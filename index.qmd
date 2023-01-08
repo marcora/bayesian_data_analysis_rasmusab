@@ -6,16 +6,16 @@ title: "Bayesian data analysis (rasmusab)"
 #| output: false
 library(tidyverse)
 library(magrittr)
-library(infer)
+library(ggside)
 library(brms)
-library(posterior)
-library(bayesplot)
-library(bayestestR)
 library(tidybayes)
+library(posterior)
+library(bayestestR)
 options(
   mc.cores = parallel::detectCores(),
   brms.backend = "cmdstanr"
 )
+set.seed(19780503)
 ```
 
 ## Resources
@@ -35,7 +35,11 @@ DataCamp course: <https://www.datacamp.com/courses/fundamentals-of-bayesian-data
 
 ## The data generation process
 
-Data story \> Data generation process \> Generative model (function that takes parameters and returns data/observations/sample).
+Data story/Data Generation Process \> DAG/Structural Causal Model \> Generative Probabilistic Model (function that takes parameters and returns data/observations/sample).
+
+![](images/image-710461311.png)
+
+![](images/image-2080205927.png)
 
 ## Linear regression
 
@@ -55,7 +59,7 @@ $$ $$
 $$
 
 ```{r}
-n = 10
+n = 2
 beta0 = 10
 beta1 = 2
 sigma = 1
@@ -76,7 +80,9 @@ d
 
 d %>% ggplot(aes(x = x, y = y, color = factor(x))) +
   geom_point(alpha = 0.5, show.legend = FALSE) +
-  geom_abline(intercept = beta0, slope = beta1, linetype = "dotted") +
+  # geom_ysidedensity(color = "gray", fill = "grey", show.legend = FALSE) +
+  geom_smooth(method = "lm", color = "grey", show.legend = FALSE) +
+  geom_abline(intercept = beta0, slope = beta1) +
   theme_bw()
 ```
 
@@ -96,5 +102,8 @@ b = brm(y ~ x, d)
 
 ```{r}
 summary(b)
+```
+
+```{r}
 mcmc_plot(b, type = "areas", prob = 0.95) # launch_shinystan(b)
 ```
