@@ -20,18 +20,20 @@ set.seed(19780503)
 
 ## Resources
 
-YouTube videos:
+### YouTube videos
 
 -   Part 1: <https://www.youtube.com/watch?v=3OJEae7Qb_o>
 -   Part 2: <https://www.youtube.com/watch?v=mAUwjSo5TJE>
 -   Part 3: <https://www.youtube.com/watch?v=Ie-6H_r7I5A>
 
-R exercises:
+### R exercises
 
 -   Exercise 1: <https://www.sumsar.net/files/posts/2017-bayesian-tutorial-exercises/modeling_exercise1.html>
 -   Exercise 2: <https://www.sumsar.net/files/posts/2017-bayesian-tutorial-exercises/modeling_exercise2.html>
 
-DataCamp course: <https://www.datacamp.com/courses/fundamentals-of-bayesian-data-analysis-in-r>
+### DataCamp courses
+
+-   <https://www.datacamp.com/courses/fundamentals-of-bayesian-data-analysis-in-r>
 
 ## The data generation process
 
