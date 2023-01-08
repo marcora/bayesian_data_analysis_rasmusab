@@ -1,0 +1,103 @@
+---
+title: "Bayesian data analysis (rasmusab)"
+---
+
+```{r}
+#| output: false
+library(tidyverse)
+library(magrittr)
+library(infer)
+library(brms)
+library(posterior)
+library(bayesplot)
+library(bayestestR)
+library(tidybayes)
+options(
+  mc.cores = parallel::detectCores(),
+  brms.backend = "cmdstanr",
+  shinystan.rstudio = TRUE
+)
+```
+
+## Resources
+
+YouTube videos:
+
+-   Part 1: <https://www.youtube.com/watch?v=3OJEae7Qb_o>
+-   Part 2: <https://www.youtube.com/watch?v=mAUwjSo5TJE>
+-   Part 3: <https://www.youtube.com/watch?v=Ie-6H_r7I5A>
+
+R exercises:
+
+-   Exercise 1: <https://www.sumsar.net/files/posts/2017-bayesian-tutorial-exercises/modeling_exercise1.html>
+-   Exercise 2: <https://www.sumsar.net/files/posts/2017-bayesian-tutorial-exercises/modeling_exercise2.html>
+
+DataCamp course: <https://www.datacamp.com/courses/fundamentals-of-bayesian-data-analysis-in-r>
+
+## The data generation process
+
+Data story \> Data generation process \> Generative model (function that takes parameters and returns data/observations/sample).
+
+## Linear regression
+
+Standard notation:
+
+$$
+y_i = \beta_0 + \beta_1 x_i + \epsilon
+$$
+$$
+\epsilon \sim \mathcal{N}(0, \sigma)
+$$
+
+Alternative notation:\
+$$
+y_i \sim \mathcal{N}(\mu_i, \sigma)
+$$
+$$
+\mu_i = \beta_0 + \beta_1 x_i
+$$
+
+```{r}
+n = 10
+beta0 = 10
+beta1 = 2
+sigma = 1
+
+dgp <- function(n, beta0, beta1, sigma) {
+  x = seq(0, 1, length.out = n)
+  y = map(x, function(x) {
+    mu = beta0 + beta1 * x
+    y = rnorm(5, mu, sigma)
+    return(y)
+  })
+  return(tibble(x, y) %>% unnest(y))
+}
+
+d = dgp(n, beta0, beta1, sigma)
+
+d
+
+d %>% ggplot(aes(x = x, y = y, color = factor(x))) +
+  geom_point(alpha = 0.5, show.legend = FALSE) +
+  geom_abline(intercept = beta0, slope = beta1, linetype = "dotted") +
+  theme_bw()
+```
+
+```{r}
+l = lm(y ~ x, d)
+summary(l)
+```
+
+```{r}
+confint(l)
+```
+
+```{r}
+#| output: false
+b = brm(y ~ x, d)
+```
+
+```{r}
+summary(b)
+mcmc_plot(b, type = "areas", prob = 0.95) # launch_shinystan(b)
+```
