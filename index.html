@@ -86,16 +86,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 
-<script src="bayesian_data_analysis_rasmusab_files/libs/clipboard/clipboard.min.js"></script>
-<script src="bayesian_data_analysis_rasmusab_files/libs/quarto-html/quarto.js"></script>
-<script src="bayesian_data_analysis_rasmusab_files/libs/quarto-html/popper.min.js"></script>
-<script src="bayesian_data_analysis_rasmusab_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="bayesian_data_analysis_rasmusab_files/libs/quarto-html/anchor.min.js"></script>
-<link href="bayesian_data_analysis_rasmusab_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="bayesian_data_analysis_rasmusab_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="bayesian_data_analysis_rasmusab_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="bayesian_data_analysis_rasmusab_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="bayesian_data_analysis_rasmusab_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
@@ -195,16 +195,16 @@ y_i \sim \mathcal{N}(\mu_i, \sigma)
 <pre><code># A tibble: 50 × 2
        x     y
    &lt;dbl&gt; &lt;dbl&gt;
- 1 0      9.75
- 2 0      9.47
- 3 0      8.09
- 4 0      9.57
- 5 0     11.5 
- 6 0.111 10.8 
- 7 0.111  9.42
- 8 0.111  9.93
- 9 0.111 10.2 
-10 0.111 10.4 
+ 1 0      9.27
+ 2 0     10.6 
+ 3 0      9.57
+ 4 0      8.76
+ 5 0      7.10
+ 6 0.111 12.0 
+ 7 0.111 10.5 
+ 8 0.111  9.39
+ 9 0.111 10.4 
+10 0.111 10.9 
 # … with 40 more rows</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>d <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> <span class="fu">factor</span>(x))) <span class="sc">+</span></span>
@@ -212,7 +212,7 @@ y_i \sim \mathcal{N}(\mu_i, \sigma)
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> beta0, <span class="at">slope =</span> beta1, <span class="at">linetype =</span> <span class="st">"dotted"</span>) <span class="sc">+</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="bayesian_data_analysis_rasmusab_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
@@ -225,26 +225,26 @@ lm(formula = y ~ x, data = d)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--1.7007 -0.4730 -0.0215  0.3972  2.4129 
+-2.6293 -0.6056 -0.0429  0.8170  2.0125 
 
 Coefficients:
             Estimate Std. Error t value             Pr(&gt;|t|)    
-(Intercept)    9.599      0.230   41.67 &lt; 0.0000000000000002 ***
-x              2.626      0.388    6.76          0.000000017 ***
+(Intercept)    9.731      0.275   35.42 &lt; 0.0000000000000002 ***
+x              2.192      0.463    4.73              0.00002 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.876 on 48 degrees of freedom
-Multiple R-squared:  0.488, Adjusted R-squared:  0.477 
-F-statistic: 45.7 on 1 and 48 DF,  p-value: 0.0000000171</code></pre>
+Residual standard error: 1.05 on 48 degrees of freedom
+Multiple R-squared:  0.318, Adjusted R-squared:  0.304 
+F-statistic: 22.4 on 1 and 48 DF,  p-value: 0.0000199</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(l)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            2.5 % 97.5 %
-(Intercept) 9.136 10.063
-x           1.845  3.407</code></pre>
+(Intercept) 9.179 10.283
+x           1.261  3.123</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -262,12 +262,12 @@ Formula: y ~ x
 
 Population-Level Effects: 
           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-Intercept     9.60      0.24     9.11    10.06 1.00     3919     2606
-x             2.63      0.40     1.83     3.41 1.00     3818     3212
+Intercept     9.73      0.28     9.17    10.27 1.00     3890     2741
+x             2.20      0.48     1.24     3.15 1.00     3719     2807
 
 Family Specific Parameters: 
       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-sigma     0.90      0.09     0.74     1.11 1.00     3024     2800
+sigma     1.07      0.11     0.88     1.31 1.00     3463     3114
 
 Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
 and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -275,7 +275,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_plot</span>(b, <span class="at">type =</span> <span class="st">"areas"</span>, <span class="at">prob =</span> <span class="fl">0.95</span>) <span class="co"># launch_shinystan(b)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="bayesian_data_analysis_rasmusab_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
