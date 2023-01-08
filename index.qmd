@@ -14,8 +14,7 @@ library(bayestestR)
 library(tidybayes)
 options(
   mc.cores = parallel::detectCores(),
-  brms.backend = "cmdstanr",
-  shinystan.rstudio = TRUE
+  brms.backend = "cmdstanr"
 )
 ```
 
@@ -44,16 +43,14 @@ Standard notation:
 
 $$
 y_i = \beta_0 + \beta_1 x_i + \epsilon
-$$
-$$
+$$ $$
 \epsilon \sim \mathcal{N}(0, \sigma)
 $$
 
 Alternative notation:\
 $$
 y_i \sim \mathcal{N}(\mu_i, \sigma)
-$$
-$$
+$$ $$
 \mu_i = \beta_0 + \beta_1 x_i
 $$
 

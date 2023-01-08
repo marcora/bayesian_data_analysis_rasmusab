@@ -135,9 +135,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">mc.cores =</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>(),</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">brms.backend =</span> <span class="st">"cmdstanr"</span>,</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">shinystan.rstudio =</span> <span class="cn">TRUE</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">brms.backend =</span> <span class="st">"cmdstanr"</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="resources" class="level2">
 <h2 class="anchored" data-anchor-id="resources">Resources</h2>
@@ -195,15 +194,15 @@ y_i \sim \mathcal{N}(\mu_i, \sigma)
 <pre><code># A tibble: 50 × 2
        x     y
    &lt;dbl&gt; &lt;dbl&gt;
- 1 0      9.27
- 2 0     10.6 
- 3 0      9.57
- 4 0      8.76
- 5 0      7.10
- 6 0.111 12.0 
- 7 0.111 10.5 
- 8 0.111  9.39
- 9 0.111 10.4 
+ 1 0      7.90
+ 2 0     10.0 
+ 3 0     10.5 
+ 4 0      9.80
+ 5 0     11.1 
+ 6 0.111  9.56
+ 7 0.111  9.31
+ 8 0.111 11.3 
+ 9 0.111  9.86
 10 0.111 10.9 
 # … with 40 more rows</code></pre>
 </div>
@@ -225,26 +224,26 @@ lm(formula = y ~ x, data = d)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--2.6293 -0.6056 -0.0429  0.8170  2.0125 
+-2.4072 -0.5612  0.0311  0.5115  2.1871 
 
 Coefficients:
             Estimate Std. Error t value             Pr(&gt;|t|)    
-(Intercept)    9.731      0.275   35.42 &lt; 0.0000000000000002 ***
-x              2.192      0.463    4.73              0.00002 ***
+(Intercept)   10.312      0.247   41.75 &lt; 0.0000000000000002 ***
+x              1.777      0.416    4.27             0.000092 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 1.05 on 48 degrees of freedom
-Multiple R-squared:  0.318, Adjusted R-squared:  0.304 
-F-statistic: 22.4 on 1 and 48 DF,  p-value: 0.0000199</code></pre>
+Residual standard error: 0.94 on 48 degrees of freedom
+Multiple R-squared:  0.275, Adjusted R-squared:  0.26 
+F-statistic: 18.2 on 1 and 48 DF,  p-value: 0.0000921</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(l)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>            2.5 % 97.5 %
-(Intercept) 9.179 10.283
-x           1.261  3.123</code></pre>
+<pre><code>             2.5 % 97.5 %
+(Intercept) 9.8153 10.809
+x           0.9403  2.615</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -262,12 +261,12 @@ Formula: y ~ x
 
 Population-Level Effects: 
           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-Intercept     9.73      0.28     9.17    10.27 1.00     3890     2741
-x             2.20      0.48     1.24     3.15 1.00     3719     2807
+Intercept    10.32      0.25     9.80    10.82 1.00     3912     2797
+x             1.77      0.42     0.95     2.60 1.00     3727     2638
 
 Family Specific Parameters: 
       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-sigma     1.07      0.11     0.88     1.31 1.00     3463     3114
+sigma     0.96      0.10     0.80     1.18 1.00     3585     2748
 
 Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
 and Tail_ESS are effective sample size measures, and Rhat is the potential
