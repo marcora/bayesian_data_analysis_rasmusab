@@ -116,23 +116,23 @@ $$
 $$
 
 $$
-Pr(\theta) = \theta^{a-1}(1-\theta)^{b-1} 
+P(\theta) = \theta^{a-1}(1-\theta)^{b-1} 
 $$
 
 ### Likelihood (Binomial)
 
 $$
-Pr(k \mid \theta) = {n \choose k} \theta^k (1 - \theta)^{n - k}
+P(k \mid \theta) = {n \choose k} \theta^k (1 - \theta)^{n - k}
 $$
 
 ### Posterior probability
 
 $$
-Pr(\theta \mid k) \propto {n \choose k} \theta^k (1 - \theta)^{n - k} \theta^{a-1}(1-\theta)^{b-1} 
+P(\theta \mid k) \propto {n \choose k} \theta^k (1 - \theta)^{n - k} \theta^{a-1}(1-\theta)^{b-1} 
 $$
 
 $$
-Pr(\theta \mid k) \propto \theta^{(a+k)-1} (1 - \theta)^{(b+n-k)-1} 
+P(\theta \mid k) \propto \theta^{(a+k)-1} (1 - \theta)^{(b+n-k)-1} 
 $$
 
 $$

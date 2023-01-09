@@ -335,22 +335,22 @@ Residual standard error: 11.2 on 99 degrees of freedom</code></pre>
 \theta \sim \mathcal{B}(a,b)
 \]</span></p>
 <p><span class="math display">\[
-Pr(\theta) = \theta^{a-1}(1-\theta)^{b-1}
+P(\theta) = \theta^{a-1}(1-\theta)^{b-1}
 \]</span></p>
 </section>
 <section id="likelihood-binomial" class="level3">
 <h3 class="anchored" data-anchor-id="likelihood-binomial">Likelihood (Binomial)</h3>
 <p><span class="math display">\[
-Pr(k \mid \theta) = {n \choose k} \theta^k (1 - \theta)^{n - k}
+P(k \mid \theta) = {n \choose k} \theta^k (1 - \theta)^{n - k}
 \]</span></p>
 </section>
 <section id="posterior-probability" class="level3">
 <h3 class="anchored" data-anchor-id="posterior-probability">Posterior probability</h3>
 <p><span class="math display">\[
-Pr(\theta \mid k) \propto {n \choose k} \theta^k (1 - \theta)^{n - k} \theta^{a-1}(1-\theta)^{b-1}
+P(\theta \mid k) \propto {n \choose k} \theta^k (1 - \theta)^{n - k} \theta^{a-1}(1-\theta)^{b-1}
 \]</span></p>
 <p><span class="math display">\[
-Pr(\theta \mid k) \propto \theta^{(a+k)-1} (1 - \theta)^{(b+n-k)-1}
+P(\theta \mid k) \propto \theta^{(a+k)-1} (1 - \theta)^{(b+n-k)-1}
 \]</span></p>
 <p><span class="math display">\[
 \theta \mid k \sim \mathcal{B}(a+k, b+n-k)
