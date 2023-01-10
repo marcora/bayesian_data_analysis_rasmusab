@@ -1,0 +1,144 @@
+---
+title: "Statistical rethinking (mcelreath)"
+---
+
+<https://github.com/rmcelreath/stat_rethinking_2023>
+
+```{r}
+library(tidyverse)
+library(magrittr)
+library(bayesrules)
+library(rethinking)
+theme_set(theme_bw())
+set.seed(2020)
+```
+
+## Binomial estimation
+
+## Linear regression
+
+Drawing the owl:
+
+1.  Goal/Question/Estimand: State a clear **question** (inferential or descriptive)
+
+    -   Describe association between (adult) weight and height
+
+2.  DAG: Sketch the causal **assumptions**
+
+    -   Height → Weight ← \[Unobserved\]
+
+    -   Weight is some function of height \[and other unobserved variables/influences\] $W = f(H,U)$
+
+3.  Scientific model: Use the sketch to define a **generative model**
+
+    -   What is this function $f$ ?
+
+    -   How does height influences weight?
+
+    -   For example, a linear function: $W = \beta H + U$
+
+    -   It should be able to generate realistic data!
+
+4.  Statistical model: Use the generative model to build an **estimator**
+
+    -   We want to estimate how the average weight changes with height.
+
+    -   How does average weight changes with height?
+
+    -   $E(W_i \mid H_i) = \alpha + \beta H_i$
+
+    -   In Bayesian inference the estimator is always the posterior distribution.
+
+    -   $P(\alpha, \beta, \sigma \mid H_i, W_i) = \frac{P(W_i \mid H_i, \alpha, \beta, \sigma) P(\alpha, \beta, \sigma)}{Z}$
+
+    -   In conventional statistical model notation:
+
+        $$
+        W_i \sim \text{Normal}(\mu_i, \sigma) \\
+        \mu_i = \alpha + \beta H_i \\
+        \alpha \sim \text{Normal}(0, 10) \\
+        \beta \sim \text{Uniform}(0, 1) \\
+        \sigma \sim \text{Uniform}(0, 10) \\
+        $$
+
+        $W$ is distributed normally with mean that is a linear function of $H$.
+
+    -   Prior predictive distribution.
+
+5.  Validate statistical model
+
+    -   Analyze data simulated using the generative model.
+
+6.  Use the statistical model to analyze data/calculate estimate
+
+    -   Estimate = Posterior distribution.
+
+    -   Posterior predictive distribution.
+
+A **generative model** is a statistical model of the conditional probability of the observable X, given a target y, symbolically, $P(X | Y = y)$.
+
+A **discriminative model** is a statistical model of the conditional probability of the target Y, given an observation x, symbolically, $P(Y | X = x)$.
+
+A generative model (e.g., naive bayes) explicitly models the joint probability distribution $p(x,y)$ and then uses the Bayes rule to compute $p(y \mid x)$. On the other hand, a discriminative model (e.g., logistic regression) directly models $p(y \mid x)$.
+
+An **estimator** is a rule for calculating an **estimate** of a quantity of interest (the **estimand**) based on observed data: thus the rule (the estimator), the quantity of interest (the estimand) and its result (the estimate) are distinguished. For example, the sample mean is a commonly used estimator of the population mean (the estimand).
+
+### Generative model
+
+```{r}
+sim_weight <- function(H, beta, sd) {
+  U = rnorm(length(H), 0, sd)
+  W = beta * H + U
+  return(W)
+}
+
+n = 100
+H = runif(n, min = 130, max = 170)
+W = sim_weight(H, beta = 0.5, sd = 5)
+plot(W ~ H, col = "red")
+```
+
+### Conventional statistical model notation
+
+1.  List the variables
+
+2.  Define each variable as a deterministic or distributional/stochastic function of the other variables
+
+$$
+W_i = \beta H_i + U_i \\
+U_i \sim \text{Normal}(0, \sigma) \\
+H_i \sim \text{Uniform}(130, 170)
+$$
+
+Variables on the left, functions on the right (equal sign for deterministic functions, tilde sign for distributional/stochastic functions).
+
+### Prior predictive distribution
+
+```{r}
+n = 1000
+a = rnorm(n, 0, 10)
+b = runif(n, 0, 1)
+plot(NULL,
+     xlim = c(130, 170),
+     ylim = c(55,95),
+     xlab = "height (cm)",
+     ylab = "weight (kg)")
+for(j in 1:50) abline(a = a[j], b = b[j], col = "red")
+```
+
+```{r}
+n = 10
+H = runif(n, min = 130, max = 170)
+W = sim_weight(H, beta = 0.5, sd = 5)
+
+m3.1 = quap(
+  alist(
+    W ~ dnorm(mu, sigma),
+    mu <- a + b * H,
+    a ~ dnorm(0, 10),
+    b ~ dunif(0, 1),
+    sigma ~ dunif(0, 10)
+  ), data = tibble(W, H))
+
+precis(m3.1)
+```
