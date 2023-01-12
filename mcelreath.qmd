@@ -40,6 +40,10 @@ P(H \mid D) = \frac{P(H) P(D \mid H)}{P(D)}
 $$
 
 $$
+P(\theta \mid X, M) = \frac{P(\theta \mid M) P(X \mid \theta, M)}{P(X \mid M)}
+$$
+
+$$
 P(\theta \mid X) = \frac{P(\theta) P(X \mid \theta)}{P(X)}
 $$
 
