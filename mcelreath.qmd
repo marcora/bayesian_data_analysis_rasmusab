@@ -8,21 +8,89 @@ title: "Statistical rethinking (mcelreath)"
 library(tidyverse)
 library(magrittr)
 library(rethinking)
+library(triangle)
 theme_set(theme_bw())
 set.seed(2020)
 ```
 
+## Bayes theorem
+
+$$
+P(A,B) = P(A) P(B \mid A)
+$$
+
+$$
+P(B,A) = P(B) P(A \mid B)
+$$
+
+$$
+P(A,B) = P(B,A)
+$$
+
+$$
+P(A) P(B \mid A) = P(B) P(A \mid B)
+$$
+
+$$
+P(A \mid B) = \frac{P(A) P(B \mid A)}{P(B)}
+$$
+
+$$
+P(H \mid D) = \frac{P(H) P(D \mid H)}{P(D)}
+$$
+
+$$
+P(\theta \mid X) = \frac{P(\theta) P(X \mid \theta)}{P(X)}
+$$
+
+$$
+P(\theta \mid X) = \frac{P(\theta) P(X \mid \theta)}{\int_\theta P(\theta) P(X \mid \theta) d\theta}
+$$
+
+$$
+P(\theta \mid X) \propto P(\theta) P(X \mid \theta)
+$$
+
+$$
+\text{posterior} \propto \text{prior} \times \text{likelihood}
+$$
+
+## Frequentist vs Bayesian
+
++------------------------------------------------+-------------------------------------------------------------+
+| Frequentist                                    | Bayesian                                                    |
++================================================+=============================================================+
+| Probability is "long-run relative frequency"   | Probability is "degree of certainty/relative plausability"  |
++------------------------------------------------+-------------------------------------------------------------+
+| $P(X \mid \theta)$ is a sampling distribution\ | $P(X \mid \theta)$ is a likelihood function\                |
+| (function of $X$ with $\theta$ fixed)          | (function of $\theta$ with $X$ fixed)                       |
++------------------------------------------------+-------------------------------------------------------------+
+| No prior                                       | Prior                                                       |
++------------------------------------------------+-------------------------------------------------------------+
+| P-values (NHST)                                | Full posterior distribution available for summary/decisions |
++------------------------------------------------+-------------------------------------------------------------+
+| Confidence intervals                           | Credible intervals                                          |
++------------------------------------------------+-------------------------------------------------------------+
+| Violates the "likelihood principle":           | Respects the "likelihood principle":                        |
+|                                                |                                                             |
+| -   Sampling intention matters                 | -   Sampling intention does not matter                      |
+| -   Correction for multiple testing            | -   No correction for multiple testing                      |
+| -   Adjustment for planned/post-hoc testing    | -   No adjustment for planned/post-hoc testing              |
++------------------------------------------------+-------------------------------------------------------------+
+| Objective?                                     | Subjective?                                                 |
++------------------------------------------------+-------------------------------------------------------------+
+
 ## Bayesian inference worfklow
 
-1.  Question/goal \[estimand\]
+1.  Question/goal \[**estimand**\]
 
 2.  Scientific model (of the data generation process, aka generative model)
 
-3.  Statistical model \[estimator\]
+3.  Statistical model(s) \[**estimator**\]
 
 4.  Validate model
 
-5.  Analyze data \[estimate\]
+5.  Analyze data \[**estimate**\]
 
 An **estimator** is a rule for calculating an **estimate** of a quantity of interest (the **estimand**) based on observed data: thus the rule (the estimator), the quantity of interest (the estimand) and its result (the estimate) are distinguished. For example, the sample mean is a commonly used estimator of the population mean (the estimand).
 
@@ -34,33 +102,80 @@ An **estimator** is a rule for calculating an **estimate** of a quantity of inte
 
 ### Statistical model
 
+Observations (data) and explanations (parameters) are variables.
+
+For each variable, must say how it is generated.
+
 List variables as deterministic or stochastic/distributional functions:
 
 $$
-W \sim \text{Binomial}(N,p) \\
-p \sim \text{Uniform}(0,1)
+W=3,L=6 \sim \text{Binomial}(\pi)
+$$
+
+$$
+\pi \sim \text{Uniform}(a=0, b=1)
 $$
 
 Stochastic/distributional functions can also be expressed as probability statements:
 
-\[Data distribution\]
+\[Data distribution/Likelihood function\]
 
 $$
-P(W \mid N,p) = \text{Binomial}(W \mid N,p)
+P(W = 3,L = 6 \mid \pi) =  \text{Binomial}(W = 3, L = 6, \pi) = \frac{(W+L)!}{W!L!} \pi^W (1 - \pi)^L = \frac{(3+6)!}{3!6!} \pi^3 (1 - \pi)^6 = \frac{362880}{4320} \pi^3 (1 - \pi)^6
 $$
 
 \[Prior distribution\]
 
 $$
-P(p) = \text{Uniform}(p \mid 0,1)
+P(\pi \mid a=0,b=1) = \text{Uniform}(\pi, a=0, b=1) = \frac{1}{b - a} = 1
 $$
 
-Bayesian estimator (posterior distribution = data distribution x prior distribution):
+Bayesian estimator (posterior $\propto$ likelihood $\times$ prior):
 
 $$
-P(p \mid W,N) \propto P(W \mid N,p) \times P(p) \\
-P(p \mid W,N) \propto \text{Binomial}(W \mid N,p) \times \text{Uniform}(p \mid 0,1)
+P(\pi \mid W = 3, L = 6) \propto \text{Binomial}(W = 3, L = 6, \pi) \times \text{Uniform}(\pi, a = 0, b = 1)
 $$
+
+$$
+P(\pi \mid W = 3, L = 6) \propto \frac{362880}{4320} \pi^3 (1 - \pi)^6 \times 1
+$$
+
+$$
+P(\pi \mid W = 3, L = 6) \propto \pi^3 (1 - \pi)^6
+$$
+
+```{r}
+D = c("W", "W", "L", "L", "L", "L", "W", "L", "L")
+
+W = sum(D == "W")
+L = sum(D == "L")
+
+W = 10
+L = 20
+
+p = seq(from=0, to=1, len=1e4)
+
+a = 0
+b = 1
+
+binomial <- function(W, L, p) {
+  return(factorial(W + L)/(factorial(W)*factorial(L)) * p^W * (1 - p)^L)
+}
+
+uniform <- function(p, a, b) {
+  return(1/(b - a))
+}
+
+likelihood = binomial(W, L, p)
+prior = uniform(p, a, b)
+
+likelihood = dbinom(W, W+L, p)
+prior = dunif(p, a, b)
+
+posterior = prior * likelihood
+
+plot(posterior ~ p)
+```
 
 ### Validate model
 

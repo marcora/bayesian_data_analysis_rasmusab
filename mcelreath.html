@@ -129,7 +129,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-✔ ggplot2 3.4.0      ✔ purrr   1.0.0 
+✔ ggplot2 3.4.0      ✔ purrr   1.0.1 
 ✔ tibble  3.1.8      ✔ dplyr   1.0.10
 ✔ tidyr   1.2.1      ✔ stringr 1.5.0 
 ✔ readr   2.1.3      ✔ forcats 0.5.2 
@@ -150,8 +150,7 @@ The following object is masked from 'package:tidyr':
 
     extract</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesrules)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rethinking)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rethinking)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: rstan
 Loading required package: StanHeaders
@@ -174,11 +173,8 @@ The following object is masked from 'package:tidyr':
 Loading required package: cmdstanr
 This is cmdstanr version 0.5.3
 - CmdStanR documentation and vignettes: mc-stan.org/cmdstanr
-- CmdStan path: /Users/marcoe02/.cmdstan/cmdstan-2.30.1
-- CmdStan version: 2.30.1
-
-A newer version of CmdStan is available. See ?install_cmdstan() to install it.
-To disable this check set option or environment variable CMDSTANR_NO_VER_CHECK=TRUE.
+- CmdStan path: /Users/marcoe02/.cmdstan/cmdstan-2.31.0
+- CmdStan version: 2.31.0
 Loading required package: parallel
 rethinking (Version 2.21)
 
@@ -196,22 +192,200 @@ The following object is masked from 'package:stats':
 
     rstudent</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2020</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(triangle)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2020</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<section id="bayes-theorem" class="level2">
+<h2 class="anchored" data-anchor-id="bayes-theorem">Bayes theorem</h2>
+<p><span class="math display">\[
+P(A,B) = P(A) P(B \mid A)
+\]</span></p>
+<p><span class="math display">\[
+P(B,A) = P(B) P(A \mid B)
+\]</span></p>
+<p><span class="math display">\[
+P(A,B) = P(B,A)
+\]</span></p>
+<p><span class="math display">\[
+P(A) P(B \mid A) = P(B) P(A \mid B)
+\]</span></p>
+<p><span class="math display">\[
+P(A \mid B) = \frac{P(A) P(B \mid A)}{P(B)}
+\]</span></p>
+<p><span class="math display">\[
+P(H \mid D) = \frac{P(H) P(D \mid H)}{P(D)}
+\]</span></p>
+<p><span class="math display">\[
+P(\theta \mid X) = \frac{P(\theta) P(X \mid \theta)}{P(X)}
+\]</span></p>
+<p><span class="math display">\[
+P(\theta \mid X) = \frac{P(\theta) P(X \mid \theta)}{\int_\theta P(\theta) P(X \mid \theta) d\theta}
+\]</span></p>
+<p><span class="math display">\[
+P(\theta \mid X) \propto P(\theta) P(X \mid \theta)
+\]</span></p>
+<p><span class="math display">\[
+\text{posterior} \propto \text{prior} \times \text{likelihood}
+\]</span></p>
+</section>
+<section id="frequentist-vs-bayesian" class="level2">
+<h2 class="anchored" data-anchor-id="frequentist-vs-bayesian">Frequentist vs Bayesian</h2>
+<table class="table">
+<colgroup>
+<col style="width: 44%">
+<col style="width: 55%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Frequentist</th>
+<th>Bayesian</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Probability is “long-run relative frequency”</td>
+<td>Probability is “degree of certainty/relative plausability”</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(P(X \mid \theta)\)</span> is a sampling distribution<br>
+(function of <span class="math inline">\(X\)</span> with <span class="math inline">\(\theta\)</span> fixed)</td>
+<td><span class="math inline">\(P(X \mid \theta)\)</span> is a likelihood function<br>
+(function of <span class="math inline">\(\theta\)</span> with <span class="math inline">\(X\)</span> fixed)</td>
+</tr>
+<tr class="odd">
+<td>No prior</td>
+<td>Prior</td>
+</tr>
+<tr class="even">
+<td>P-values (NHST)</td>
+<td>Full posterior distribution available for summary/decisions</td>
+</tr>
+<tr class="odd">
+<td>Confidence intervals</td>
+<td>Credible intervals</td>
+</tr>
+<tr class="even">
+<td><p>Violates the “likelihood principle”:</p>
+<ul>
+<li>Sampling intention matters</li>
+<li>Correction for multiple testing</li>
+<li>Adjustment for planned/post-hoc testing</li>
+</ul></td>
+<td><p>Respects the “likelihood principle”:</p>
+<ul>
+<li>Sampling intention does not matter</li>
+<li>No correction for multiple testing</li>
+<li>No adjustment for planned/post-hoc testing</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td>Objective?</td>
+<td>Subjective?</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bayesian-inference-worfklow" class="level2">
+<h2 class="anchored" data-anchor-id="bayesian-inference-worfklow">Bayesian inference worfklow</h2>
+<ol type="1">
+<li><p>Question/goal [<strong>estimand</strong>]</p></li>
+<li><p>Scientific model (of the data generation process, aka generative model)</p></li>
+<li><p>Statistical model(s) [<strong>estimator</strong>]</p></li>
+<li><p>Validate model</p></li>
+<li><p>Analyze data [<strong>estimate</strong>]</p></li>
+</ol>
+<p>An <strong>estimator</strong> is a rule for calculating an <strong>estimate</strong> of a quantity of interest (the <strong>estimand</strong>) based on observed data: thus the rule (the estimator), the quantity of interest (the estimand) and its result (the estimate) are distinguished. For example, the sample mean is a commonly used estimator of the population mean (the estimand).</p>
+</section>
 <section id="binomial-estimation" class="level2">
 <h2 class="anchored" data-anchor-id="binomial-estimation">Binomial estimation</h2>
+<section id="questiongoalestimand" class="level3">
+<h3 class="anchored" data-anchor-id="questiongoalestimand">Question/goal/estimand</h3>
+</section>
+<section id="scientific-model" class="level3">
+<h3 class="anchored" data-anchor-id="scientific-model">Scientific model</h3>
+</section>
+<section id="statistical-model" class="level3">
+<h3 class="anchored" data-anchor-id="statistical-model">Statistical model</h3>
+<p>Observations (data) and explanations (parameters) are variables.</p>
+<p>For each variable, must say how it is generated.</p>
+<p>List variables as deterministic or stochastic/distributional functions:</p>
+<p><span class="math display">\[
+W=3,L=6 \sim \text{Binomial}(\pi)
+\]</span></p>
+<p><span class="math display">\[
+\pi \sim \text{Uniform}(a=0, b=1)
+\]</span></p>
+<p>Stochastic/distributional functions can also be expressed as probability statements:</p>
+<p>[Data distribution/Likelihood function]</p>
+<p><span class="math display">\[
+P(W = 3,L = 6 \mid \pi) =  \text{Binomial}(W = 3, L = 6, \pi) = \frac{(W+L)!}{W!L!} \pi^W (1 - \pi)^L = \frac{(3+6)!}{3!6!} \pi^3 (1 - \pi)^6 = \frac{362880}{4320} \pi^3 (1 - \pi)^6
+\]</span></p>
+<p>[Prior distribution]</p>
+<p><span class="math display">\[
+P(\pi \mid a=0,b=1) = \text{Uniform}(\pi, a=0, b=1) = \frac{1}{b - a} = 1
+\]</span></p>
+<p>Bayesian estimator (posterior <span class="math inline">\(\propto\)</span> likelihood <span class="math inline">\(\times\)</span> prior):</p>
+<p><span class="math display">\[
+P(\pi \mid W = 3, L = 6) \propto \text{Binomial}(W = 3, L = 6, \pi) \times \text{Uniform}(\pi, a = 0, b = 1)
+\]</span></p>
+<p><span class="math display">\[
+P(\pi \mid W = 3, L = 6) \propto \frac{362880}{4320} \pi^3 (1 - \pi)^6 \times 1
+\]</span></p>
+<p><span class="math display">\[
+P(\pi \mid W = 3, L = 6) \propto \pi^3 (1 - \pi)^6
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>D <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"W"</span>, <span class="st">"W"</span>, <span class="st">"L"</span>, <span class="st">"L"</span>, <span class="st">"L"</span>, <span class="st">"L"</span>, <span class="st">"W"</span>, <span class="st">"L"</span>, <span class="st">"L"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>W <span class="ot">=</span> <span class="fu">sum</span>(D <span class="sc">==</span> <span class="st">"W"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>L <span class="ot">=</span> <span class="fu">sum</span>(D <span class="sc">==</span> <span class="st">"L"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>W <span class="ot">=</span> <span class="dv">10</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>L <span class="ot">=</span> <span class="dv">20</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">1</span>, <span class="at">len=</span><span class="fl">1e4</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>b <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>binomial <span class="ot">&lt;-</span> <span class="cf">function</span>(W, L, p) {</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">factorial</span>(W <span class="sc">+</span> L)<span class="sc">/</span>(<span class="fu">factorial</span>(W)<span class="sc">*</span><span class="fu">factorial</span>(L)) <span class="sc">*</span> p<span class="sc">^</span>W <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> p)<span class="sc">^</span>L)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>uniform <span class="ot">&lt;-</span> <span class="cf">function</span>(p, a, b) {</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="dv">1</span><span class="sc">/</span>(b <span class="sc">-</span> a))</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">=</span> <span class="fu">binomial</span>(W, L, p)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">=</span> <span class="fu">uniform</span>(p, a, b)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">=</span> <span class="fu">dbinom</span>(W, W<span class="sc">+</span>L, p)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">=</span> <span class="fu">dunif</span>(p, a, b)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">=</span> prior <span class="sc">*</span> likelihood</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(posterior <span class="sc">~</span> p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="mcelreath_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="validate-model" class="level3">
+<h3 class="anchored" data-anchor-id="validate-model">Validate model</h3>
+</section>
+<section id="analyze-data" class="level3">
+<h3 class="anchored" data-anchor-id="analyze-data">Analyze data</h3>
+</section>
 </section>
 <section id="linear-regression" class="level2">
 <h2 class="anchored" data-anchor-id="linear-regression">Linear regression</h2>
-<p>Drawing the owl:</p>
 <ol type="1">
-<li><p>Goal/Question/Estimand: State a clear <strong>question</strong> (inferential or descriptive)</p>
+<li><p>Question/goal [estimand]: State a clear <strong>question</strong> (inferential or descriptive)</p>
 <ul>
-<li><p>Describe association between (adult) weight and height</p></li>
-<li><p>How does height influences weight?</p></li>
+<li>Describe association between (adult) weight and height</li>
 </ul></li>
-<li><p>Scientific model: Sketch the causal <strong>assumptions</strong></p>
+<li><p>Scientific model: Sketch the causal <strong>assumptions</strong> (DAG)</p>
 <ul>
 <li><p>Height → Weight ← [Unobserved]</p></li>
 <li><p>Weight is some function of height [and other unobserved variables/influences] <span class="math inline">\(W = f(H,U)\)</span></p></li>
@@ -219,41 +393,108 @@ The following object is masked from 'package:stats':
 <li><p>Statistical model: Use the sketch to define a <strong>generative model</strong></p>
 <ul>
 <li><p>What is this function <span class="math inline">\(f\)</span> ?</p></li>
-<li><p>For example, a linear function: <span class="math inline">\(W = \beta H + U\)</span></p></li>
-<li><p>It should be able to generate realistic data</p></li>
+<li><p>How does height influences weight?</p></li>
+<li><p>For example, a linear function: <span class="math inline">\(W = \alpha + \beta H + U\)</span></p></li>
+<li><p>It should be able to generate realistic data!</p></li>
 </ul></li>
-<li><p>XXX: Use the generative model to build an <strong>estimator</strong></p></li>
-<li><p>Validate model</p></li>
-<li><p>Analyze data</p></li>
+<li><p>Statistical model: Use the generative model to build an <strong>estimator</strong></p>
+<ul>
+<li><p>We want to estimate how the average weight changes with height.</p></li>
+<li><p>How does average weight changes with height?</p></li>
+<li><p><span class="math inline">\(E(W_i \mid H_i) = \alpha + \beta H_i\)</span></p></li>
+<li><p>In Bayesian inference the estimator is always the posterior distribution.</p></li>
+<li><p><span class="math inline">\(P(\alpha, \beta, \sigma \mid H_i, W_i) = \frac{P(W_i \mid H_i, \alpha, \beta, \sigma) P(\alpha, \beta, \sigma)}{Z}\)</span></p></li>
+<li><p>In conventional statistical model notation:</p>
+<p><span class="math display">\[
+W_i \sim \text{Normal}(\mu_i, \sigma) \\
+\mu_i = \alpha + \beta H_i \\
+\alpha \sim \text{Normal}(0, 10) \\
+\beta \sim \text{Uniform}(0, 1) \\
+\sigma \sim \text{Uniform}(0, 10) \\
+\]</span></p>
+<p><span class="math inline">\(W\)</span> is distributed normally with mean that is a linear function of <span class="math inline">\(H\)</span>.</p></li>
+<li><p>Prior predictive distribution.</p></li>
+</ul></li>
+<li><p>Validate statistical model</p>
+<ul>
+<li>Analyze data simulated using the generative model.</li>
+</ul></li>
+<li><p>Use the statistical model to analyze data/calculate estimate</p>
+<ul>
+<li><p>Estimate = Posterior distribution.</p></li>
+<li><p>Posterior predictive distribution.</p></li>
+</ul></li>
 </ol>
-<p>A <strong>generative model</strong> is a statistical model of the conditional probability of the observable X, given a target y, symbolically, <span class="math inline">\(P(X | Y = y)\)</span>.</p>
-<p>A <strong>discriminative model</strong> is a statistical model of the conditional probability of the target Y, given an observation x, symbolically, <span class="math inline">\(P(Y | X = x)\)</span>.</p>
-<p>A generative model (e.g., naive bayes) explicitly models the joint probability distribution <span class="math inline">\(p(x,y)\)</span> and then uses the Bayes rule to compute <span class="math inline">\(p(y \mid x)\)</span>. On the other hand, a discriminative model (e.g., logistic regression) directly models <span class="math inline">\(p(y \mid x)\)</span>.</p>
 <p>An <strong>estimator</strong> is a rule for calculating an <strong>estimate</strong> of a quantity of interest (the <strong>estimand</strong>) based on observed data: thus the rule (the estimator), the quantity of interest (the estimand) and its result (the estimate) are distinguished. For example, the sample mean is a commonly used estimator of the population mean (the estimand).</p>
 <section id="generative-model" class="level3">
 <h3 class="anchored" data-anchor-id="generative-model">Generative model</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sim_weight <span class="ot">&lt;-</span> <span class="cf">function</span>(H, beta, sd) {</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  U <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(H), <span class="dv">0</span>, sd)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  W <span class="ot">=</span> beta <span class="sc">*</span> H <span class="sc">+</span> U</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(W)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">100</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>H <span class="ot">=</span> <span class="fu">runif</span>(n, <span class="at">min =</span> <span class="dv">130</span>, <span class="at">max =</span> <span class="dv">170</span>)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>W <span class="ot">=</span> <span class="fu">sim_weight</span>(H, <span class="at">beta =</span> <span class="fl">0.5</span>, <span class="at">sd =</span> <span class="dv">5</span>)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(W <span class="sc">~</span> H, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sim_weight <span class="ot">&lt;-</span> <span class="cf">function</span>(H, beta, sd) {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  U <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(H), <span class="dv">0</span>, sd)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  W <span class="ot">=</span> beta <span class="sc">*</span> H <span class="sc">+</span> U</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(W)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">100</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>H <span class="ot">=</span> <span class="fu">runif</span>(n, <span class="at">min =</span> <span class="dv">130</span>, <span class="at">max =</span> <span class="dv">170</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>W <span class="ot">=</span> <span class="fu">sim_weight</span>(H, <span class="at">beta =</span> <span class="fl">0.5</span>, <span class="at">sd =</span> <span class="dv">5</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(W <span class="sc">~</span> H, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="mcelreath_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+<p><img src="mcelreath_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
-<section id="conventional-generativestatistical-model-notation" class="level3">
-<h3 class="anchored" data-anchor-id="conventional-generativestatistical-model-notation">Conventional generative/statistical model notation</h3>
+<section id="conventional-statistical-model-notation" class="level3">
+<h3 class="anchored" data-anchor-id="conventional-statistical-model-notation">Conventional statistical model notation</h3>
 <ol type="1">
 <li><p>List the variables</p></li>
-<li><p>Define each variable as a deterministic or distributional function of the other variables</p></li>
+<li><p>Define each variable as a deterministic or distributional/stochastic function of the other variables</p></li>
 </ol>
+<p><span class="math display">\[
+W_i = \beta H_i + U_i \\
+U_i \sim \text{Normal}(0, \sigma) \\
+H_i \sim \text{Uniform}(130, 170)
+\]</span></p>
+<p>Variables on the left, functions on the right (equal sign for deterministic functions, tilde sign for distributional/stochastic functions).</p>
+</section>
+<section id="prior-predictive-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="prior-predictive-distribution">Prior predictive distribution</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">1000</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>b <span class="ot">=</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="cn">NULL</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">130</span>, <span class="dv">170</span>),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">55</span>,<span class="dv">95</span>),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"height (cm)"</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"weight (kg)"</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>) <span class="fu">abline</span>(<span class="at">a =</span> a[j], <span class="at">b =</span> b[j], <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="mcelreath_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">10</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>H <span class="ot">=</span> <span class="fu">runif</span>(n, <span class="at">min =</span> <span class="dv">130</span>, <span class="at">max =</span> <span class="dv">170</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>W <span class="ot">=</span> <span class="fu">sim_weight</span>(H, <span class="at">beta =</span> <span class="fl">0.5</span>, <span class="at">sd =</span> <span class="dv">5</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>m3<span class="fl">.1</span> <span class="ot">=</span> <span class="fu">quap</span>(</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">alist</span>(</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    W <span class="sc">~</span> <span class="fu">dnorm</span>(mu, sigma),</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span> a <span class="sc">+</span> b <span class="sc">*</span> H,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    a <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>, <span class="dv">10</span>),</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    b <span class="sc">~</span> <span class="fu">dunif</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    sigma <span class="sc">~</span> <span class="fu">dunif</span>(<span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  ), <span class="at">data =</span> <span class="fu">tibble</span>(W, H))</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">precis</span>(m3<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        mean      sd    5.5%   94.5%
+a     5.3469 8.22285 -7.7948 18.4886
+b     0.4674 0.05835  0.3742  0.5607
+sigma 2.8565 0.65096  1.8161  3.8969</code></pre>
+</div>
+</div>
 </section>
 </section>
 
