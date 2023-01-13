@@ -62,10 +62,6 @@ P(H \mid D) = \frac{P(D \mid H) P(H)}{P(D)}
 $$
 
 $$
-P(\theta \mid X, M) = \frac{P(X \mid \theta, M) P(\theta \mid M)}{P(X)}
-$$
-
-$$
 P(\theta \mid X) = \frac{P(X \mid \theta) P(\theta)}{P(X)}
 $$
 
