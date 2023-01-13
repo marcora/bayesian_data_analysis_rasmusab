@@ -5,10 +5,12 @@ title: "Statistical rethinking (mcelreath)"
 <https://github.com/rmcelreath/stat_rethinking_2023>
 
 ```{r}
+#| output: false
 library(tidyverse)
 library(magrittr)
 library(rethinking)
 library(triangle)
+library(ggdag)
 theme_set(theme_bw())
 set.seed(2020)
 ```
@@ -37,6 +39,8 @@ $$
 
 $$
 P(H \mid D) = \frac{P(H) P(D \mid H)}{P(D)}
+$$ $$
+P(\theta \mid X, M) = \frac{P(\theta \mid M) P(X \mid \theta, M)}{P(X)}
 $$
 
 $$
@@ -98,7 +102,20 @@ An **estimator** is a rule for calculating an **estimate** of a quantity of inte
 
 ### Question/goal/estimand
 
+Globe tossing example. Estimate proportion of globe surface covered by water.
+
 ### Scientific model
+
+```{r}
+ggdag(dagify(
+  WL ~ p,
+  exposure = "p",
+  outcome = "WL",
+  labels = c(WL = "W,L", p = "pi")
+)) + theme_dag_blank()
+```
+
+$W,L = f(\pi)$
 
 ### Statistical model
 
@@ -121,13 +138,13 @@ Stochastic/distributional functions can also be expressed as probability stateme
 \[Data distribution/Likelihood function\]
 
 $$
-P(W = 3,L = 6 \mid \pi) =  \text{Binomial}(W = 3, L = 6, \pi) = \frac{(W+L)!}{W!L!} \pi^W (1 - \pi)^L = \frac{(3+6)!}{3!6!} \pi^3 (1 - \pi)^6 = \frac{362880}{4320} \pi^3 (1 - \pi)^6
+P(W = 3,L = 6 \mid \pi) =  \text{Binomial}(W = 3, L = 6, \pi) = \frac{(W+L)!}{W!L!} \pi^W (1 - \pi)^L = \\ \frac{(3+6)!}{3!6!} \pi^3 (1 - \pi)^6 = \frac{362880}{4320} \pi^3 (1 - \pi)^6  = 84 \pi^3 (1 - \pi)^6
 $$
 
 \[Prior distribution\]
 
 $$
-P(\pi \mid a=0,b=1) = \text{Uniform}(\pi, a=0, b=1) = \frac{1}{b - a} = 1
+P(\pi \mid a=0,b=1) = \text{Uniform}(\pi, a=0, b=1) = \frac{1}{b - a} \\ = \frac{1}{1 - 0} = 1
 $$
 
 Bayesian estimator (posterior $\propto$ likelihood $\times$ prior):
@@ -137,7 +154,7 @@ P(\pi \mid W = 3, L = 6) \propto \text{Binomial}(W = 3, L = 6, \pi) \times \text
 $$
 
 $$
-P(\pi \mid W = 3, L = 6) \propto \frac{362880}{4320} \pi^3 (1 - \pi)^6 \times 1
+P(\pi \mid W = 3, L = 6) \propto 84 \pi^3 (1 - \pi)^6 \times 1
 $$
 
 $$
@@ -145,15 +162,15 @@ P(\pi \mid W = 3, L = 6) \propto \pi^3 (1 - \pi)^6
 $$
 
 ```{r}
-D = c("W", "W", "L", "L", "L", "L", "W", "L", "L")
+WL = c("W", "W", "L", "L", "L", "L", "W", "L", "L")
 
-W = sum(D == "W")
-L = sum(D == "L")
+W = sum(WL == "W")
+L = sum(WL == "L")
 
-W = 10
-L = 20
+#W = 10
+#L = 20
 
-p = seq(from=0, to=1, len=1e4)
+p = seq(from = 0, to = 1, len = 1000)
 
 a = 0
 b = 1
@@ -169,10 +186,10 @@ uniform <- function(p, a, b) {
 likelihood = binomial(W, L, p)
 prior = uniform(p, a, b)
 
-likelihood = dbinom(W, W+L, p)
-prior = dunif(p, a, b)
+#likelihood = dbinom(W, W+L, p)
+#prior = dunif(p, a, b)
 
-posterior = prior * likelihood
+posterior = prior * likelihood / sum(likelihood)
 
 plot(posterior ~ p)
 ```
