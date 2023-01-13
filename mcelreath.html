@@ -134,39 +134,61 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2020</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Inference = a conclusion reached on the basis of evidence and reasoning.</p>
+<p>Reasoning = thinking about something in a logical, sensible way.</p>
+<p>“Researchers are entrusted with drawing inferences from the data”.</p>
+<p>Learning how to perform statistical inference is like learning to write a novel in a foreign language (statistics and probability theory).</p>
+<section id="the-cycle-of-science" class="level2">
+<h2 class="anchored" data-anchor-id="the-cycle-of-science">The cycle of science</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://bebi103a.github.io/lessons/01/cycle_of_science.html"><img src="images/image-13316612.png" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p><a href="https://bebi103a.github.io/lessons/01/cycle_of_science.html" class="uri">https://bebi103a.github.io/lessons/01/cycle_of_science.html</a></p>
+</section>
+<section id="data-analysis-pipeline" class="level2">
+<h2 class="anchored" data-anchor-id="data-analysis-pipeline">Data analysis pipeline</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://bebi103a.github.io/lessons/01/cycle_of_science.html"><img src="images/image-2023841330.png" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p><a href="https://bebi103a.github.io/lessons/01/cycle_of_science.html" class="uri">https://bebi103a.github.io/lessons/01/cycle_of_science.html</a></p>
+</section>
 <section id="bayes-theorem" class="level2">
 <h2 class="anchored" data-anchor-id="bayes-theorem">Bayes theorem</h2>
 <p><span class="math display">\[
-P(A,B) = P(A) P(B \mid A)
+P(A,B) = P(A \mid B) P(B)
 \]</span></p>
 <p><span class="math display">\[
-P(B,A) = P(B) P(A \mid B)
+P(B,A) = P(B \mid A) P(A)
 \]</span></p>
 <p><span class="math display">\[
 P(A,B) = P(B,A)
 \]</span></p>
 <p><span class="math display">\[
-P(A) P(B \mid A) = P(B) P(A \mid B)
+P(A \mid B) P(B) = P(A,B) = P(B,A) = P(B \mid A) P(A)
 \]</span></p>
 <p><span class="math display">\[
-P(A \mid B) = \frac{P(A) P(B \mid A)}{P(B)}
+P(A \mid B) = \frac{P(B \mid A) P(A)}{P(B)}
 \]</span></p>
 <p><span class="math display">\[
-P(H \mid D) = \frac{P(H) P(D \mid H)}{P(D)}
+P(H \mid D) = \frac{P(D \mid H) P(H)}{P(D)}
 \]</span> <span class="math display">\[
-P(\theta \mid X, M) = \frac{P(\theta \mid M) P(X \mid \theta, M)}{P(X)}
+P(\theta \mid X, M) = \frac{P(X \mid \theta, M) P(\theta \mid M)}{P(X)}
 \]</span></p>
 <p><span class="math display">\[
-P(\theta \mid X) = \frac{P(\theta) P(X \mid \theta)}{P(X)}
+P(\theta \mid X) = \frac{P(X \mid \theta) P(\theta)}{P(X)}
 \]</span></p>
 <p><span class="math display">\[
-P(\theta \mid X) = \frac{P(\theta) P(X \mid \theta)}{\int_\theta P(\theta) P(X \mid \theta) d\theta}
+P(\theta \mid X) = \frac{P(X \mid \theta) P(\theta)}{\int_\theta P(X \mid \theta) P(\theta) d\theta}
 \]</span></p>
 <p><span class="math display">\[
-P(\theta \mid X) \propto P(\theta) P(X \mid \theta)
+P(\theta \mid X) \propto P(X \mid \theta) P(\theta)
 \]</span></p>
 <p><span class="math display">\[
-\text{posterior} \propto \text{prior} \times \text{likelihood}
+\text{posterior} \propto \text{likelihood} \times \text{prior}
 \]</span></p>
 </section>
 <section id="frequentist-vs-bayesian" class="level2">
@@ -316,7 +338,7 @@ P(\pi \mid W = 3, L = 6) \propto \pi^3 (1 - \pi)^6
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">#likelihood = dbinom(W, W+L, p)</span></span>
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">#prior = dunif(p, a, b)</span></span>
 <span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">=</span> prior <span class="sc">*</span> likelihood <span class="sc">/</span> <span class="fu">sum</span>(likelihood)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">=</span> likelihood <span class="sc">*</span> prior <span class="sc">/</span> <span class="fu">sum</span>(likelihood)</span>
 <span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(posterior <span class="sc">~</span> p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">

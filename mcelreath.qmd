@@ -15,14 +15,34 @@ theme_set(theme_bw())
 set.seed(2020)
 ```
 
+Inference = a conclusion reached on the basis of evidence and reasoning.
+
+Reasoning = thinking about something in a logical, sensible way.
+
+"Researchers are entrusted with drawing inferences from the data".
+
+Learning how to perform statistical inference is like learning to write a novel in a foreign language (statistics and probability theory).
+
+## The cycle of science
+
+[![](images/image-13316612.png)](https://bebi103a.github.io/lessons/01/cycle_of_science.html)
+
+<https://bebi103a.github.io/lessons/01/cycle_of_science.html>
+
+## Data analysis pipeline
+
+[![](images/image-2023841330.png)](https://bebi103a.github.io/lessons/01/cycle_of_science.html)
+
+<https://bebi103a.github.io/lessons/01/cycle_of_science.html>
+
 ## Bayes theorem
 
 $$
-P(A,B) = P(A) P(B \mid A)
+P(A,B) = P(A \mid B) P(B)
 $$
 
 $$
-P(B,A) = P(B) P(A \mid B)
+P(B,A) = P(B \mid A) P(A)
 $$
 
 $$
@@ -30,33 +50,33 @@ P(A,B) = P(B,A)
 $$
 
 $$
-P(A) P(B \mid A) = P(B) P(A \mid B)
+P(A \mid B) P(B) = P(A,B) = P(B,A) = P(B \mid A) P(A)
 $$
 
 $$
-P(A \mid B) = \frac{P(A) P(B \mid A)}{P(B)}
+P(A \mid B) = \frac{P(B \mid A) P(A)}{P(B)}
 $$
 
 $$
-P(H \mid D) = \frac{P(H) P(D \mid H)}{P(D)}
+P(H \mid D) = \frac{P(D \mid H) P(H)}{P(D)}
 $$ $$
-P(\theta \mid X, M) = \frac{P(\theta \mid M) P(X \mid \theta, M)}{P(X)}
+P(\theta \mid X, M) = \frac{P(X \mid \theta, M) P(\theta \mid M)}{P(X)}
 $$
 
 $$
-P(\theta \mid X) = \frac{P(\theta) P(X \mid \theta)}{P(X)}
+P(\theta \mid X) = \frac{P(X \mid \theta) P(\theta)}{P(X)}
 $$
 
 $$
-P(\theta \mid X) = \frac{P(\theta) P(X \mid \theta)}{\int_\theta P(\theta) P(X \mid \theta) d\theta}
+P(\theta \mid X) = \frac{P(X \mid \theta) P(\theta)}{\int_\theta P(X \mid \theta) P(\theta) d\theta}
 $$
 
 $$
-P(\theta \mid X) \propto P(\theta) P(X \mid \theta)
+P(\theta \mid X) \propto P(X \mid \theta) P(\theta)
 $$
 
 $$
-\text{posterior} \propto \text{prior} \times \text{likelihood}
+\text{posterior} \propto \text{likelihood} \times \text{prior}
 $$
 
 ## Frequentist vs Bayesian
@@ -189,7 +209,7 @@ prior = uniform(p, a, b)
 #likelihood = dbinom(W, W+L, p)
 #prior = dunif(p, a, b)
 
-posterior = prior * likelihood / sum(likelihood)
+posterior = likelihood * prior / sum(likelihood)
 
 plot(posterior ~ p)
 ```
