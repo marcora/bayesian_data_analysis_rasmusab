@@ -35,7 +35,7 @@ Learning how to perform statistical inference is like learning to write a novel 
 
 <https://bebi103a.github.io/lessons/01/cycle_of_science.html>
 
-## Bayes theorem
+## Bayes' rule/theorem
 
 $$
 P(A,B) = P(A \mid B) P(B)
@@ -61,16 +61,16 @@ $$
 P(H \mid D) = \frac{P(D \mid H) P(H)}{P(D)}
 $$
 
+Bayes' rule holds for PDFs as it does for probabilities:
+
 $$
-P(\theta \mid X) = \frac{P(X \mid \theta) P(\theta)}{P(X)}
+p(\theta \mid y) = \frac{p(y \mid \theta) p(\theta)}{p(y)}
+$$ $$
+p(\theta \mid y) = \frac{p(y \mid \theta) p(\theta)}{\int_\theta p(y \mid \theta) p(\theta) d\theta}
 $$
 
 $$
-P(\theta \mid X) = \frac{P(X \mid \theta) P(\theta)}{\int_\theta P(X \mid \theta) P(\theta) d\theta}
-$$
-
-$$
-P(\theta \mid X) \propto P(X \mid \theta) P(\theta)
+p(\theta \mid y) \propto p(y \mid \theta) p(\theta) = p(y, \theta)
 $$
 
 $$
@@ -116,6 +116,16 @@ $$
 
 An **estimator** is a rule for calculating an **estimate** of a quantity of interest (the **estimand**) based on observed data: thus the rule (the estimator), the quantity of interest (the estimand) and its result (the estimate) are distinguished. For example, the sample mean is a commonly used estimator of the population mean (the estimand).
 
+When we take measurements, we are observing samples out of an underlying, typically unknown, **generative distribution**. If we have a full understanding of the generative distribution, we have learned how the data were generated, and thereby have an understanding of the physical, chemical, or biological phenomena we are studying. **Statistical inference** involves deducing properties of these (unknown) generative distributions.
+
+## Why models?
+
+As scientists, our goal is to learn about how nature works. We can make observations and measurements, and these are usually in the service of gaining an understanding of how nature works. In their book Physical Biology of the Cell, Phillips, et al. write that:
+
+> ...quantitative data demand quantitative models and, conversely, ...quantitative models need to provide experimentally testable quantitative predictions about biological phenomena.
+
+It is in this spirit that we approach parametric inference. Our goal is to model the process of data generation, and using the measured data to learn about the model. This leads to knowledge.
+
 ## Binomial estimation
 
 ### Question/goal/estimand
@@ -129,7 +139,7 @@ ggdag(dagify(
   WL ~ p,
   exposure = "p",
   outcome = "WL",
-  labels = c(WL = "W,L", p = "pi")
+  labels = c(WL = "Fuck", p = "pi")
 )) + theme_dag_blank()
 ```
 
@@ -138,6 +148,10 @@ $W,L = f(\pi)$
 ### Statistical model
 
 Observations (data) and explanations (parameters) are variables.
+
+Observed/known variables are data, unobserved/unknown variables are parameters.
+
+\[known/unknown constants\]
 
 For each variable, must say how it is generated.
 
@@ -335,3 +349,13 @@ m3.1 = quap(
 
 precis(m3.1)
 ```
+
+## Lost and found
+
+In frequentist inference, parameters are considered to be fixed/constants but unknown.
+
+In Bayesian inference, parameters are considered to be random variables instead of constants.
+
+Non-parametric (vs parametric) inference is statistical inference where no model is assumed; conclusions are drawn from the data alone.
+
+The **bias** of an estimate is the difference between the expected value of the point estimate and the value of the parameter. The bias is typically small. Biased and unbiased estimators of the variance differ by a factor of $n/(n−1)$, which is negligible when $n$ is large.

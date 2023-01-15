@@ -156,8 +156,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p><a href="https://bebi103a.github.io/lessons/01/cycle_of_science.html" class="uri">https://bebi103a.github.io/lessons/01/cycle_of_science.html</a></p>
 </section>
-<section id="bayes-theorem" class="level2">
-<h2 class="anchored" data-anchor-id="bayes-theorem">Bayes theorem</h2>
+<section id="bayes-ruletheorem" class="level2">
+<h2 class="anchored" data-anchor-id="bayes-ruletheorem">Bayes’ rule/theorem</h2>
 <p><span class="math display">\[
 P(A,B) = P(A \mid B) P(B)
 \]</span></p>
@@ -176,14 +176,14 @@ P(A \mid B) = \frac{P(B \mid A) P(A)}{P(B)}
 <p><span class="math display">\[
 P(H \mid D) = \frac{P(D \mid H) P(H)}{P(D)}
 \]</span></p>
+<p>Bayes’ rule holds for PDFs as it does for probabilities:</p>
 <p><span class="math display">\[
-P(\theta \mid X) = \frac{P(X \mid \theta) P(\theta)}{P(X)}
+p(\theta \mid y) = \frac{p(y \mid \theta) p(\theta)}{p(y)}
+\]</span> <span class="math display">\[
+p(\theta \mid y) = \frac{p(y \mid \theta) p(\theta)}{\int_\theta p(y \mid \theta) p(\theta) d\theta}
 \]</span></p>
 <p><span class="math display">\[
-P(\theta \mid X) = \frac{P(X \mid \theta) P(\theta)}{\int_\theta P(X \mid \theta) P(\theta) d\theta}
-\]</span></p>
-<p><span class="math display">\[
-P(\theta \mid X) \propto P(X \mid \theta) P(\theta)
+p(\theta \mid y) \propto p(y \mid \theta) p(\theta) = p(y, \theta)
 \]</span></p>
 <p><span class="math display">\[
 \text{posterior} \propto \text{likelihood} \times \text{prior}
@@ -256,6 +256,15 @@ P(\theta \mid X) \propto P(X \mid \theta) P(\theta)
 <li><p>Analyze data [<strong>estimate</strong>]</p></li>
 </ol>
 <p>An <strong>estimator</strong> is a rule for calculating an <strong>estimate</strong> of a quantity of interest (the <strong>estimand</strong>) based on observed data: thus the rule (the estimator), the quantity of interest (the estimand) and its result (the estimate) are distinguished. For example, the sample mean is a commonly used estimator of the population mean (the estimand).</p>
+<p>When we take measurements, we are observing samples out of an underlying, typically unknown, <strong>generative distribution</strong>. If we have a full understanding of the generative distribution, we have learned how the data were generated, and thereby have an understanding of the physical, chemical, or biological phenomena we are studying. <strong>Statistical inference</strong> involves deducing properties of these (unknown) generative distributions.</p>
+</section>
+<section id="why-models" class="level2">
+<h2 class="anchored" data-anchor-id="why-models">Why models?</h2>
+<p>As scientists, our goal is to learn about how nature works. We can make observations and measurements, and these are usually in the service of gaining an understanding of how nature works. In their book Physical Biology of the Cell, Phillips, et al.&nbsp;write that:</p>
+<blockquote class="blockquote">
+<p>…quantitative data demand quantitative models and, conversely, …quantitative models need to provide experimentally testable quantitative predictions about biological phenomena.</p>
+</blockquote>
+<p>It is in this spirit that we approach parametric inference. Our goal is to model the process of data generation, and using the measured data to learn about the model. This leads to knowledge.</p>
 </section>
 <section id="binomial-estimation" class="level2">
 <h2 class="anchored" data-anchor-id="binomial-estimation">Binomial estimation</h2>
@@ -270,7 +279,7 @@ P(\theta \mid X) \propto P(X \mid \theta) P(\theta)
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  WL <span class="sc">~</span> p,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">exposure =</span> <span class="st">"p"</span>,</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span> <span class="st">"WL"</span>,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="at">WL =</span> <span class="st">"W,L"</span>, <span class="at">p =</span> <span class="st">"pi"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="at">WL =</span> <span class="st">"Fuck"</span>, <span class="at">p =</span> <span class="st">"pi"</span>)</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">+</span> <span class="fu">theme_dag_blank</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="mcelreath_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
@@ -281,6 +290,8 @@ P(\theta \mid X) \propto P(X \mid \theta) P(\theta)
 <section id="statistical-model" class="level3">
 <h3 class="anchored" data-anchor-id="statistical-model">Statistical model</h3>
 <p>Observations (data) and explanations (parameters) are variables.</p>
+<p>Observed/known variables are data, unobserved/unknown variables are parameters.</p>
+<p>[known/unknown constants]</p>
 <p>For each variable, must say how it is generated.</p>
 <p>List variables as deterministic or stochastic/distributional functions:</p>
 <p><span class="math display">\[
@@ -469,6 +480,13 @@ sigma  4.4520 1.00455   2.8465 6.0574</code></pre>
 </div>
 </div>
 </section>
+</section>
+<section id="lost-and-found" class="level2">
+<h2 class="anchored" data-anchor-id="lost-and-found">Lost and found</h2>
+<p>In frequentist inference, parameters are considered to be fixed/constants but unknown.</p>
+<p>In Bayesian inference, parameters are considered to be random variables instead of constants.</p>
+<p>Non-parametric (vs parametric) inference is statistical inference where no model is assumed; conclusions are drawn from the data alone.</p>
+<p>The <strong>bias</strong> of an estimate is the difference between the expected value of the point estimate and the value of the parameter. The bias is typically small. Biased and unbiased estimators of the variance differ by a factor of <span class="math inline">\(n/(n−1)\)</span>, which is negligible when <span class="math inline">\(n\)</span> is large.</p>
 </section>
 
 </main>
