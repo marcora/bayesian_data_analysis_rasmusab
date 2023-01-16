@@ -27,3 +27,17 @@ $P(D \mid \Omega) = \frac{3}{12} = \frac{P(D, \Omega)}{P(\Omega)}$
 ![](images/image-1020936965.png)
 
 $P(H \mid E) = \frac{P(H,E)}{P(E)} = \frac{P(E,H)}{P(E)} = \frac{P(E \mid H) P(H)}{P(E)}$
+
+## Probability tree
+
+```{r}
+library(data.tree)
+
+df <- data.frame(pathString=c("R/D", "R/D/T", "R/D/T'", "R/D'", "R/D'/T", "R/D'/T'"))
+
+df
+
+tree = as.Node(df)
+
+tree
+```
