@@ -1,5 +1,5 @@
 ---
-title: "Statistical rethinking (mcelreath)"
+title: "Statistical rethinking (rladies)"
 ---
 
 <https://github.com/rmcelreath/stat_rethinking_2023>
@@ -71,7 +71,13 @@ plot(0:n_obs,
 
 ![](images/image-72657137.png)
 
-![](images/image-547837308.png)![](images/image-1967031970.png)![](images/image-2109920847.png)![](images/image-1790684355.png)
+![](images/image-547837308.png)
+
+![](images/image-1967031970.png)
+
+![](images/image-2109920847.png)
+
+![](images/image-1790684355.png)
 
 ![](images/image-64413481.png)
 
@@ -145,6 +151,12 @@ curve(posterior(x),
       add = TRUE)
 ```
 
+![](images/image-1637904463.png)
+
+![](images/image-1179777922.png)
+
+![](images/image-2147369647.png)
+
 ```{r}
 # Cumulative density function of the posterior
 posterior_CDF <- function(theta){
@@ -163,6 +175,12 @@ lower_bound
 upper_bound
 ```
 
+![](images/image-1036023816.png)
+
+![](images/image-1034729982.png)
+
+![](images/image-1947564776.png)![](images/image-1895498865.png)![](images/image-1424996511.png)![](images/image-256994646.png)![](images/image-985938114.png)
+
 ```{r}
 # Here, we compare the binomial model with the dispersed prior against a model
 # where the binomial parameter is fixed to a constant. However, it would also
@@ -174,10 +192,14 @@ ML_1 <- ML
 ML_2 <- dbinom(sum(dogpeople), length(dogpeople), prob = 0.5)
 
 # Compute the Bayes factor
-BF12 <- ML_1 / ML_2
+(BF12 <- ML_1 / ML_2)
+```
 
-#### Posterior model odds ####
+![![](images/image-914272595.png)](images/image-624959265.png)
 
+![![](images/image-55434408.png)](images/image-1629995235.png)
+
+```{r}
 # First, define your prior model odds
 prior_prob_M1 <- 0.5
 prior_prob_M2 <- 0.5
@@ -185,4 +207,14 @@ prior_model_odds <- prior_prob_M1 / prior_prob_M2
 
 # Then, update with the Bayes factor
 (posterior_model_odds <- prior_model_odds * BF12)
+
+# First, define your prior model odds
+prior_prob_M1 <- 1
+prior_prob_M2 <- 5
+prior_model_odds <- prior_prob_M1 / prior_prob_M2
+
+# Then, update with the Bayes factor
+(posterior_model_odds <- prior_model_odds * BF12)
 ```
+
+![](images/image-2014521652.png)

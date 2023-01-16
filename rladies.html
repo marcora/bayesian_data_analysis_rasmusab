@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Statistical rethinking (mcelreath)</title>
+<title>Statistical rethinking (rladies)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -108,7 +108,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Statistical rethinking (mcelreath)</h1>
+<h1 class="title">Statistical rethinking (rladies)</h1>
 </div>
 
 
@@ -186,7 +186,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <p><img src="images/image-72657137.png" class="img-fluid"></p>
-<p><img src="images/image-547837308.png" class="img-fluid"><img src="images/image-1967031970.png" class="img-fluid"><img src="images/image-2109920847.png" class="img-fluid"><img src="images/image-1790684355.png" class="img-fluid"></p>
+<p><img src="images/image-547837308.png" class="img-fluid"></p>
+<p><img src="images/image-1967031970.png" class="img-fluid"></p>
+<p><img src="images/image-2109920847.png" class="img-fluid"></p>
+<p><img src="images/image-1790684355.png" class="img-fluid"></p>
 <p><img src="images/image-64413481.png" class="img-fluid"></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ppred <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n_obs<span class="sc">+</span><span class="dv">1</span>)</span>
@@ -263,6 +266,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="rladies_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p><img src="images/image-1637904463.png" class="img-fluid"></p>
+<p><img src="images/image-1179777922.png" class="img-fluid"></p>
+<p><img src="images/image-2147369647.png" class="img-fluid"></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cumulative density function of the posterior</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>posterior_CDF <span class="ot">&lt;-</span> <span class="cf">function</span>(theta){</span>
@@ -286,6 +292,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>[1] 0.843</code></pre>
 </div>
 </div>
+<p><img src="images/image-1036023816.png" class="img-fluid"></p>
+<p><img src="images/image-1034729982.png" class="img-fluid"></p>
+<p><img src="images/image-1947564776.png" class="img-fluid"><img src="images/image-1895498865.png" class="img-fluid"><img src="images/image-1424996511.png" class="img-fluid"><img src="images/image-256994646.png" class="img-fluid"><img src="images/image-985938114.png" class="img-fluid"></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Here, we compare the binomial model with the dispersed prior against a model</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># where the binomial parameter is fixed to a constant. However, it would also</span></span>
@@ -297,21 +306,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>ML_2 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="fu">sum</span>(dogpeople), <span class="fu">length</span>(dogpeople), <span class="at">prob =</span> <span class="fl">0.5</span>)</span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the Bayes factor</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>BF12 <span class="ot">&lt;-</span> ML_1 <span class="sc">/</span> ML_2</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="do">#### Posterior model odds ####</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co"># First, define your prior model odds</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>prior_prob_M1 <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>prior_prob_M2 <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>prior_model_odds <span class="ot">&lt;-</span> prior_prob_M1 <span class="sc">/</span> prior_prob_M2</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Then, update with the Bayes factor</span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>(posterior_model_odds <span class="ot">&lt;-</span> prior_model_odds <span class="sc">*</span> BF12)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>(BF12 <span class="ot">&lt;-</span> ML_1 <span class="sc">/</span> ML_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6857</code></pre>
 </div>
 </div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/image-624959265.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><img src="images/image-914272595.png" class="img-fluid figure-img"></figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/image-1629995235.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><img src="images/image-55434408.png" class="img-fluid figure-img"></figcaption><p></p>
+</figure>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, define your prior model odds</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>prior_prob_M1 <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>prior_prob_M2 <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>prior_model_odds <span class="ot">&lt;-</span> prior_prob_M1 <span class="sc">/</span> prior_prob_M2</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Then, update with the Bayes factor</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>(posterior_model_odds <span class="ot">&lt;-</span> prior_model_odds <span class="sc">*</span> BF12)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6857</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, define your prior model odds</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>prior_prob_M1 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>prior_prob_M2 <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>prior_model_odds <span class="ot">&lt;-</span> prior_prob_M1 <span class="sc">/</span> prior_prob_M2</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Then, update with the Bayes factor</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>(posterior_model_odds <span class="ot">&lt;-</span> prior_model_odds <span class="sc">*</span> BF12)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1371</code></pre>
+</div>
+</div>
+<p><img src="images/image-2014521652.png" class="img-fluid"></p>
 </section>
 
 </main>
