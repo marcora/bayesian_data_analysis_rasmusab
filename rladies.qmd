@@ -1,0 +1,188 @@
+---
+title: "Statistical rethinking (mcelreath)"
+---
+
+<https://github.com/rmcelreath/stat_rethinking_2023>
+
+```{r}
+#| output: false
+library(tidyverse)
+library(magrittr)
+library(rethinking)
+library(triangle)
+library(ggdag)
+theme_set(theme_bw())
+set.seed(2020)
+```
+
+## Bayesian statistics
+
+> Bayesian statistics is an approach to data analysis based on Bayes' theorem, where available knowledge about parameters in a statistical model is updated with the information in observed data. The background knowledge is expressed as a prior distribution and combined with observational data in the form of a likelihood function to determine the posterior distribution. The posterior can also be used for making predictions about future events. \[<https://doi.org/10.1038/s43586-020-00001-2>\]
+
+> Uncertainty is merely an expression of our ignorance of the causes and our consequent inability to predict the result. \[William S. Jevons, 1873\]
+
+Parametric model of the world/hypothesis + prior knowledge about parameters (prior distribution) → predictions → compare with observations in the real world (data) → update knowledge about parameters (posterior distribution)
+
+Bayesian statistics can be used for 1) parameter estimation and 2) hypothesis testing/model comparison.
+
+<https://www.youtube.com/watch?v=EBGKzDAAWYo>
+
+<https://github.com/rladiesamsterdam/2021_Sept_Bayesian_statistics>
+
+[![](images/image-431475737.png)](https://www.youtube.com/watch?v=EBGKzDAAWYo)
+
+![](images/image-2051502246.png)
+
+![](images/image-1853433370.png)
+
+![](images/image-1314703028.png)
+
+![](images/image-2123528887.png)
+
+```{r}
+# theta = 0 = 0% dog people; theta = 1 = 100% dog people in the population
+a <- 2
+b <- 2
+
+curve(dbeta(x, a, b),
+      xlab=bquote(theta),
+      ylab=bquote("Density p("~theta~")"),
+      bty="l")
+```
+
+![](images/image-1044093053.png)
+
+The likelihood is the probability model of the data (the data/sampling distribution).
+
+![](images/image-1506689839.png)
+
+```{r}
+n_obs <- 5
+theta <- 0.5
+
+plot(0:n_obs,
+     dbinom(x=0:n_obs, size=n_obs, prob=theta),
+     xlab=bquote("# of dog people (out of "~.(n_obs)~")"),
+     ylab=bquote("Probability p("~X~"|"~theta~")"),
+     type="h",
+     bty="l",
+     main=bquote(theta~"="~.(theta)))
+```
+
+![](images/image-72657137.png)
+
+![](images/image-547837308.png)![](images/image-1967031970.png)![](images/image-2109920847.png)![](images/image-1790684355.png)
+
+![](images/image-64413481.png)
+
+```{r}
+ppred <- rep(NA, n_obs+1)
+
+for(i in 0:n_obs){
+  integrand <- function(theta){
+    dbinom(i, n_obs, theta) * dbeta(theta, a, b)
+  }
+  
+  ppred[i+1] <- integrate(integrand, lower = 0, upper = 1)$value
+}
+
+plot(0:n_obs, ppred,
+     bty="l",
+     xlab=bquote("# of dog people (out of "~.(n_obs)~")"),
+     ylab = "Probability p(X)",
+     type="h",
+     bty="l")
+```
+
+![](images/image-1801946896.png)![](images/image-681283399.png)![](images/image-696612052.png)The marginal likelihood is the prior predictive distribution evaluated at the observed data.
+
+```{r}
+dogpeople <- c(0,0,1,1,1)
+
+# Marginal likelihood
+
+integrand <- function(theta){
+  dbinom(sum(dogpeople), length(dogpeople), theta) * dbeta(theta, a, b)
+}
+
+ML <- integrate(integrand, lower = 0, upper = 1)$value
+
+ML
+```
+
+![](images/image-1830800205.png)
+
+![](images/image-690367884.png)![](images/image-789772245.png)
+
+```{r}
+posterior <- function(theta){
+  dbinom(sum(dogpeople), length(dogpeople), theta) * dbeta(theta, a, b) / ML
+}
+
+curve(posterior(x),
+      xlab=bquote(theta),
+      ylab=bquote("Density p("~theta~")"),
+      bty="l")
+```
+
+```{r}
+# (this is only to scale the y-axis - no need to worry if you don't understand
+# this bit)
+prior_mode <- (a-1)/(a+b-2)
+posterior_mode <- (a+sum(dogpeople)-1)/(a+b+length(dogpeople)-2)
+
+prior_max <- ifelse(is.nan(prior_mode), 1, dbeta(prior_mode, a, b))
+posterior_max <- dbeta(posterior_mode, 
+                       a + sum(dogpeople), 
+                       b + length(dogpeople) - sum(dogpeople))
+
+curve(dbeta(x, a, b),
+      bty="l", xlab = bquote(theta), ylab = "Density", cex.lab = 1.5, 
+      col="lightgrey", ylim = c(0, max(c(prior_max, posterior_max))))
+
+curve(posterior(x),
+      bty="l", xlab = bquote(theta), ylab = "Density", cex.lab = 1.5, 
+      add = TRUE)
+```
+
+```{r}
+# Cumulative density function of the posterior
+posterior_CDF <- function(theta){
+  integrate(posterior, lower = 0, upper = theta)$value
+}
+
+# Which values of theta cut off 2.5% at either end of the posterior? These
+# values mark the 95% central credible interval.
+
+lower_bound <- optimize(function(x) (posterior_CDF(x)-0.025)^2,
+                        lower = 0, upper = 1)$minimum
+upper_bound <- optimize(function(x) (posterior_CDF(x)-0.975)^2,
+                        lower = 0, upper = 1)$minimum
+
+lower_bound
+upper_bound
+```
+
+```{r}
+# Here, we compare the binomial model with the dispersed prior against a model
+# where the binomial parameter is fixed to a constant. However, it would also
+# be possible to compare two models with different dispersed priors or even
+# non-nested models.
+
+# Compute the marginal likelihoods (ML_1 was computed earlier)
+ML_1 <- ML 
+ML_2 <- dbinom(sum(dogpeople), length(dogpeople), prob = 0.5)
+
+# Compute the Bayes factor
+BF12 <- ML_1 / ML_2
+
+#### Posterior model odds ####
+
+# First, define your prior model odds
+prior_prob_M1 <- 0.5
+prior_prob_M2 <- 0.5
+prior_model_odds <- prior_prob_M1 / prior_prob_M2
+
+# Then, update with the Bayes factor
+(posterior_model_odds <- prior_model_odds * BF12)
+```

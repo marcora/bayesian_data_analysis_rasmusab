@@ -1,0 +1,44 @@
+---
+title: "brms"
+format: html
+---
+
+```{r}
+#| output: false
+library(tidyverse)
+library(magrittr)
+library(brms)
+library(ggdag)
+theme_set(theme_bw())
+options(
+  mc.cores = parallel::detectCores(),
+  brms.backend = "cmdstanr"
+)
+set.seed(19780503)
+```
+
+```{r}
+#| message: false
+fit_sleep1 = brm(Reaction ~ 1 + Days, data = lme4::sleepstudy)
+
+conditional_effects(fit_sleep1)
+```
+
+```{r}
+#| message: false
+fit_sleep2 = brm(Reaction ~ 1 + Days + (1 + Days | Subject), data = lme4::sleepstudy)
+
+conditional_effects(fit_sleep2)
+```
+
+```{r}
+fit_kidney1 = brm(time ~ age + sex, family = gaussian(), data = kidney)
+
+pp_check(fit_kidney1, type = "ecdf_overlay")
+```
+
+```{r}
+fit_kidney2 = brm(time ~ age + sex, family = Gamma(link = "log"), data = kidney)
+
+pp_check(fit_kidney2, type = "ecdf_overlay")
+```
