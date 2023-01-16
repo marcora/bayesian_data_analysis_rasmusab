@@ -1,16 +1,11 @@
 ---
-title: "Statistical rethinking (rladies)"
+title: "Bayesian statistics (rladies)"
 ---
-
-<https://github.com/rmcelreath/stat_rethinking_2023>
 
 ```{r}
 #| output: false
 library(tidyverse)
 library(magrittr)
-library(rethinking)
-library(triangle)
-library(ggdag)
 theme_set(theme_bw())
 set.seed(2020)
 ```
@@ -40,14 +35,19 @@ Bayesian statistics can be used for 1) parameter estimation and 2) hypothesis te
 ![](images/image-2123528887.png)
 
 ```{r}
-# theta = 0 = 0% dog people; theta = 1 = 100% dog people in the population
-a <- 2
-b <- 2
+#### Specify your prior distribution ####
 
-curve(dbeta(x, a, b),
-      xlab=bquote(theta),
-      ylab=bquote("Density p("~theta~")"),
-      bty="l")
+# Change the shape parameters to find the prior distribution that represents
+# your belief best. 
+# Remember: theta = 0 = 0% dog people; theta = 1 = 100% dog people
+
+shape1 <- 1
+shape2 <- 1
+
+curve(dbeta(x, shape1, shape2),
+      bty="l",
+      xlab = bquote(theta),
+      ylab=bquote("Density p("~theta~")"))
 ```
 
 ![](images/image-1044093053.png)
@@ -57,12 +57,14 @@ The likelihood is the probability model of the data (the data/sampling distribut
 ![](images/image-1506689839.png)
 
 ```{r}
-n_obs <- 5
+#### The likelihood ####
+
+n_observations <- 5
 theta <- 0.5
 
-plot(0:n_obs,
-     dbinom(x=0:n_obs, size=n_obs, prob=theta),
-     xlab=bquote("# of dog people (out of "~.(n_obs)~")"),
+plot(0:n_observations, 
+     dbinom(0:n_observations, size=n_observations, prob=theta),
+     xlab=bquote("X [# of dog people (out of "~.(n_observations)~")]"),
      ylab=bquote("Probability p("~X~"|"~theta~")"),
      type="h",
      bty="l",
@@ -82,19 +84,23 @@ plot(0:n_obs,
 ![](images/image-64413481.png)
 
 ```{r}
-ppred <- rep(NA, n_obs+1)
+### The prior predictive distribution ####
 
-for(i in 0:n_obs){
+ppred <- rep(NA, n_observations+1)
+
+for(i in 0:n_observations){
+  
   integrand <- function(theta){
-    dbinom(i, n_obs, theta) * dbeta(theta, a, b)
+    dbinom(i,n_observations,theta) * dbeta(theta,shape1,shape2)
   }
   
   ppred[i+1] <- integrate(integrand, lower = 0, upper = 1)$value
+  
 }
 
-plot(0:n_obs, ppred,
+plot(c(0:n_observations), ppred,
      bty="l",
-     xlab=bquote("# of dog people (out of "~.(n_obs)~")"),
+     xlab=bquote("X [# of dog people (out of "~.(n_observations)~")]"),
      ylab = "Probability p(X)",
      type="h",
      bty="l")
@@ -103,17 +109,30 @@ plot(0:n_obs, ppred,
 ![](images/image-1801946896.png)![](images/image-681283399.png)![](images/image-696612052.png)The marginal likelihood is the prior predictive distribution evaluated at the observed data.
 
 ```{r}
+### Observed data ####
+
 dogpeople <- c(0,0,1,1,1)
+
+#### Posterior distribution ####
 
 # Marginal likelihood
 
 integrand <- function(theta){
-  dbinom(sum(dogpeople), length(dogpeople), theta) * dbeta(theta, a, b)
+  dbinom(sum(dogpeople),length(dogpeople),theta) * dbeta(theta,shape1,shape2)
 }
 
-ML <- integrate(integrand, lower = 0, upper = 1)$value
+(ML <- integrate(integrand, lower = 0, upper = 1)$value)
 
-ML
+# Posterior distribution
+
+posterior <- function(theta){
+  dbinom(sum(dogpeople),length(dogpeople),theta) * dbeta(theta,shape1,shape2) / ML
+}
+
+curve(posterior(x),
+      xlab=bquote(theta),
+      ylab=bquote("Density p("~theta~" | X)"),
+      bty="l")
 ```
 
 ![](images/image-1830800205.png)
@@ -121,33 +140,31 @@ ML
 ![](images/image-690367884.png)![](images/image-789772245.png)
 
 ```{r}
-posterior <- function(theta){
-  dbinom(sum(dogpeople), length(dogpeople), theta) * dbeta(theta, a, b) / ML
-}
+# Plot prior and posterior for comparison
 
-curve(posterior(x),
-      xlab=bquote(theta),
-      ylab=bquote("Density p("~theta~")"),
-      bty="l")
-```
-
-```{r}
+# Prior and posterior maximum 
 # (this is only to scale the y-axis - no need to worry if you don't understand
 # this bit)
-prior_mode <- (a-1)/(a+b-2)
-posterior_mode <- (a+sum(dogpeople)-1)/(a+b+length(dogpeople)-2)
+prior_mode <- (shape1-1)/(shape1+shape2-2)
+posterior_mode <- (shape1+sum(dogpeople)-1)/(shape1+shape2+length(dogpeople)-2)
 
-prior_max <- ifelse(is.nan(prior_mode), 1, dbeta(prior_mode, a, b))
+prior_max <- ifelse(is.nan(prior_mode), 1, dbeta(prior_mode, shape1, shape2))
 posterior_max <- dbeta(posterior_mode, 
-                       a + sum(dogpeople), 
-                       b + length(dogpeople) - sum(dogpeople))
+                       shape1 + sum(dogpeople), 
+                       shape2 + length(dogpeople) - sum(dogpeople))
 
-curve(dbeta(x, a, b),
-      bty="l", xlab = bquote(theta), ylab = "Density", cex.lab = 1.5, 
-      col="lightgrey", ylim = c(0, max(c(prior_max, posterior_max))))
+# The plot
+curve(dbeta(x, shape1, shape2),
+      bty="l",
+      xlab = bquote(theta),
+      ylab="Density",
+      col="lightgrey",
+      ylim = c(0, max(c(prior_max, posterior_max))))
 
 curve(posterior(x),
-      bty="l", xlab = bquote(theta), ylab = "Density", cex.lab = 1.5, 
+      bty="l",
+      xlab = bquote(theta),
+      ylab = "Density", 
       add = TRUE)
 ```
 
@@ -158,6 +175,8 @@ curve(posterior(x),
 ![](images/image-2147369647.png)
 
 ```{r}
+#### The credible interval ####
+
 # Cumulative density function of the posterior
 posterior_CDF <- function(theta){
   integrate(posterior, lower = 0, upper = theta)$value
@@ -182,6 +201,8 @@ upper_bound
 ![](images/image-1947564776.png)![](images/image-1895498865.png)![](images/image-1424996511.png)![](images/image-256994646.png)![](images/image-985938114.png)
 
 ```{r}
+### The Bayes factor ####
+
 # Here, we compare the binomial model with the dispersed prior against a model
 # where the binomial parameter is fixed to a constant. However, it would also
 # be possible to compare two models with different dispersed priors or even
@@ -192,7 +213,7 @@ ML_1 <- ML
 ML_2 <- dbinom(sum(dogpeople), length(dogpeople), prob = 0.5)
 
 # Compute the Bayes factor
-(BF12 <- ML_1 / ML_2)
+BF12 <- ML_1 / ML_2
 ```
 
 ![![](images/image-914272595.png)](images/image-624959265.png)
@@ -200,21 +221,21 @@ ML_2 <- dbinom(sum(dogpeople), length(dogpeople), prob = 0.5)
 ![![](images/image-55434408.png)](images/image-1629995235.png)
 
 ```{r}
+#### Posterior model odds ####
+
 # First, define your prior model odds
 prior_prob_M1 <- 0.5
 prior_prob_M2 <- 0.5
 prior_model_odds <- prior_prob_M1 / prior_prob_M2
 
 # Then, update with the Bayes factor
-(posterior_model_odds <- prior_model_odds * BF12)
-
-# First, define your prior model odds
-prior_prob_M1 <- 1
-prior_prob_M2 <- 5
-prior_model_odds <- prior_prob_M1 / prior_prob_M2
-
-# Then, update with the Bayes factor
-(posterior_model_odds <- prior_model_odds * BF12)
+posterior_model_odds <- prior_model_odds * BF12
 ```
 
 ![](images/image-2014521652.png)
+
+![](images/image-761601826.png)
+
+![](images/image-1030109437.png)
+
+![](images/image-791301501.png)
