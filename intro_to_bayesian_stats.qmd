@@ -1,0 +1,29 @@
+---
+title: "Intro to bayesian statistics ()"
+---
+
+## Conditional probability
+
+![](images/image-943550851.png)
+
+![](images/image-782849664.png)
+
+$P(D) = \frac{3}{12}$
+
+![](images/image-1069672018.png)
+
+$P(D \mid G) = \frac{1}{5} = \frac{P(D, G)}{P(G)}$
+
+![](images/image-3890210.png)
+
+$P(D \mid \Omega) = \frac{3}{12} = \frac{P(D, \Omega)}{P(\Omega)}$
+
+![](images/image-49920810.png)
+
+![](images/image-721501487.png)
+
+## Bayes' theorem
+
+![](images/image-1020936965.png)
+
+$P(H \mid E) = \frac{P(H,E)}{P(E)} = \frac{P(E,H)}{P(E)} = \frac{P(E \mid H) P(H)}{P(E)}$
