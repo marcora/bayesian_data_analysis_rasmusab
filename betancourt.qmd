@@ -25,6 +25,7 @@ library(extraDistr)
 options(mc.cores=parallel::detectCores())
 rstan_options(auto_write=TRUE)
 rstan_options(threads_per_chain=1)
+set.seed(19690329)
 ```
 
 ```{stan, output.var="model"}
@@ -33,17 +34,19 @@ data {
   real x[N];
   real y[N];
 }
+
 parameters {
   real<lower=0> alpha;
   real beta;
   real<lower=0> sigma;
 }
+
 model {
   alpha ~ cauchy(0, 10);
   beta ~ normal(0, 10);
   sigma ~ cauchy(0, 10);
   for (i in 1:N)
-    y[i] ~ normal(beta * x[i] + alpha, sigma);
+    y[i] ~ normal(alpha + beta * x[i], sigma);
 }
 ```
 
@@ -55,6 +58,10 @@ sigma = 12
 x = seq(from=110, to=220, length.out=N)
 error = rnorm(N, 0, sigma)
 y = alpha + x * beta + error
+```
+
+```{r}
+summary(lm(y ~ x))
 ```
 
 ```{r}
