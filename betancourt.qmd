@@ -1,0 +1,70 @@
+---
+title: "Some bayesian modeling techniques in Stan"
+---
+
+Stan provides a comprehensive user-oriented probabilistic programming language to specify the conditional probability function of observed and unobserved variables (data and parameters) that describes the *posterior* probability distribution.
+
+$\pi(q \mid \mathcal{D})$
+
+The Stan language requires specification of:
+
+-   Data \[what we are conditioning on\]
+
+-   Parameters \[what the Markov chain is going to explore\]
+
+-   The (conditional) probability functions of observed and unobserved variables (data and parameters) that describe the *prior* and *likelihood* probability distributions \[$\pi(q)$ and $\pi(\mathcal{D} \mid q)$\]
+
+$\pi(q \mid \mathcal{D}) = \frac{\pi(q)\pi(\mathcal{D} \mid q)}{\pi(\mathcal{D})} = \frac{\pi(q, \mathcal{D})}{\pi(\mathcal{D})}$
+
+```{r}
+#| output: false
+library(tidyverse)
+library(rstan)
+library(bayesplot)
+library(extraDistr)
+options(mc.cores=parallel::detectCores())
+rstan_options(auto_write=TRUE)
+rstan_options(threads_per_chain=1)
+```
+
+```{stan, output.var="model"}
+data {
+  int<lower=1> N;
+  real x[N];
+  real y[N];
+}
+parameters {
+  real<lower=0> alpha;
+  real beta;
+  real<lower=0> sigma;
+}
+model {
+  alpha ~ cauchy(0, 10);
+  beta ~ normal(0, 10);
+  sigma ~ cauchy(0, 10);
+  for (i in 1:N)
+    y[i] ~ normal(beta * x[i] + alpha, sigma);
+}
+```
+
+```{r}
+N = 100
+alpha = 0
+beta = 0.6
+sigma = 12
+x = seq(from=110, to=220, length.out=N)
+error = rnorm(N, 0, sigma)
+y = alpha + x * beta + error
+```
+
+```{r}
+plot(y ~ x, bty="l")
+```
+
+```{r}
+sampling(model, data = list(x = x, y = y, N = N))
+```
+
+## Linear models
+
+$\mathcal{D} \rightarrow \{y, x\}$
