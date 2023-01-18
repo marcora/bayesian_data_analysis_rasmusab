@@ -1,0 +1,7 @@
+---
+title: "Probability"
+---
+
+Probability is a numerical description of how likely it is that an event is to occur, or how likely it is that a proposition is true.
+
+![](images/image-1693632950.png)
