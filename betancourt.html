@@ -124,15 +124,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>Stan provides a comprehensive user-oriented probabilistic programming language to specify the conditional probability function of observed and unobserved variables (data and parameters) that describes the <em>posterior</em> probability distribution.</p>
-<p><span class="math inline">\(\pi(q \mid \mathcal{D})\)</span></p>
-<p>The Stan language requires specification of:</p>
-<ul>
-<li><p>Data [what we are conditioning on]</p></li>
-<li><p>Parameters [what the Markov chain is going to explore]</p></li>
-<li><p>The (conditional) probability functions of observed and unobserved variables (data and parameters) that describe the <em>prior</em> and <em>likelihood</em> probability distributions [<span class="math inline">\(\pi(q)\)</span> and <span class="math inline">\(\pi(\mathcal{D} \mid q)\)</span>]</p></li>
-</ul>
-<p><span class="math inline">\(\pi(q \mid \mathcal{D}) = \frac{\pi(q)\pi(\mathcal{D} \mid q)}{\pi(\mathcal{D})} = \frac{\pi(q, \mathcal{D})}{\pi(\mathcal{D})}\)</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstan)</span>
@@ -143,35 +134,81 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">rstan_options</span>(<span class="at">threads_per_chain=</span><span class="dv">1</span>)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">19690329</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-output.var="model">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; N;</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> x[N];</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> y[N];</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; alpha;</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> beta;</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  alpha ~ cauchy(<span class="dv">0</span>, <span class="dv">10</span>);</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  beta ~ normal(<span class="dv">0</span>, <span class="dv">10</span>);</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  sigma ~ cauchy(<span class="dv">0</span>, <span class="dv">10</span>);</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:N)</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    y[i] ~ normal(alpha + beta * x[i], sigma);</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<p>Stan provides a comprehensive user-oriented probabilistic programming language to specify the conditional probability function of observed and unobserved variables (data and parameters) that describes the <strong>posterior</strong> probability distribution: <span class="math inline">\(\pi(\theta \mid \mathcal{D})\)</span>.</p>
+<p>The Stan language requires specification of:</p>
+<ul>
+<li><p>Data [what we are conditioning on]</p></li>
+<li><p>Parameters [what the Markov chain is going to explore]</p></li>
+<li><p>The (conditional) probability functions of observed and unobserved variables (data and parameters) that describe the <strong>prior</strong> and <strong>likelihood</strong> probability distributions: <span class="math inline">\(\pi(\theta)\)</span> and <span class="math inline">\(\pi(\mathcal{D} \mid \theta)\)</span>.</p></li>
+</ul>
+<p><span class="math inline">\(\pi(\theta \mid \mathcal{D}) = \frac{\pi(\theta)\pi(\mathcal{D} \mid \theta)}{\pi(\mathcal{D})} = \frac{\pi(\theta, \mathcal{D})}{\pi(\mathcal{D})}\)</span></p>
+<section id="linear-models" class="level2">
+<h2 class="anchored" data-anchor-id="linear-models">Linear models</h2>
+<p>Often the data naturally separates into <strong>variates</strong> (<span class="math inline">\(y\)</span>) and <strong>covariates</strong> (<span class="math inline">\(x\)</span>):</p>
+<p><span class="math inline">\(\mathcal{D} \rightarrow \{y, x\}\)</span></p>
+<p>Regression models the stochastic/probabilistic relationship/association between variates <span class="math inline">\(y\)</span> and covariates <span class="math inline">\(x\)</span>.</p>
+<p>In other words, we want to know <span class="math inline">\(y\)</span> given <span class="math inline">\(x\)</span>.</p>
+<p>We start by decomposing the likelihood into:</p>
+<p><span class="math inline">\(\pi(y,x \mid \theta) = \pi(y \mid x, \theta) \pi(x \mid \theta)\)</span></p>
+<p>The component (regression) we are interested in is:</p>
+<p><span class="math inline">\(\pi(y \mid x, \theta)\)</span></p>
+<p>In order to focus on this component, we typically ignore the second component:</p>
+<p><span class="math inline">\(\pi(x \mid \theta)\)</span></p>
+<p>by assuming that the covariates <span class="math inline">\(x\)</span> do not depend on/are independent of the parameters <span class="math inline">\(\theta\)</span>, such that:</p>
+<p><span class="math inline">\(\pi(x \mid \theta) = \pi(x)\)</span></p>
+<p>[n.b.: this assumption breaks if, for example, there is “selection bias”]</p>
+<p>In which case the likelihood becomes a model of the variates conditional on the covariates:</p>
+<p><span class="math inline">\(\pi(y,x \mid \theta) = \pi(y \mid x, \theta) \pi(x \mid \theta) = \pi(y \mid x, \theta) \pi(x)\)</span></p>
+<p>because <span class="math inline">\(\pi(x)\)</span> is just a normalizing constant:</p>
+<p><span class="math inline">\(\pi(y,x \mid \theta) \propto \pi(y \mid x, \theta)\)</span></p>
+<p>[from a joint likelihood to a regression likelihood, i.e., the data generation process is specified by a probability function of <span class="math inline">\(y\)</span> given <span class="math inline">\(x\)</span> and the parameters <span class="math inline">\(\theta\)</span>]</p>
+<p>Therefore, regression modeling is mainly based on choosing the functional form of <span class="math inline">\(\pi(y \mid x, \theta)\)</span>, i.e., the functional form of the stochastic/probabilistic relationship/association between variates <span class="math inline">\(y\)</span> and covariates <span class="math inline">\(x\)</span>.</p>
+<p>Covariates are often restricted to a single effective parameter through a deterministic mapping:</p>
+<p><span class="math inline">\(\pi(y \mid x,\theta) = \pi(y \mid f(x, \theta_1), \theta_2)\)</span></p>
+<p>For example, in the case of a normal likelihood:</p>
+<p><span class="math inline">\(\pi(y \mid x,\theta) = \mathcal{N}(y \mid f(x, \beta), \sigma)\)</span></p>
+<p><span class="math inline">\(y \sim \mathcal{N}(f(x, \beta), \sigma)\)</span></p>
+<p><span class="math inline">\(y \sim \mathcal{N}(\mu, \sigma)\)</span></p>
+<p><span class="math inline">\(\mu = f(x, \beta)\)</span></p>
+<p>In the case of linear regression <span class="math inline">\(f\)</span> is additive:</p>
+<p><span class="math inline">\(\mu = \beta_0 + \beta_1 x\)</span></p>
+<p><span class="math inline">\(y \sim \mathcal{N}(\beta_0 + \beta_1 x, \sigma)\)</span></p>
+<p><span class="math inline">\(y = \beta_0 + \beta_1 x + \mathcal{N}(0, \sigma)\)</span></p>
+<p><span class="math inline">\(y = \beta_0 + \beta_1 x + \epsilon\)</span></p>
+<p><span class="math inline">\(\epsilon = \mathcal{N}(0, \sigma)\)</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">=</span> <span class="dv">100</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">=</span> <span class="dv">0</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>beta <span class="ot">=</span> <span class="fl">0.6</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">=</span> <span class="dv">12</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">110</span>, <span class="at">to=</span><span class="dv">220</span>, <span class="at">length.out=</span>N)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>error <span class="ot">=</span> <span class="fu">rnorm</span>(N, <span class="dv">0</span>, sigma)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> alpha <span class="sc">+</span> x <span class="sc">*</span> beta <span class="sc">+</span> error</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">=</span> <span class="dv">20</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>beta0 <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>beta1 <span class="ot">=</span> <span class="fl">0.6</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">=</span> <span class="dv">10</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">110</span>, <span class="at">to=</span><span class="dv">220</span>, <span class="at">length.out=</span>N) <span class="co"># human height</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>epsilon <span class="ot">=</span> <span class="fu">rnorm</span>(N, <span class="dv">0</span>, sigma)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> beta0 <span class="sc">+</span> beta1 <span class="sc">*</span> x <span class="sc">+</span> epsilon <span class="co"># human weight</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(y <span class="sc">~</span> x, <span class="at">bty=</span><span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="betancourt_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell" data-output.var="model">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; N;</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> x[N];</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> y[N];</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; beta0;</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> beta1;</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  beta0 ~ cauchy(<span class="dv">0</span>, <span class="dv">10</span>);</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  beta1 ~ normal(<span class="dv">0</span>, <span class="dv">10</span>);</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  sigma ~ cauchy(<span class="dv">0</span>, <span class="dv">10</span>);</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:N)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    y[i] ~ normal(beta0 + beta1 * x[i], sigma);</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -182,40 +219,29 @@ lm(formula = y ~ x)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--28.820  -7.172  -0.059   7.145  28.998 
+-18.325  -4.225  -0.871   6.800  16.120 
 
 Coefficients:
-            Estimate Std. Error t value            Pr(&gt;|t|)    
-(Intercept)  -7.2863     6.2324   -1.17                0.25    
-x             0.6409     0.0371   17.29 &lt;0.0000000000000002 ***
+            Estimate Std. Error t value   Pr(&gt;|t|)    
+(Intercept)   6.2872    11.6964    0.54        0.6    
+x             0.5707     0.0695    8.21 0.00000017 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 11.9 on 98 degrees of freedom
-Multiple R-squared:  0.753, Adjusted R-squared:  0.751 
-F-statistic:  299 on 1 and 98 DF,  p-value: &lt;0.0000000000000002</code></pre>
+Residual standard error: 10.4 on 18 degrees of freedom
+Multiple R-squared:  0.789, Adjusted R-squared:  0.778 
+F-statistic: 67.5 on 1 and 18 DF,  p-value: 0.000000168</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(y <span class="sc">~</span> x, <span class="at">bty=</span><span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="betancourt_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sampling</span>(model, <span class="at">data =</span> <span class="fu">list</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">N =</span> N))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sampling</span>(model, <span class="at">data=</span><span class="fu">list</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">N=</span>N))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: There were 30 divergent transitions after warmup. See
+<pre><code>Warning: There were 28 divergent transitions after warmup. See
 https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
 to find out why this is a problem and how to eliminate them.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Examine the pairs() plot to diagnose sampling problems</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-Running the chains for more iterations may help. See
-https://mc-stan.org/misc/warnings.html#bulk-ess</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
@@ -227,21 +253,21 @@ https://mc-stan.org/misc/warnings.html#tail-ess</code></pre>
 4 chains, each with iter=2000; warmup=1000; thin=1; 
 post-warmup draws per chain=1000, total post-warmup draws=4000.
 
-         mean se_mean   sd    2.5%     25%     50%     75%   97.5% n_eff Rhat
-alpha    2.87    0.17 2.48    0.08    0.96    2.20    4.08    9.19   202 1.03
-beta     0.58    0.00 0.02    0.54    0.57    0.58    0.59    0.61   193 1.03
-sigma   12.10    0.02 0.83   10.64   11.51   12.05   12.63   13.83  1534 1.00
-lp__  -296.93    0.05 1.28 -300.24 -297.49 -296.61 -296.00 -295.46   764 1.00
+        mean se_mean   sd   2.5%    25%    50%    75%  97.5% n_eff Rhat
+beta0   7.16    0.23 5.40   0.32   2.88   6.05  10.22  20.23   536 1.00
+beta1   0.57    0.00 0.03   0.49   0.55   0.57   0.59   0.62   523 1.00
+sigma  10.60    0.05 1.76   7.80   9.38  10.38  11.51  14.56  1400 1.00
+lp__  -54.13    0.04 1.26 -57.39 -54.74 -53.81 -53.19 -52.66  1117 1.01
 
-Samples were drawn using NUTS(diag_e) at Tue Jan 17 17:40:39 2023.
+Samples were drawn using NUTS(diag_e) at Tue Jan 17 22:27:47 2023.
 For each parameter, n_eff is a crude measure of effective sample size,
 and Rhat is the potential scale reduction factor on split chains (at 
 convergence, Rhat=1).</code></pre>
 </div>
 </div>
-<section id="linear-models" class="level2">
-<h2 class="anchored" data-anchor-id="linear-models">Linear models</h2>
-<p><span class="math inline">\(\mathcal{D} \rightarrow \{y, x\}\)</span></p>
+</section>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
 </section>
 
 </main>

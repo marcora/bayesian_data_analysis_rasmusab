@@ -2,20 +2,6 @@
 title: "Some bayesian modeling techniques in Stan"
 ---
 
-Stan provides a comprehensive user-oriented probabilistic programming language to specify the conditional probability function of observed and unobserved variables (data and parameters) that describes the *posterior* probability distribution.
-
-$\pi(q \mid \mathcal{D})$
-
-The Stan language requires specification of:
-
--   Data \[what we are conditioning on\]
-
--   Parameters \[what the Markov chain is going to explore\]
-
--   The (conditional) probability functions of observed and unobserved variables (data and parameters) that describe the *prior* and *likelihood* probability distributions \[$\pi(q)$ and $\pi(\mathcal{D} \mid q)$\]
-
-$\pi(q \mid \mathcal{D}) = \frac{\pi(q)\pi(\mathcal{D} \mid q)}{\pi(\mathcal{D})} = \frac{\pi(q, \mathcal{D})}{\pi(\mathcal{D})}$
-
 ```{r}
 #| output: false
 library(tidyverse)
@@ -28,6 +14,95 @@ rstan_options(threads_per_chain=1)
 set.seed(19690329)
 ```
 
+Stan provides a comprehensive user-oriented probabilistic programming language to specify the conditional probability function of observed and unobserved variables (data and parameters) that describes the **posterior** probability distribution: $\pi(\theta \mid \mathcal{D})$.
+
+The Stan language requires specification of:
+
+-   Data \[what we are conditioning on\]
+
+-   Parameters \[what the Markov chain is going to explore\]
+
+-   The (conditional) probability functions of observed and unobserved variables (data and parameters) that describe the **prior** and **likelihood** probability distributions: $\pi(\theta)$ and $\pi(\mathcal{D} \mid \theta)$.
+
+$\pi(\theta \mid \mathcal{D}) = \frac{\pi(\theta)\pi(\mathcal{D} \mid \theta)}{\pi(\mathcal{D})} = \frac{\pi(\theta, \mathcal{D})}{\pi(\mathcal{D})}$
+
+## Linear models
+
+Often the data naturally separates into **variates** ($y$) and **covariates** ($x$):
+
+$\mathcal{D} \rightarrow \{y, x\}$
+
+Regression models the stochastic/probabilistic relationship/association between variates $y$ and covariates $x$.
+
+In other words, we want to know $y$ given $x$.
+
+We start by decomposing the likelihood into:
+
+$\pi(y,x \mid \theta) = \pi(y \mid x, \theta) \pi(x \mid \theta)$
+
+The component (regression) we are interested in is:
+
+$\pi(y \mid x, \theta)$
+
+In order to focus on this component, we typically ignore the second component:
+
+$\pi(x \mid \theta)$
+
+by assuming that the covariates $x$ do not depend on/are independent of the parameters $\theta$, such that:
+
+$\pi(x \mid \theta) = \pi(x)$
+
+\[n.b.: this assumption breaks if, for example, there is "selection bias"\]
+
+In which case the likelihood becomes a model of the variates conditional on the covariates:
+
+$\pi(y,x \mid \theta) = \pi(y \mid x, \theta) \pi(x \mid \theta) = \pi(y \mid x, \theta) \pi(x)$
+
+because $\pi(x)$ is just a normalizing constant:
+
+$\pi(y,x \mid \theta) \propto \pi(y \mid x, \theta)$
+
+\[from a joint likelihood to a regression likelihood, i.e., the data generation process is specified by a probability function of $y$ given $x$ and the parameters $\theta$\]
+
+Therefore, regression modeling is mainly based on choosing the functional form of $\pi(y \mid x, \theta)$, i.e., the functional form of the stochastic/probabilistic relationship/association between variates $y$ and covariates $x$.
+
+Covariates are often restricted to a single effective parameter through a deterministic mapping:
+
+$\pi(y \mid x,\theta) = \pi(y \mid f(x, \theta_1), \theta_2)$
+
+For example, in the case of a normal likelihood:
+
+$\pi(y \mid x,\theta) = \mathcal{N}(y \mid f(x, \beta), \sigma)$
+
+$y \sim \mathcal{N}(f(x, \beta), \sigma)$
+
+$y \sim \mathcal{N}(\mu, \sigma)$
+
+$\mu = f(x, \beta)$
+
+In the case of linear regression $f$ is additive:
+
+$\mu = \beta_0 + \beta_1 x$
+
+$y \sim \mathcal{N}(\beta_0 + \beta_1 x, \sigma)$
+
+$y = \beta_0 + \beta_1 x + \mathcal{N}(0, \sigma)$
+
+$y = \beta_0 + \beta_1 x + \epsilon$
+
+$\epsilon = \mathcal{N}(0, \sigma)$
+
+```{r}
+N = 20
+beta0 = 0
+beta1 = 0.6
+sigma = 10
+x = seq(from=110, to=220, length.out=N) # human height
+epsilon = rnorm(N, 0, sigma)
+y = beta0 + beta1 * x + epsilon # human weight
+plot(y ~ x, bty="l")
+```
+
 ```{stan, output.var="model"}
 data {
   int<lower=1> N;
@@ -36,28 +111,18 @@ data {
 }
 
 parameters {
-  real<lower=0> alpha;
-  real beta;
+  real<lower=0> beta0;
+  real beta1;
   real<lower=0> sigma;
 }
 
 model {
-  alpha ~ cauchy(0, 10);
-  beta ~ normal(0, 10);
+  beta0 ~ cauchy(0, 10);
+  beta1 ~ normal(0, 10);
   sigma ~ cauchy(0, 10);
   for (i in 1:N)
-    y[i] ~ normal(alpha + beta * x[i], sigma);
+    y[i] ~ normal(beta0 + beta1 * x[i], sigma);
 }
-```
-
-```{r}
-N = 100
-alpha = 0
-beta = 0.6
-sigma = 12
-x = seq(from=110, to=220, length.out=N)
-error = rnorm(N, 0, sigma)
-y = alpha + x * beta + error
 ```
 
 ```{r}
@@ -65,13 +130,7 @@ summary(lm(y ~ x))
 ```
 
 ```{r}
-plot(y ~ x, bty="l")
+sampling(model, data=list(x=x, y=y, N=N))
 ```
 
-```{r}
-sampling(model, data = list(x = x, y = y, N = N))
-```
-
-## Linear models
-
-$\mathcal{D} \rightarrow \{y, x\}$
+## 
