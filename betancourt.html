@@ -156,7 +156,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><span class="math inline">\(\pi(x \mid \theta)\)</span></p>
 <p>by assuming that the covariates <span class="math inline">\(x\)</span> do not depend on/are independent of the parameters <span class="math inline">\(\theta\)</span>, such that:</p>
 <p><span class="math inline">\(\pi(x \mid \theta) = \pi(x)\)</span></p>
-<p>[n.b.: this assumption breaks if, for example, there is “selection bias”]</p>
+<p>[n.b.: this assumption breaks if, for example, there is “selection/observation bias”]</p>
 <p>In which case the likelihood becomes a model of the variates conditional on the covariates:</p>
 <p><span class="math inline">\(\pi(y,x \mid \theta) = \pi(y \mid x, \theta) \pi(x \mid \theta) = \pi(y \mid x, \theta) \pi(x)\)</span></p>
 <p>because <span class="math inline">\(\pi(x)\)</span> is just a normalizing constant:</p>
@@ -165,12 +165,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Therefore, regression modeling is mainly based on choosing the functional form of <span class="math inline">\(\pi(y \mid x, \theta)\)</span>, i.e., the functional form of the stochastic/probabilistic relationship/association between variates <span class="math inline">\(y\)</span> and covariates <span class="math inline">\(x\)</span>.</p>
 <p>Covariates are often restricted to a single effective parameter through a deterministic mapping:</p>
 <p><span class="math inline">\(\pi(y \mid x,\theta) = \pi(y \mid f(x, \theta_1), \theta_2)\)</span></p>
-<p>For example, in the case of a normal likelihood:</p>
+<p>For example, in the case of a normal likelihood, we may want to model <span class="math inline">\(\mu\)</span> as a function of <span class="math inline">\(x\)</span>:</p>
 <p><span class="math inline">\(\pi(y \mid x,\theta) = \mathcal{N}(y \mid f(x, \beta), \sigma)\)</span></p>
 <p><span class="math inline">\(y \sim \mathcal{N}(f(x, \beta), \sigma)\)</span></p>
 <p><span class="math inline">\(y \sim \mathcal{N}(\mu, \sigma)\)</span></p>
 <p><span class="math inline">\(\mu = f(x, \beta)\)</span></p>
-<p>In the case of linear regression <span class="math inline">\(f\)</span> is additive:</p>
+<p>In the case of linear regression <span class="math inline">\(f\)</span> is linear, i.e., additive:</p>
 <p><span class="math inline">\(\mu = \beta_0 + \beta_1 x\)</span></p>
 <p><span class="math inline">\(y \sim \mathcal{N}(\beta_0 + \beta_1 x, \sigma)\)</span></p>
 <p><span class="math inline">\(y = \beta_0 + \beta_1 x + \mathcal{N}(0, \sigma)\)</span></p>
@@ -259,7 +259,7 @@ beta1   0.57    0.00 0.03   0.49   0.55   0.57   0.59   0.62   523 1.00
 sigma  10.60    0.05 1.76   7.80   9.38  10.38  11.51  14.56  1400 1.00
 lp__  -54.13    0.04 1.26 -57.39 -54.74 -53.81 -53.19 -52.66  1117 1.01
 
-Samples were drawn using NUTS(diag_e) at Tue Jan 17 22:27:47 2023.
+Samples were drawn using NUTS(diag_e) at Wed Jan 18 09:47:28 2023.
 For each parameter, n_eff is a crude measure of effective sample size,
 and Rhat is the potential scale reduction factor on split chains (at 
 convergence, Rhat=1).</code></pre>

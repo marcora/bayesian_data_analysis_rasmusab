@@ -52,7 +52,7 @@ by assuming that the covariates $x$ do not depend on/are independent of the para
 
 $\pi(x \mid \theta) = \pi(x)$
 
-\[n.b.: this assumption breaks if, for example, there is "selection bias"\]
+\[n.b.: this assumption breaks if, for example, there is "selection/observation bias"\]
 
 In which case the likelihood becomes a model of the variates conditional on the covariates:
 
@@ -70,7 +70,7 @@ Covariates are often restricted to a single effective parameter through a determ
 
 $\pi(y \mid x,\theta) = \pi(y \mid f(x, \theta_1), \theta_2)$
 
-For example, in the case of a normal likelihood:
+For example, in the case of a normal likelihood, we may want to model $\mu$ as a function of $x$:
 
 $\pi(y \mid x,\theta) = \mathcal{N}(y \mid f(x, \beta), \sigma)$
 
@@ -80,7 +80,7 @@ $y \sim \mathcal{N}(\mu, \sigma)$
 
 $\mu = f(x, \beta)$
 
-In the case of linear regression $f$ is additive:
+In the case of linear regression $f$ is linear, i.e., additive:
 
 $\mu = \beta_0 + \beta_1 x$
 

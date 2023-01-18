@@ -1,0 +1,308 @@
+---
+title: "Statistical thinking (bois)"
+format: 
+   html:
+     df-print: paged
+---
+
+```{r}
+#| output: false
+library(tidyverse)
+library(magrittr)
+library(skimr)
+library(janitor)
+library(ggbeeswarm)
+library(corrr)
+library(corrplot)
+library(GGally)
+theme_set(theme_bw())
+set.seed(197805)
+```
+
+## Exploratory data analysis (EDA)
+
+Before diving into statistical inference, you should first explore your data by plotting them and computing simple summary statistics. This process, called exploratory data analysis, is a crucial first step in statistical analysis of data.
+
+> Exploratory data analysis can never be the whole story, but nothing else can serve as the foundation stone. --- John Tukey
+
+### Penguins dataset
+
+The `palmerpenguins` data contains size measurements for three penguin species observed on three islands in the Palmer Archipelago, Antarctica.
+
+![](images/image-658112605.png)
+
+The palmerpenguins package contains two datasets. One is called `penguins`, and is a simplified, curated version of the second one `penguins_raw`; see [`?penguins`](https://allisonhorst.github.io/palmerpenguins/reference/penguins.html) for more information.
+
+Both datasets contain data for 344 penguins. There are 3 different species of penguins in this dataset, collected from 3 islands in the Palmer Archipelago, Antarctica.
+
+```{r}
+library(palmerpenguins)
+data(package = "palmerpenguins")
+citation(package = "palmerpenguins")
+```
+
+```{r}
+penguins
+```
+
+```{r}
+str(penguins) # or glimpse(penguins)
+```
+
+```{r}
+skim(penguins) # or summary(penguins)
+```
+
+### Quantitative EDA: Penguins are fun to summarize!
+
+Key concepts:
+
+-   [descriptive statistics](https://en.wikipedia.org/wiki/Descriptive_statistics) and [summary statistics](https://en.wikipedia.org/wiki/Summary_statistics) vs. [inferential statistics](https://en.wikipedia.org/wiki/Statistical_inference) (or statistical inference)
+
+```{r}
+penguins %>% count(species)
+```
+
+```{r}
+penguins %>%
+  count(species, island, .drop = FALSE)
+```
+
+```{r}
+penguins %>% count(species, sex, .drop = FALSE)
+```
+
+There are several kinds of [mean](https://en.wikipedia.org/wiki/Mean) in statistics. Informally, a measure of the location/center/central tendency of the data.
+
+The mean of a set of observations is the arithmetic average of the values.
+
+$$
+\text{arithmetic mean} = \bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i 
+$$ The mean is not necessarily the same as the middle value (median), or the most likely value (mode).
+
+```{r}
+penguins %>% 
+  group_by(species) %>% 
+  summarize(across(where(is.numeric), mean, na.rm = TRUE))
+```
+
+```{r}
+penguins %>% 
+  group_by(species) %>% 
+  summarize(across(where(is.numeric), median, na.rm = TRUE))
+```
+
+```{r}
+mode <- function(x, na.rm = FALSE) {
+  if(na.rm){
+    x = x[!is.na(x)]
+  }
+  ux = unique(x)
+  return(ux[which.max(tabulate(match(x, ux)))])
+}
+
+penguins %>% 
+  group_by(species) %>% 
+  summarize(across(where(is.numeric), mode, na.rm = TRUE))
+```
+
+![](images/image-597599048.png){width="50%"}
+
+The mean is heavily influenced by outliers, i.e., data points whose value is far greater or less than most of the rest of the data.
+
+The median is a special name for the 50^th^ percentile, i.e., the value below (or above) which are 50% of the data.
+
+```{r}
+penguins %>% group_by(species) %>% select(flipper_length_mm) %>% skim()
+```
+
+The variance is the mean squared distance of the data from their mean. Informally, a measure of the variability/spread of the data.
+
+$$
+\text{variance} = \frac{1}{n} \sum_{i=1}^{n}(x_i - \bar{x})^2
+$$
+
+```{r}
+popvar <- function(x, na.rm = FALSE) {
+  if(na.rm){
+    x = x[!is.na(x)]
+  }
+  return(mean((x-mean(x))^2))
+}
+
+penguins %>% 
+  group_by(species) %>% 
+  summarize(across(where(is.numeric), popvar, na.rm = TRUE))
+```
+
+The standard deviation is the square root of the variance.
+
+```{r}
+popsd <- function(x, na.rm = FALSE) {
+  if(na.rm){
+    x = x[!is.na(x)]
+  }
+  return(sqrt(mean((x-mean(x))^2)))
+}
+
+penguins %>% 
+  group_by(species) %>% 
+  summarize(across(where(is.numeric), popsd, na.rm = TRUE))
+```
+
+n.b.: The `var()` and `sd()` functions calculate the sample variance/standard deviation and use n-1 'degrees of freedom', where n is the number of observations.
+
+The IQR is XXX. Informally, a measure of the spread of the data.
+
+### Graphical EDA: Penguins are fun to visualize!
+
+```{r}
+#| warning: false
+#| message: false
+ggplot(data = penguins, aes(x = flipper_length_mm, y = body_mass_g, color = species)) + geom_point()
+```
+
+![](images/image-546582265.png){width="50%"}
+
+```{r}
+#| warning: false
+#| message: false
+ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) + geom_point()
+```
+
+```{r}
+#| warning: false
+#| message: false
+ggplot(data = penguins, aes(x = flipper_length_mm, y = body_mass_g, color = sex)) + geom_point() + facet_wrap(~ species)
+```
+
+```{r}
+penguins %>%
+  select(body_mass_g, ends_with("_mm")) %>%
+  correlate() %>%
+  rearrange() %>%
+  shave() %>%
+  rplot()
+```
+
+```{r}
+penguins %>%
+  select(body_mass_g, ends_with("_mm")) %>%
+  correlate() %>%
+  network_plot()
+```
+
+```{r}
+#| warning: false
+#| message: false
+penguins %>%
+  select(species, body_mass_g, ends_with("_mm")) %>% 
+  ggpairs(aes(color = species)) 
+```
+
+```{r}
+penguins %>%
+  select(body_mass_g, ends_with("_mm")) %>%
+  ggcorr()
+```
+
+```{r}
+penguins %>%
+  select(body_mass_g, ends_with("_mm")) %>%
+  correlate(diagonal = TRUE) %>%
+  column_to_rownames("term") %>%
+  as.matrix() %>%
+  corrplot(type = "lower")
+```
+
+```{r}
+#| warning: false
+#| message: false
+ggplot(data = penguins, aes(x = flipper_length_mm, fill = species)) + geom_histogram(alpha = 0.5, position = "identity")
+```
+
+Unlike histograms, beeswarms can be used to plot data distributions while displaying all data points.
+
+```{r}
+#| warning: false
+#| message: false
+ggplot(data = penguins, aes(y = flipper_length_mm, x = species, color = species)) + geom_beeswarm()
+```
+
+Beeswarms fail when there is a large number of data points!
+
+A solution to this would be to plot the **empirical cumulative distribution function** (ECDF):
+
+```{r}
+#| warning: false
+#| message: false
+ggplot(data = penguins, aes(x = flipper_length_mm, color = species)) + stat_ecdf(geom = "point") + geom_hline(yintercept = 0.5)
+```
+
+The horizontal line intercepts the ECDF at the median, i.e., the 50^th^ percentile.
+
+```{r}
+#| warning: false
+#| message: false
+ggplot(data = penguins, aes(y= flipper_length_mm, color = species)) + geom_boxplot()
+```
+
+A box plot combines graphical and quantitative EDA by displaying the median (horizontal line, the 50^th^ percentile), a box corresponding to the IQR (from the 25^th^ to the 75^th^ percentile), a vertical line corresponding to the min/max value or (if min/max values are not within the 1.5 IQR) the boundaries of the 1.5 IQR plus outliers as individual data points. Outliers are not necessarily erroneous data points.
+
+### Covariance and the Pearson correlation coefficient
+
+The [covariance](https://en.wikipedia.org/wiki/Covariance) is a measure of how two quantities vary together.
+
+$$
+\text{covariance} = \text{cov}_{xy} = \frac{1}{n} \sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})
+$$
+
+The magnitude of the covariance is not easy to interpret because it is not normalized and hence depends on the magnitudes of the quantities of interest. The normalized version of the covariance, the [Pearson correlation coefficient](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient) is a measure of linear correlation between two sets of data that always has a value between −1 and 1 (corresponding to perfect negative and positive linear correlation, and 0 corresponding to no linear correlation).
+
+$$
+\text{Pearson correlation coefficient} = r_{xy} = \frac{\text{cov}_{xy}}{\text{SD}_x \text{SD}_y} = \frac{\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n}(x_i - \bar{x})^2} \sqrt{\sum_{i=1}^{n}(y_i - \bar{y})^2}}
+$$
+
+![](images/image-2039588345.png)
+
+## Probabilistic logic and statistical inference
+
+[Probability](https://en.wikipedia.org/wiki/Probability) is a measure of uncertainty.
+
+### Random number generators and hacker statistics
+
+Hacker statistics simulates a random experiment many many times to compute probabilities.
+
+Hacker stats probabilities are computed as follows:
+
+1.  Determine how to simulate data (from data story to generative model)
+
+2.  Simulate many many times
+
+3.  The fraction of trials with the outcome(s) of interest approximates the probability of that outcome (or event).
+
+A random experiment with exactly two possible outcomes ("success"/TRUE/1 or "failure"/FALSE/0) and in which the probability of "success" is the same every time the experiment is conducted is called a [Bernoulli (or binomial) trial](https://en.wikipedia.org/wiki/Bernoulli_trial).
+
+As an example, we repeatedly simulate a random experiment in which we flip a fair coin four times and record the number of "successes"/heads and calculate the probability of getting three heads out of four coin flips.
+
+```{r}
+nsims = 1e4
+nflips = 4
+nsuccesses = 3
+p = 0.5
+outcomes = rbinom(n = nsims, size = nflips, prob = p)
+
+mean(outcomes == nsuccesses)
+
+dbinom(x = 3, size = 4, prob = p)
+```
+
+### Probability distributions and data stories: The Binomial distribution
+
+From **data story** to **generative model** to **probability distribution**.
+
+We simulated a story about a person flipping a coin. We did this to get the probability for each possible outcome of the story. That set of probabilities is called a probability mass function (PMF). A PMF is defined as the set of probabilities of discrete outcomes.
+
+A PMF is a property of a discrete probability distribution, i.e., a mathematical description of outcomes.
+
+XXX
