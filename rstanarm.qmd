@@ -112,10 +112,11 @@ table(lowgrade_sim)
 
 ```{r}
 #| output: false
-post_sim = stan_glm(lowgrade_sim ~ I(df$emp_length != 0),
+post_sim = stan_glm(lowgrade_sim ~ I(emp_length != 0),
                     family = binomial(link = "logit"),
                     prior = normal(),
-                    prior_intercept = normal())
+                    prior_intercept = normal(),
+                    data = df)
 ```
 
 ```{r}
