@@ -133,12 +133,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggbeeswarm)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrr)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">197805</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggblanket)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrr)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">197805</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>https://campus.datacamp.com/courses/statistical-thinking-in-python-part-1/</p>
 <section id="exploratory-data-analysis-eda" class="level2">
 <h2 class="anchored" data-anchor-id="exploratory-data-analysis-eda">Exploratory data analysis (EDA)</h2>
 <p>Before diving into statistical inference, you should first explore your data by plotting them and computing simple summary statistics. This process, called exploratory data analysis, is a crucial first step in statistical analysis of data.</p>
@@ -395,6 +397,7 @@ A BibTeX entry for LaTeX users is
 </section>
 <section id="quantitative-eda-penguins-are-fun-to-summarize" class="level3">
 <h3 class="anchored" data-anchor-id="quantitative-eda-penguins-are-fun-to-summarize">Quantitative EDA: Penguins are fun to summarize!</h3>
+<p>In this chapter, you will compute useful summary statistics, which serve to concisely describe salient features of a dataset with a few numbers.</p>
 <p>Key concepts:</p>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/Descriptive_statistics">descriptive statistics</a> and <a href="https://en.wikipedia.org/wiki/Summary_statistics">summary statistics</a> vs.&nbsp;<a href="https://en.wikipedia.org/wiki/Statistical_inference">inferential statistics</a> (or statistical inference)</li>
@@ -786,6 +789,7 @@ A BibTeX entry for LaTeX users is
 </section>
 <section id="probabilistic-logic-and-statistical-inference" class="level2">
 <h2 class="anchored" data-anchor-id="probabilistic-logic-and-statistical-inference">Probabilistic logic and statistical inference</h2>
+<p>Statistical inference rests upon probability. Because we can very rarely say anything meaningful with absolute certainty from data, we use probabilistic language to make quantitative statements about data. In this chapter, you will learn how to think probabilistically about discrete quantities: those that can only take certain values, like integers.</p>
 <p><a href="https://en.wikipedia.org/wiki/Probability">Probability</a> is a measure of uncertainty.</p>
 <section id="random-number-generators-and-hacker-statistics" class="level3">
 <h3 class="anchored" data-anchor-id="random-number-generators-and-hacker-statistics">Random number generators and hacker statistics</h3>
@@ -800,14 +804,25 @@ A BibTeX entry for LaTeX users is
 <p>As an example, we repeatedly simulate a random experiment in which we flip a fair coin four times and record the number of “successes”/heads and calculate the probability of getting three heads out of four coin flips.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>nsims <span class="ot">=</span> <span class="fl">1e4</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>nflips <span class="ot">=</span> <span class="dv">4</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>ntrials <span class="ot">=</span> <span class="dv">4</span></span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>nsuccesses <span class="ot">=</span> <span class="dv">3</span></span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="fl">0.5</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>outcomes <span class="ot">=</span> <span class="fu">rbinom</span>(<span class="at">n =</span> nsims, <span class="at">size =</span> nflips, <span class="at">prob =</span> p)</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(outcomes <span class="sc">==</span> nsuccesses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>outcomes <span class="ot">=</span> <span class="fu">integer</span>()</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (isim <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsims) {</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  outcome <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (itrial <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ntrials) {</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;=</span> p) outcome <span class="ot">=</span> outcome <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>  outcomes <span class="ot">=</span> <span class="fu">c</span>(outcomes, outcome)</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="co"># outcomes = rbinom(n = nsims, size = nflips, prob = p)</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(outcomes <span class="sc">==</span> nsuccesses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.2558</code></pre>
+<pre><code>[1] 0.2424</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">3</span>, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">prob =</span> p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -815,12 +830,70 @@ A BibTeX entry for LaTeX users is
 </div>
 </div>
 </section>
-<section id="probability-distributions-and-data-stories-the-binomial-distribution" class="level3">
-<h3 class="anchored" data-anchor-id="probability-distributions-and-data-stories-the-binomial-distribution">Probability distributions and data stories: The Binomial distribution</h3>
-<p>From <strong>data story</strong> to <strong>generative model</strong> to <strong>probability distribution</strong>.</p>
-<p>We simulated a story about a person flipping a coin. We did this to get the probability for each possible outcome of the story. That set of probabilities is called a probability mass function (PMF). A PMF is defined as the set of probabilities of discrete outcomes.</p>
+<section id="probability-distributions" class="level3">
+<h3 class="anchored" data-anchor-id="probability-distributions">Probability distributions</h3>
+<p>From <strong>data story</strong> to <strong>generative model/data generation process</strong> to <strong>probability distribution</strong>.</p>
+<p>We simulated (many many times) a story of a person flipping a coin four times and obtaining a number r of heads. We did this to get the probability of each possible outcome (the number r of heads) of the story. This set of probabilities is called a probability mass function (PMF). A PMF is defined as the set of probabilities of all possible discrete outcomes of a data generation process/generative model/simulation of a “data story”.</p>
 <p>A PMF is a property of a discrete probability distribution, i.e., a mathematical description of outcomes.</p>
-<p>XXX</p>
+<section id="the-binomial-distribution" class="level4">
+<h4 class="anchored" data-anchor-id="the-binomial-distribution">The Binomial distribution</h4>
+<p>Any data generation process that matches the Binomial “data story” is a Binomial process.</p>
+<p>The data story:</p>
+<ul>
+<li><p>The number <span class="math inline">\(r\)</span> of successes in <span class="math inline">\(n\)</span> Bernoulli trials with probability <span class="math inline">\(p\)</span> of success is Binomially distributed</p></li>
+<li><p>The number <span class="math inline">\(r\)</span> of heads in 4 coin flips with probability 0.5 of heads is Binomially distributed</p></li>
+</ul>
+<p>The PMF:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rbinom</span>(<span class="at">n =</span> <span class="fl">1e4</span>, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">prob =</span> <span class="fl">0.5</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">outcome =</span> .) <span class="sc">%&gt;%</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> outcome)) <span class="sc">+</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">y =</span> (..count..)<span class="sc">/</span><span class="fu">sum</span>(..count..))) <span class="sc">+</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"p"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The dot-dot notation (`..count..`) was deprecated in ggplot2 3.4.0.
+ℹ Please use `after_stat(count)` instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="bois_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="the-poisson-distribution" class="level4">
+<h4 class="anchored" data-anchor-id="the-poisson-distribution">The Poisson distribution</h4>
+<p>Any data generation process that matches the Poisson “data story” is a Poisson process.</p>
+<p>The data story:</p>
+<ul>
+<li><p>The number <span class="math inline">\(r\)</span> of arrivals in a given time interval with an average rate of <span class="math inline">\(\lambda\)</span> arrivals per interval is Poisson distributed</p></li>
+<li><p>The number <span class="math inline">\(r\)</span> of hits on a website in 1 hour with an average rate of 6 hits per hour is Poisson distributed</p></li>
+</ul>
+<p>The PMF:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rpois</span>(<span class="at">n =</span> <span class="fl">1e4</span>, <span class="at">lambda =</span> <span class="dv">6</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">outcome =</span> .) <span class="sc">%&gt;%</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> outcome)) <span class="sc">+</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">y =</span> (..count..)<span class="sc">/</span><span class="fu">sum</span>(..count..))) <span class="sc">+</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"p"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="bois_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The Poisson distribution is the limit of a Binomial distribution for a low probability of success and a large number of trials, i.e., for rare events.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rbinom</span>(<span class="at">n =</span> <span class="fl">1e4</span>, <span class="at">size =</span> <span class="dv">60</span>, <span class="at">prob =</span> <span class="fl">0.1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">outcome =</span> .) <span class="sc">%&gt;%</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> outcome)) <span class="sc">+</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">y =</span> (..count..)<span class="sc">/</span><span class="fu">sum</span>(..count..))) <span class="sc">+</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"p"</span>) <span class="sc">+</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1 rows containing missing values (`geom_bar()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="bois_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
 </section>
 </section>
 

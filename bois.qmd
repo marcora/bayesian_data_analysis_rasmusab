@@ -12,12 +12,15 @@ library(magrittr)
 library(skimr)
 library(janitor)
 library(ggbeeswarm)
+library(ggblanket)
 library(corrr)
 library(corrplot)
 library(GGally)
 theme_set(theme_bw())
 set.seed(197805)
 ```
+
+https://campus.datacamp.com/courses/statistical-thinking-in-python-part-1/
 
 ## Exploratory data analysis (EDA)
 
@@ -54,6 +57,8 @@ skim(penguins) # or summary(penguins)
 ```
 
 ### Quantitative EDA: Penguins are fun to summarize!
+
+In this chapter, you will compute useful summary statistics, which serve to concisely describe salient features of a dataset with a few numbers.
 
 Key concepts:
 
@@ -267,6 +272,8 @@ $$
 
 ## Probabilistic logic and statistical inference
 
+Statistical inference rests upon probability. Because we can very rarely say anything meaningful with absolute certainty from data, we use probabilistic language to make quantitative statements about data. In this chapter, you will learn how to think probabilistically about discrete quantities: those that can only take certain values, like integers.
+
 [Probability](https://en.wikipedia.org/wiki/Probability) is a measure of uncertainty.
 
 ### Random number generators and hacker statistics
@@ -287,22 +294,82 @@ As an example, we repeatedly simulate a random experiment in which we flip a fai
 
 ```{r}
 nsims = 1e4
-nflips = 4
+ntrials = 4
 nsuccesses = 3
 p = 0.5
-outcomes = rbinom(n = nsims, size = nflips, prob = p)
+
+outcomes = integer()
+
+for (isim in 1:nsims) {
+  outcome = 0
+  for (itrial in 1:ntrials) {
+    if (runif(1) <= p) outcome = outcome + 1
+  }
+  outcomes = c(outcomes, outcome)
+}
+
+# outcomes = rbinom(n = nsims, size = nflips, prob = p)
 
 mean(outcomes == nsuccesses)
 
 dbinom(x = 3, size = 4, prob = p)
 ```
 
-### Probability distributions and data stories: The Binomial distribution
+### Probability distributions
 
-From **data story** to **generative model** to **probability distribution**.
+From **data story** to **generative model/data generation process** to **probability distribution**.
 
-We simulated a story about a person flipping a coin. We did this to get the probability for each possible outcome of the story. That set of probabilities is called a probability mass function (PMF). A PMF is defined as the set of probabilities of discrete outcomes.
+We simulated (many many times) a story of a person flipping a coin four times and obtaining a number r of heads. We did this to get the probability of each possible outcome (the number r of heads) of the story. This set of probabilities is called a probability mass function (PMF). A PMF is defined as the set of probabilities of all possible discrete outcomes of a data generation process/generative model/simulation of a "data story".
 
 A PMF is a property of a discrete probability distribution, i.e., a mathematical description of outcomes.
 
-XXX
+#### The Binomial distribution
+
+Any data generation process that matches the Binomial "data story" is a Binomial process.
+
+The data story:
+
+-   The number $r$ of successes in $n$ Bernoulli trials with probability $p$ of success is Binomially distributed
+
+-   The number $r$ of heads in 4 coin flips with probability 0.5 of heads is Binomially distributed
+
+The PMF:
+
+```{r}
+rbinom(n = 1e4, size = 4, prob = 0.5) %>%
+  tibble(outcome = .) %>%
+  ggplot(aes(x = outcome)) +
+  geom_bar(aes(y = (..count..)/sum(..count..))) +
+  ylab("p") 
+```
+
+#### The Poisson distribution
+
+Any data generation process that matches the Poisson "data story" is a Poisson process.
+
+The data story:
+
+-   The number $r$ of arrivals in a given time interval with an average rate of $\lambda$ arrivals per interval is Poisson distributed
+
+-   The number $r$ of hits on a website in 1 hour with an average rate of 6 hits per hour is Poisson distributed
+
+The PMF:
+
+```{r}
+rpois(n = 1e4, lambda = 6) %>%
+  tibble(outcome = .) %>%
+  ggplot(aes(x = outcome)) +
+  geom_bar(aes(y = (..count..)/sum(..count..))) +
+  ylab("p") 
+```
+
+The Poisson distribution is the limit of a Binomial distribution for a low probability of success and a large number of trials, i.e., for rare events.
+
+```{r}
+rbinom(n = 1e4, size = 60, prob = 0.1) %>%
+  tibble(outcome = .) %>%
+  ggplot(aes(x = outcome)) +
+  geom_bar(aes(y = (..count..)/sum(..count..))) +
+  ylab("p") +
+  xlim(0, 20)
+```
