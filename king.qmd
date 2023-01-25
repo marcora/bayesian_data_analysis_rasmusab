@@ -1,0 +1,248 @@
+---
+title: "king"
+format: html
+---
+
+<https://j.mp/G2001>
+
+<https://youtube.com/playlist?list=PL0n492lUg2sgSevEQ3bLilGbFph4l92gH>
+
+## Course strategy
+
+Teach the fundamentals, the underlying theory of inference, from which statistical models are developed!
+
+Practical stats: Math proofs when needed, deep concepts and intuition
+
+## Data analysis/Statistical inference
+
+Statistical inference = "Using facts you know to learn about facts you don't know"
+
+Statistical inference is impossible! But just because it's impossible, it doesn't mean you shouldn't do it!
+
+### Textbook list of statistical inference components
+
+1.  Choose: Question
+
+2.  Formalize: Quantity of interest (QOI), given question
+
+3.  Collect: Data, given QOI, question
+
+4.  Assume: Class of models, given data, QOI, question
+
+5.  Estimate from data: \[Use estimator (function of the data) to choose\] Best model in class, given all of the above
+
+6.  Present results: Given all of the above
+
+    1.  QOI estimates
+
+    2.  Uncertainty estimates
+
+7.  Open questions:
+
+    1.  Better ways of presenting results
+
+    2.  Model dependence
+
+    3.  Model class dependence
+
+    4.  Data problems
+
+    5.  More interesting QOIs
+
+    6.  More impactful questions to avoid problems in the first place
+
+## Statistical models
+
+A model is an abstraction!
+
+Models are not true/false, realistic/not-realistic... they are useful or not!
+
+### Notation
+
+-   Dependent (or "outcome") variable
+
+    -   $Y$ is $n \times 1$
+
+    -   $y_i$ is a number (after we know it) \[Y as a column of numbers\]
+
+    -   $Y_i$ is a random variable (before we know it) \[Y as the random variable for each unit $i$\]
+
+-   Explanatory variables
+
+    -   aka "covariates", "independent" or "exogenous" variables
+
+    -   $X = \{x_{ij} \}$ is $n \times k$ (observations by variables)
+
+    -   $X$ can be viewed as a set of columns (variables)
+
+    -   $X$ can be viewed as a set of rows (observations)
+
+    -   $X$ is fixed (not random) \[most of the times but not always true\]
+
+-   Standard notation
+
+    -   $Y_i = x_i \beta + \epsilon_i$ = systematic + stochastic component
+
+    -   $\epsilon_i \sim N(0, \sigma^2)$
+
+-   Alternative notation
+
+    -   $Y_i = N(\mu_i, \sigma^2)$ = stochastic component
+
+    -   $\mu_i = x_i \beta$ = systematic component
+
+-   Generalized alternative notation
+
+    -   $Y_i \sim f(\theta_i, \alpha)$ = stochastic component
+
+    -   $\theta_i = g(x_i, \beta)$ = systematic component
+
+    -   where:
+
+        -   $Y_i$ is the random outcome variable
+
+        -   $f()$ is the probability density/mass function
+
+        -   $\theta_i$ is a systematic feature of $f()$ (e.g., the mean of a normal distribution) that varies over $i$
+
+        -   $\alpha$ is an ancillary parameter/systematic feature of $f()$ (e.g., the variance/standard deviation of a normal distribution) that is constant/does not vary over $i$
+
+        -   $g()$ is the functional form (e.g., linear function in the case of linear regression)
+
+        -   $x_i$ is the explanatory variable vector for $i$
+
+        -   $\beta$ is the "effect parameter" vector
+
+### Sources of uncertainty
+
+-   **Estimation uncertainty**: Lack of knowledge of $\alpha$ and $\beta$. Vanishes as $n$ gets larger!
+
+-   **Fundamental uncertainty**: Represented by the stochastic component. Exists no matter what you do or size of $n$!
+
+-   **Model dependence**: Maybe the model specification is wrong!
+
+### Examples of systematic components
+
+-   Examples:
+
+    -   $E(Y_i) = \mu_i = x_i \beta = \beta_0 + \beta_1 x_{1i} + \ldots + \beta_k x_{ki}$
+
+    -   $P(Y_i = 1) = \pi_i = \frac{1}{1+e^{-x_i \beta}}$
+
+    -   $V(Y_i) = \sigma^2_i = e^{x_i \beta}$
+
+-   Interpretation:
+
+    -   Each is a *class of functional forms*
+
+    -   Setting (or estimating) $\beta$ picks out one member of the class
+
+-   Standard procedure
+
+    -   Use theory: Assume a class of functional forms
+
+    -   Use data: Estimate the values of the parameters (to pick out one member of the class)
+
+    -   Remain uncertain: Because of 1) estimation uncertainty, 2) fundamental uncertainty, 3) model dependence
+
+    -   If we choose the wrong family of functional forms, we:
+
+        -   Have specification error, and potentially bias
+
+        -   Still get the best \[linear, logit, etc.\] approximation to the correct functional form
+
+        -   May be close or far from the truth
+
+### Examples of stochastic components
+
+-   Normal distribution: continuous, unimodal, symmetric, unbounded
+
+-   Log-normal distribution: continuous, unimodal, skewed, bounded from below by zero
+
+-   Bernoulli distribution: discrete, binary outcomes
+
+-   Poisson distribution: discrete, countably infinite on the non-negative integers
+
+### Choosing systematic and stochastic components
+
+-   If one is bounded, so is the other
+
+-   If the stochastic component is bounded, the systematic component must be globally non-linear (although possibly locally linear) \[which is why we can, for example, use linear regression for proportions if they are away from the extremes of 0 and 100%\]
+
+-   All modeling decisions are about the data generation process = the chain of evidence from the world to our observation of it, it should be the first question you ask of every empirical paper!
+
+-   What if we don't know the DGP (and we usually don't know it completely)?
+
+    -   The problem: Model dependence
+
+    -   First line approach: Make "reasonable" assumptions and check fit (and other observable implications of the assumptions)
+
+    -   Second line approach:
+
+        -   Avoid it: Relax assumptions (functional form, distribution, etc)
+
+        -   Detect remaining model dependence
+
+        -   Remove model dependence: Preprocess data (via matching for causal inference, etc)
+
+## Data generation process (with simulation)
+
+-   The data generation process = the chain of evidence from the world to our observation of it
+
+-   It should be the first question you ask of every empirical paper!
+
+-   DGP uncertainty -\> Substantive uncertainty
+
+-   For data to be useful, you need the DGP! \[because we want to study the world, not the data\]
+
+-   Theory is helpful for data; data is helpful for theory
+
+-   How we will use the DGP?
+
+    -   Probability: Assumes the DGP
+
+    -   Statistical inference: Learns the DGP
+
+### Simulation
+
+Simulation is used to:
+
+-   Understand the DGP
+
+-   Solve probability problems
+
+-   Evaluate estimators (an estimator is a function of the data)
+
+-   Calculate features of probability densities
+
+-   Transform statistical inference results (e.g., the "effect parameter" vector $\beta$) into quantities of interest
+
+-   Get the right answer: Easier than mathematical calculations
+
+### Survey sampling vs Simulation
+
+XXX
+
+## Probability (as a model of the data generation process)
+
+Probability is defined as:
+
+-   A function $P(y \mid M) = P(\text{data} \mid \text{model})$ where $M = (f, g, X, \beta, \alpha)$
+
+-   For simplicity: $P(y \mid M) = P(y)$
+
+-   3 axioms define the function $P()$:
+
+    1.  $P(z) \ge 0$ for some event $z$
+
+    2.  $P(\Omega) = 1$ for sample space $\Omega$
+
+    3.  If $z_1, \ldots, z_k$ are mutually exclusive events then $P(z_1 \cup \ldots \cup z_k) = P(z_1) + \ldots + P(z_k)$
+
+-   Axioms 1 and 2 imply $0 \le P(z) \le 1$
+
+-   Axioms are not assumptions; they can't be wrong!
+
+-   From the 3 axioms come all rules of probability theory
+
+-   Rules can be applied analytically or via simulation
