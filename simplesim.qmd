@@ -1,6 +1,8 @@
 ---
 title: "simplesim"
-format: html
+format:
+  html:
+    df-print: paged
 ---
 
 ```{r}
@@ -9,13 +11,10 @@ library(tidyverse)
 library(magrittr)
 library(broom)
 library(broom.mixed)
-library(marginaleffects)
 library(brms)
 library(rethinking)
-library(tidybayes)
 library(bayesplot)
-library(bayestestR)
-library(posterior)
+library(marginaleffects)
 
 theme_set(theme_bw())
 options(
@@ -38,7 +37,7 @@ true_sigma = 10
 
 y = true_alpha + true_beta * x + rnorm(n, mean = 0, sd = true_sigma)
 
-dat = tibble(x = x, y = y)
+(dat = tibble(x = x, y = y))
 ```
 
 ```{r}
@@ -48,7 +47,9 @@ ggplot(dat, aes(x = x, y = y)) + geom_point() + geom_smooth(method = "lm", se = 
 
 ```{r}
 ff = lm(y ~ x, dat)
+```
 
+```{r}
 tidy(ff, conf.int = TRUE)
 ```
 
@@ -57,26 +58,39 @@ predictions(ff) %>% tibble
 ```
 
 ```{r}
+#| output: false
 bf = brm(y ~ x, dat)
+```
+```{r}
+mcmc_trace(bf)
+```
 
+```{r}
 tidy(bf)
 ```
 
 ```{r}
-predictions(bf) %>% tibble
+mcmc_intervals(bf)
 ```
 
 ```{r}
 #| output: false
-bf2 = ulam(alist(
+rt = ulam(alist(
   y ~ dnorm(mu, sigma),
   mu <- alpha + beta * x,
   alpha ~ dnorm(0, 100),
   beta ~ dnorm(0, 100),
   sigma ~ dhalfnorm(0, 10)
-  ), data = dat)
+  ), data = dat, chains=4, cores=4)
+```
+```{r}
+trankplot(rt)
 ```
 
 ```{r}
-precis(bf2)
+precis(rt)
+```
+
+```{r}
+coeftab_plot(coeftab(rt))
 ```

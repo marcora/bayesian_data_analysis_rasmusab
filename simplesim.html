@@ -97,6 +97,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link href="simplesim_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="simplesim_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
+<link href="simplesim_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="simplesim_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
+
 
 </head>
 
@@ -128,21 +131,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom.mixed)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(marginaleffects)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rethinking)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayestestR)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(posterior)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">mc.cores =</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>(),</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">brms.backend =</span> <span class="st">"cmdstanr"</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">19780503</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rethinking)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(marginaleffects)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">mc.cores =</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>(),</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">brms.backend =</span> <span class="st">"cmdstanr"</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">19780503</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">10</span></span>
@@ -155,7 +155,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> true_alpha <span class="sc">+</span> true_beta <span class="sc">*</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> true_sigma)</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">tibble</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>(<span class="at">dat =</span> <span class="fu">tibble</span>(<span class="at">x =</span> x, <span class="at">y =</span> y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["x"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["y"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"83.368","2":"171.86"},{"1":"38.320","2":"81.44"},{"1":"93.304","2":"196.91"},{"1":"39.829","2":"73.38"},{"1":"62.555","2":"118.63"},{"1":"20.151","2":"49.89"},{"1":"92.407","2":"196.81"},{"1":"11.735","2":"16.02"},{"1":"46.700","2":"106.15"},{"1":"5.575","2":"24.80"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dat, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -164,201 +172,86 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ff <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, dat)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(ff, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 7
-  term        estimate std.error statistic      p.value conf.low conf.high
-  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-1 (Intercept)     2.56    5.28       0.485 0.641           -9.62     14.8 
-2 x               2.05    0.0907    22.5   0.0000000159     1.84      2.25</code></pre>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ff <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(ff, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["term"],"name":[1],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["conf.low"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["conf.high"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"(Intercept)","2":"2.564","3":"5.28473","4":"0.4852","5":"0.64057020801","6":"-9.623","7":"14.751"},{"1":"x","2":"2.045","3":"0.09074","4":"22.5398","5":"0.00000001589","6":"1.836","7":"2.255"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predictions</span>(ff) <span class="sc">%&gt;%</span> tibble</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 10 × 10
-   rowid type     estimate std.error statistic   p.value conf.low conf.high
-   &lt;int&gt; &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
- 1     1 response    173.       4.16     41.6  0           165.       181. 
- 2     2 response     80.9      2.97     27.2  5.05e-163    75.1       86.8
- 3     3 response    193.       4.87     39.7  0           184.       203. 
- 4     4 response     84.0      2.93     28.7  1.06e-180    78.3       89.8
- 5     5 response    131.       3.04     42.9  0           125.       136. 
- 6     6 response     43.8      3.86     11.3  7.55e- 30    36.2       51.3
- 7     7 response    192.       4.80     39.9  0           182.       201. 
- 8     8 response     26.6      4.42      6.01 1.82e-  9    17.9       35.2
- 9     9 response     98.1      2.81     34.9  8.31e-267    92.6      104. 
-10    10 response     14.0      4.86      2.87 4.08e-  3     4.43      23.5
-       x     y
-   &lt;dbl&gt; &lt;dbl&gt;
- 1 83.4  172. 
- 2 38.3   81.4
- 3 93.3  197. 
- 4 39.8   73.4
- 5 62.6  119. 
- 6 20.2   49.9
- 7 92.4  197. 
- 8 11.7   16.0
- 9 46.7  106. 
-10  5.57  24.8</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>bf <span class="ot">=</span> <span class="fu">brm</span>(y <span class="sc">~</span> x, dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Start sampling</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Running MCMC with 4 chains, at most 12 in parallel...
+<div class="cell-output-display">
 
-Chain 1 Iteration:    1 / 2000 [  0%]  (Warmup) 
-Chain 1 Iteration:  100 / 2000 [  5%]  (Warmup) 
-Chain 1 Iteration:  200 / 2000 [ 10%]  (Warmup) 
-Chain 1 Iteration:  300 / 2000 [ 15%]  (Warmup) 
-Chain 1 Iteration:  400 / 2000 [ 20%]  (Warmup) 
-Chain 1 Iteration:  500 / 2000 [ 25%]  (Warmup) 
-Chain 1 Iteration:  600 / 2000 [ 30%]  (Warmup) 
-Chain 1 Iteration:  700 / 2000 [ 35%]  (Warmup) 
-Chain 1 Iteration:  800 / 2000 [ 40%]  (Warmup) 
-Chain 1 Iteration:  900 / 2000 [ 45%]  (Warmup) 
-Chain 1 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
-Chain 1 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
-Chain 1 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
-Chain 1 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
-Chain 1 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
-Chain 1 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
-Chain 1 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
-Chain 1 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
-Chain 1 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
-Chain 1 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
-Chain 1 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
-Chain 1 Iteration: 2000 / 2000 [100%]  (Sampling) 
-Chain 2 Iteration:    1 / 2000 [  0%]  (Warmup) 
-Chain 2 Iteration:  100 / 2000 [  5%]  (Warmup) 
-Chain 2 Iteration:  200 / 2000 [ 10%]  (Warmup) 
-Chain 2 Iteration:  300 / 2000 [ 15%]  (Warmup) 
-Chain 2 Iteration:  400 / 2000 [ 20%]  (Warmup) 
-Chain 2 Iteration:  500 / 2000 [ 25%]  (Warmup) 
-Chain 2 Iteration:  600 / 2000 [ 30%]  (Warmup) 
-Chain 2 Iteration:  700 / 2000 [ 35%]  (Warmup) 
-Chain 2 Iteration:  800 / 2000 [ 40%]  (Warmup) 
-Chain 2 Iteration:  900 / 2000 [ 45%]  (Warmup) 
-Chain 2 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
-Chain 2 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
-Chain 2 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
-Chain 2 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
-Chain 2 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
-Chain 2 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
-Chain 2 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
-Chain 2 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
-Chain 2 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
-Chain 2 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
-Chain 2 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
-Chain 2 Iteration: 2000 / 2000 [100%]  (Sampling) 
-Chain 3 Iteration:    1 / 2000 [  0%]  (Warmup) 
-Chain 3 Iteration:  100 / 2000 [  5%]  (Warmup) 
-Chain 3 Iteration:  200 / 2000 [ 10%]  (Warmup) 
-Chain 3 Iteration:  300 / 2000 [ 15%]  (Warmup) 
-Chain 3 Iteration:  400 / 2000 [ 20%]  (Warmup) 
-Chain 3 Iteration:  500 / 2000 [ 25%]  (Warmup) 
-Chain 3 Iteration:  600 / 2000 [ 30%]  (Warmup) 
-Chain 3 Iteration:  700 / 2000 [ 35%]  (Warmup) 
-Chain 3 Iteration:  800 / 2000 [ 40%]  (Warmup) 
-Chain 3 Iteration:  900 / 2000 [ 45%]  (Warmup) 
-Chain 3 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
-Chain 3 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
-Chain 3 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
-Chain 3 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
-Chain 3 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
-Chain 3 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
-Chain 3 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
-Chain 3 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
-Chain 3 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
-Chain 3 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
-Chain 3 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
-Chain 3 Iteration: 2000 / 2000 [100%]  (Sampling) 
-Chain 4 Iteration:    1 / 2000 [  0%]  (Warmup) 
-Chain 4 Iteration:  100 / 2000 [  5%]  (Warmup) 
-Chain 4 Iteration:  200 / 2000 [ 10%]  (Warmup) 
-Chain 4 Iteration:  300 / 2000 [ 15%]  (Warmup) 
-Chain 4 Iteration:  400 / 2000 [ 20%]  (Warmup) 
-Chain 4 Iteration:  500 / 2000 [ 25%]  (Warmup) 
-Chain 4 Iteration:  600 / 2000 [ 30%]  (Warmup) 
-Chain 4 Iteration:  700 / 2000 [ 35%]  (Warmup) 
-Chain 4 Iteration:  800 / 2000 [ 40%]  (Warmup) 
-Chain 4 Iteration:  900 / 2000 [ 45%]  (Warmup) 
-Chain 4 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
-Chain 4 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
-Chain 4 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
-Chain 4 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
-Chain 4 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
-Chain 4 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
-Chain 4 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
-Chain 4 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
-Chain 4 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
-Chain 4 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
-Chain 4 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
-Chain 4 Iteration: 2000 / 2000 [100%]  (Sampling) 
-Chain 1 finished in 0.1 seconds.
-Chain 2 finished in 0.1 seconds.
-Chain 3 finished in 0.1 seconds.
-Chain 4 finished in 0.1 seconds.
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["rowid"],"name":[1],"type":["int"],"align":["right"]},{"label":["type"],"name":[2],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["conf.low"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["conf.high"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["x"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["y"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"response","3":"173.08","4":"4.165","5":"41.560","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000","7":"164.914","8":"181.24","9":"83.368","10":"171.86"},{"1":"2","2":"response","3":"80.94","4":"2.975","5":"27.209","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000505325747642740027568376639253466487285663691635092461180471610891692727098270332833187939554715011212839612","7":"75.109","8":"86.77","9":"38.320","10":"81.44"},{"1":"3","2":"response","3":"193.40","4":"4.870","5":"39.714","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000","7":"183.852","8":"202.94","9":"93.304","10":"196.91"},{"1":"4","2":"response","3":"84.02","4":"2.931","5":"28.665","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001056891592485266460805338212958973814502802802846665023040461816351250694271784882800892028","7":"78.280","8":"89.77","9":"39.829","10":"73.38"},{"1":"5","2":"response","3":"130.51","4":"3.044","5":"42.875","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000","7":"124.541","8":"136.47","9":"62.555","10":"118.63"},{"1":"6","2":"response","3":"43.78","4":"3.858","5":"11.348","6":"0.000000000000000000000000000007549049031609619336866795405027061754198950152603986157154516931659156283939511242198072693554422585293650627136230468750000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000","7":"36.217","8":"51.34","9":"20.151","10":"49.89"},{"1":"7","2":"response","3":"191.56","4":"4.803","5":"39.881","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000","7":"182.148","8":"200.98","9":"92.407","10":"196.81"},{"1":"8","2":"response","3":"26.57","4":"4.418","5":"6.013","6":"0.000000001816974681612260777580960289872506058239665094333759043365716934204101562500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000","7":"17.907","8":"35.22","9":"11.735","10":"16.02"},{"1":"9","2":"response","3":"98.08","4":"2.811","5":"34.897","6":"0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008306","7":"92.569","8":"103.59","9":"46.700","10":"106.15"},{"1":"10","2":"response","3":"13.97","4":"4.863","5":"2.872","6":"0.004082046082120940888593452200439060106873512268066406250000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000","7":"4.434","8":"23.50","9":"5.575","10":"24.80"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>bf <span class="ot">=</span> <span class="fu">brm</span>(y <span class="sc">~</span> x, dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_trace</span>(bf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="simplesim_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(bf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
 
-All 4 chains finished successfully.
-Mean chain execution time: 0.1 seconds.
-Total execution time: 0.5 seconds.</code></pre>
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["effect"],"name":[1],"type":["chr"],"align":["left"]},{"label":["component"],"name":[2],"type":["chr"],"align":["left"]},{"label":["group"],"name":[3],"type":["chr"],"align":["left"]},{"label":["term"],"name":[4],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["conf.low"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["conf.high"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"fixed","2":"cond","3":"NA","4":"(Intercept)","5":"2.521","6":"6.525","7":"-10.506","8":"15.702"},{"1":"fixed","2":"cond","3":"NA","4":"x","5":"2.047","6":"0.113","7":"1.814","8":"2.261"},{"1":"ran_pars","2":"cond","3":"Residual","4":"sd__Observation","5":"10.609","6":"3.406","7":"6.240","8":"19.242"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(bf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 8
-  effect   component group    term            estimate std.error conf.low
-  &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-1 fixed    cond      &lt;NA&gt;     (Intercept)         2.52     6.53    -10.5 
-2 fixed    cond      &lt;NA&gt;     x                   2.05     0.113     1.81
-3 ran_pars cond      Residual sd__Observation    10.6      3.41      6.24
-  conf.high
-      &lt;dbl&gt;
-1     15.7 
-2      2.26
-3     19.2 </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predictions</span>(bf) <span class="sc">%&gt;%</span> tibble</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 10 × 7
-   rowid type     estimate conf.low conf.high     x     y
-   &lt;int&gt; &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
- 1     1 response    173.    163.       183.  83.4  172. 
- 2     2 response     81.0    73.5       88.1 38.3   81.4
- 3     3 response    193.    181.       206.  93.3  197. 
- 4     4 response     84.1    76.6       91.1 39.8   73.4
- 5     5 response    131.    123.       138.  62.6  119. 
- 6     6 response     43.7    34.2       53.2 20.2   49.9
- 7     7 response    192.    180.       204.  92.4  197. 
- 8     8 response     26.5    15.7       37.2 11.7   16.0
- 9     9 response     98.1    90.8      105.  46.7  106. 
-10    10 response     13.9     1.96      25.9  5.57  24.8</code></pre>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_intervals</span>(bf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="simplesim_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>bf2 <span class="ot">=</span> <span class="fu">ulam</span>(<span class="fu">alist</span>(</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  y <span class="sc">~</span> <span class="fu">dnorm</span>(mu, sigma),</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  mu <span class="ot">&lt;-</span> alpha <span class="sc">+</span> beta <span class="sc">*</span> x,</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  alpha <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>, <span class="dv">100</span>),</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  beta <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>, <span class="dv">100</span>),</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  sigma <span class="sc">~</span> <span class="fu">dhalfnorm</span>(<span class="dv">0</span>, <span class="dv">10</span>)</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  ), <span class="at">data =</span> dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>rt <span class="ot">=</span> <span class="fu">ulam</span>(<span class="fu">alist</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  y <span class="sc">~</span> <span class="fu">dnorm</span>(mu, sigma),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  mu <span class="ot">&lt;-</span> alpha <span class="sc">+</span> beta <span class="sc">*</span> x,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  alpha <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>, <span class="dv">100</span>),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  beta <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>, <span class="dv">100</span>),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  sigma <span class="sc">~</span> <span class="fu">dhalfnorm</span>(<span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  ), <span class="at">data =</span> dat, <span class="at">chains=</span><span class="dv">4</span>, <span class="at">cores=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">precis</span>(bf2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>       mean     sd   5.5%  94.5% n_eff Rhat4
-alpha 3.107 6.5568 -6.357 15.058 156.3 1.014
-beta  2.031 0.1125  1.861  2.205 148.1 1.014
-sigma 9.816 2.6222  6.486 14.510 170.6 1.004</code></pre>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">trankplot</span>(rt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="simplesim_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">precis</span>(rt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["mean"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["5.5%"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["94.5%"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["n_eff"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Rhat4"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"2.680","2":"6.4245","3":"-7.204","4":"13.22","5":"461.4","6":"1.010","_rn_":"alpha"},{"1":"2.042","2":"0.1109","3":"1.876","4":"2.21","5":"405.2","6":"1.011","_rn_":"beta"},{"1":"9.698","2":"2.4675","3":"6.455","4":"13.90","5":"740.5","6":"1.006","_rn_":"sigma"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftab_plot</span>(<span class="fu">coeftab</span>(rt))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="simplesim_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 
