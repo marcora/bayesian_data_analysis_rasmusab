@@ -80,8 +80,7 @@ rt = ulam(alist(
   mu <- alpha + beta * x,
   alpha ~ dnorm(0, 100),
   beta ~ dnorm(0, 100),
-  sigma ~ dhalfnorm(0, 10)
-  ), data = dat, chains=4, cores=4)
+  sigma ~ dhalfnorm(0, 10)), data = dat, chains = 4, cores = 4)
 ```
 ```{r}
 trankplot(rt)
