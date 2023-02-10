@@ -1,0 +1,82 @@
+---
+title: "simplesim"
+format: html
+---
+
+```{r}
+#| output: false
+library(tidyverse)
+library(magrittr)
+library(broom)
+library(broom.mixed)
+library(marginaleffects)
+library(brms)
+library(rethinking)
+library(tidybayes)
+library(bayesplot)
+library(bayestestR)
+library(posterior)
+
+theme_set(theme_bw())
+options(
+  mc.cores = parallel::detectCores(),
+  brms.backend = "cmdstanr"
+)
+
+set.seed(19780503)
+```
+
+```{r}
+n = 10
+x = runif(n, min = 0, max = 100)
+```
+
+```{r}
+true_alpha = 5
+true_beta = 2
+true_sigma = 10
+
+y = true_alpha + true_beta * x + rnorm(n, mean = 0, sd = true_sigma)
+
+dat = tibble(x = x, y = y)
+```
+
+```{r}
+#| message: FALSE
+ggplot(dat, aes(x = x, y = y)) + geom_point() + geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r}
+ff = lm(y ~ x, dat)
+
+tidy(ff, conf.int = TRUE)
+```
+
+```{r}
+predictions(ff) %>% tibble
+```
+
+```{r}
+bf = brm(y ~ x, dat)
+
+tidy(bf)
+```
+
+```{r}
+predictions(bf) %>% tibble
+```
+
+```{r}
+#| output: false
+bf2 = ulam(alist(
+  y ~ dnorm(mu, sigma),
+  mu <- alpha + beta * x,
+  alpha ~ dnorm(0, 100),
+  beta ~ dnorm(0, 100),
+  sigma ~ dhalfnorm(0, 10)
+  ), data = dat)
+```
+
+```{r}
+precis(bf2)
+```
