@@ -27,7 +27,7 @@ set.seed(19780503)
 
 ```{r}
 n = 10
-x = runif(n, min = 0, max = 100)
+x = sort(runif(n, min = 0, max = 100))
 ```
 
 ```{r}
