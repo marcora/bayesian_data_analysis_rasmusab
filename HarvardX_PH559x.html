@@ -77,13 +77,39 @@ ul.task-list li input[type="checkbox"] {
 <p>Suppose 30% of the treated die and 10% of the untreated die.</p>
 <p>This does not mean that the treatment has a causal effect on death in this population. Perhaps the treatment has no effect but it is given to people who are at a higher risk of death anyway.</p>
 <p>We say that treatment and death are associated because the risk of death is different in the treated and the untreated.</p>
-<p>Quantifying associations requires the contrast of groups of individuals at different levels of treatment.</p>
-<p>Formally, we say that associations are defined by simple contrasts.</p>
-<p>The association may be present because the treatment has a causal effect or because the groups of individuals are different. Therefore there may be association without causation.</p>
-<p>We can also say that treatment and death are associated when having information about the treatment level allows us to predict death better, on average.</p>
-<p>Causal diagrams/DAGs are very helpful because they represent both association and causation simultaneously! They are both a causal and a statistical (albeit only qualitative) model.</p>
-<p><br>
-</p>
+<p>Quantifying associations requires the contrast of two groups of individuals at different levels of treatment.</p>
+<p>Formally, we say that associations are defined by simple? contrasts.</p>
+<p>The association may be present because the treatment has a causal effect or because the groups of individuals are different. Thus there may be association without causation.</p>
+<p>We can also say that treatment and death are associated when having information about the treatment status allows us to predict death better, on average.</p>
+<p>Causal diagrams/DAGs are very helpful because they represent both association and causation simultaneously! They are both a causal and a statistical (albeit only qualitative) model at the same time.</p>
+<p>This dual nature of causal DAGs is based on the fact that a causal effect implies dependence/association and lack of a causal effect implies independence/lack of association.</p>
+</section>
+</section>
+<section id="directed-acyclic-graphs-dags-as-causal-diagramsdags" class="level2">
+<h2 class="anchored" data-anchor-id="directed-acyclic-graphs-dags-as-causal-diagramsdags">Directed acyclic graphs (DAGs) as causal diagrams/DAGs</h2>
+<section id="directed-acyclic-graphs" class="level3">
+<h3 class="anchored" data-anchor-id="directed-acyclic-graphs">Directed acyclic graphs</h3>
+<p>Arrows of causal graphs are not meant to be deterministic.</p>
+</section>
+<section id="causal-markov-condition" class="level3">
+<h3 class="anchored" data-anchor-id="causal-markov-condition">Causal Markov condition</h3>
+<p>A DAG is causal if the causes shared by any pair of variables on the graph are also on the DAG.</p>
+<p>If our expert knowledge is insufficient for us to rule out a direct causal effect of variable A on variable Y, we should draw an arrow from A to Y on the causal DAG.</p>
+</section>
+</section>
+<section id="the-building-blocks-of-causal-diagramsdags" class="level2">
+<h2 class="anchored" data-anchor-id="the-building-blocks-of-causal-diagramsdags">The building blocks of causal diagrams/DAGs</h2>
+<section id="the-pipe" class="level3">
+<h3 class="anchored" data-anchor-id="the-pipe">The pipe</h3>
+<p>The flow of association between A and Y is interrupted when we condition on the mediator B.</p>
+<p>So, if there is no direct arrow from A and Y, there no association between A and Y conditioned on B, even though A has a causal effect on Y.</p>
+<p><img src="images/image-1379316732.png" class="img-fluid"></p>
+</section>
+<section id="the-fork" class="level3">
+<h3 class="anchored" data-anchor-id="the-fork">The fork</h3>
+</section>
+<section id="the-collider" class="level3">
+<h3 class="anchored" data-anchor-id="the-collider">The collider</h3>
 </section>
 </section>
 
