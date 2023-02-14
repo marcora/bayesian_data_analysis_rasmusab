@@ -43,7 +43,7 @@ Causal diagrams/DAGs are very helpful because they represent both association an
 
 This dual nature of causal DAGs is based on the fact that a causal effect implies dependence/association and lack of a causal effect implies independence/lack of association.
 
-## Directed acyclic graphs (DAGs) as causal diagrams/DAGs 
+## Directed acyclic graphs (DAGs) as causal diagrams/DAGs
 
 ### Directed acyclic graphs
 
@@ -57,14 +57,30 @@ If our expert knowledge is insufficient for us to rule out a direct causal effec
 
 ## The building blocks of causal diagrams/DAGs
 
-### The pipe
+### The pipe (cause and effect)
 
-The flow of association between A and Y is interrupted when we condition on the mediator B.
+A causes Y through the mediator B.
 
-So, if there is no direct arrow from A and Y, there no association between A and Y conditioned on B, even though A has a causal effect on Y.
+There is association between A and Y.
+
+If there is no direct arrow from A to Y, the flow of association between A and Y is interrupted when we condition on the mediator B, even though A has a causal effect on Y.
 
 ![](images/image-1379316732.png)
 
-### The fork
+### The fork (confounding)
 
-### The collider
+L causes A and Y (i.e., A and Y share a common cause).
+
+There is association between A and Y even though A has no causal effect on Y.
+
+If there is no direct arrow from A to Y, the flow of association between A and Y is interrupted when we condition on the common cause L.
+
+When we're using data to estimate the causal effect of A on Y, any component of the association between A and Y that is not due to the causal effect of A on Y is going to **bias** our estimate. In particular, when there is bias due to a common cause of A and Y, we say that there is bias due to **confounding**.
+
+![](images/image-2110736205.png)
+
+\[Marginal (i.e., unconditional) vs conditional dependence/association.\]
+
+### The collider (selection bias)
+
+XXX

@@ -99,17 +99,25 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="the-building-blocks-of-causal-diagramsdags" class="level2">
 <h2 class="anchored" data-anchor-id="the-building-blocks-of-causal-diagramsdags">The building blocks of causal diagrams/DAGs</h2>
-<section id="the-pipe" class="level3">
-<h3 class="anchored" data-anchor-id="the-pipe">The pipe</h3>
-<p>The flow of association between A and Y is interrupted when we condition on the mediator B.</p>
-<p>So, if there is no direct arrow from A and Y, there no association between A and Y conditioned on B, even though A has a causal effect on Y.</p>
+<section id="the-pipe-cause-and-effect" class="level3">
+<h3 class="anchored" data-anchor-id="the-pipe-cause-and-effect">The pipe (cause and effect)</h3>
+<p>A causes Y through the mediator B.</p>
+<p>There is association between A and Y.</p>
+<p>If there is no direct arrow from A to Y, the flow of association between A and Y is interrupted when we condition on the mediator B, even though A has a causal effect on Y.</p>
 <p><img src="images/image-1379316732.png" class="img-fluid"></p>
 </section>
-<section id="the-fork" class="level3">
-<h3 class="anchored" data-anchor-id="the-fork">The fork</h3>
+<section id="the-fork-confounding" class="level3">
+<h3 class="anchored" data-anchor-id="the-fork-confounding">The fork (confounding)</h3>
+<p>L causes A and Y (i.e., A and Y share a common cause).</p>
+<p>There is association between A and Y even though A has no causal effect on Y.</p>
+<p>If there is no direct arrow from A to Y, the flow of association between A and Y is interrupted when we condition on the common cause L.</p>
+<p>When we’re using data to estimate the causal effect of A on Y, any component of the association between A and Y that is not due to the causal effect of A on Y is going to <strong>bias</strong> our estimate. In particular, when there is bias due to a common cause of A and Y, we say that there is bias due to <strong>confounding</strong>.</p>
+<p><img src="images/image-2110736205.png" class="img-fluid"></p>
+<p>[Marginal (i.e., unconditional) vs conditional dependence/association.]</p>
 </section>
-<section id="the-collider" class="level3">
-<h3 class="anchored" data-anchor-id="the-collider">The collider</h3>
+<section id="the-collider-selection-bias" class="level3">
+<h3 class="anchored" data-anchor-id="the-collider-selection-bias">The collider (selection bias)</h3>
+<p>XXX</p>
 </section>
 </section>
 
