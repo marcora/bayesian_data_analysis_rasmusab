@@ -1,7 +1,45 @@
 ---
 title: "Miscellanea"
+format:
+  html:
+    df-print: paged
 ---
 
 ![<https://www.nature.com/articles/s41573-023-00638-0/figures/1>](images/image-302188697.png)
 
 The frequentist approach evaluates evidence from a single new experiment, most often using a p-value as a measure for deciding whether a hypothesis is true or false. The Bayesian approach formally and statistically quantifies prior knowledge ($D_0$) about a hypothesis ($H$) in the form of a prior probability ($P_0$), which is then combined with the evidence from a new experiment ($D_N$) to compute a posterior probability ($P_1$) about the veracity of that hypothesis. The posterior probability can be recycled as input to form the prior for a subsequent experiment, thereby creating a virtuous cycle of synthesizing scientific knowledge about a hypothesis.
+
+## Random variables
+
+```{r}
+#| output: false
+library(tidyverse)
+```
+
+```{r}
+coin = c("H", "T")
+n = 10
+prob = 0.7
+
+sample.space = expand.grid(rep(list(coin), times = n), stringsAsFactors = FALSE) %>% tibble %>% unite("outcome", all_of(1:n), sep = "")
+
+sample.space
+
+probability.table = sample.space %>% mutate(p = prob^str_count(outcome, pattern = "H") * (1 - prob)^str_count(outcome, pattern = "T"))
+
+probability.table
+
+sum(probability.table$p)
+
+random.variable <- function(outcome) { str_count(outcome, pattern = "H") }
+
+probability.distribution = probability.table %>% mutate(rv = random.variable(outcome))
+
+probability.distribution
+
+probability.distribution %<>% group_by(rv) %>% summarise(p = sum(p))
+
+probability.distribution
+
+probability.distribution %>% ggplot(aes(x=rv, xend=rv, y=p, yend=0)) + geom_point() + geom_segment()
+```
