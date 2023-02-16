@@ -11,6 +11,8 @@ The frequentist approach evaluates evidence from a single new experiment, most o
 
 ## Random variables
 
+$\text{rv} \sim \text{Binomial}(\text{prob}, \text{n})$
+
 ```{r}
 #| output: false
 library(tidyverse)
