@@ -97,6 +97,8 @@ $\text{no. of heads in n coin tosses} \sim \text{Binomial}(\text{prob}, \text{n}
 ```{r}
 #| output: false
 library(tidyverse)
+library(magrittr)
+theme_set(theme_bw())
 ```
 
 ```{r}
