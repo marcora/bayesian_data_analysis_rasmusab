@@ -11,7 +11,7 @@ The frequentist approach evaluates evidence from a single new experiment, most o
 
 ## Random experiment
 
-Let's create a coin object:
+Let's create a coin object (see also <https://www.gastonsanchez.com/packyourcode>):
 
 ```{r}
 set.seed(123456)
