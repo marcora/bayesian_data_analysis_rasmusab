@@ -9,9 +9,90 @@ format:
 
 The frequentist approach evaluates evidence from a single new experiment, most often using a p-value as a measure for deciding whether a hypothesis is true or false. The Bayesian approach formally and statistically quantifies prior knowledge ($D_0$) about a hypothesis ($H$) in the form of a prior probability ($P_0$), which is then combined with the evidence from a new experiment ($D_N$) to compute a posterior probability ($P_1$) about the veracity of that hypothesis. The posterior probability can be recycled as input to form the prior for a subsequent experiment, thereby creating a virtuous cycle of synthesizing scientific knowledge about a hypothesis.
 
+## Random experiment
+
+Let's create a coin object:
+
+```{r}
+set.seed(123456)
+
+# (virtual) coin
+coin = c("H", "T")
+coin
+```
+
+```{r}
+# numeric coin (H = 1, T = 0)
+num_coin = c(1, 0)
+num_coin
+```
+
+```{r}
+# logical coin
+log_coin = c(TRUE, FALSE)
+log_coin
+```
+
+Let's simulate tossing a fair coin once:
+
+```{r}
+(outcome = sample(coin, size = 1))
+```
+
+Let's simulate tossing a fair coin 10 times:
+
+```{r}
+(outcome = sample(coin, size = 10, replace = TRUE))
+```
+
+Number of heads:
+
+```{r}
+sum(outcome == "H")
+```
+
+Relative frequency of heads:
+
+```{r}
+mean(outcome == "H")
+```
+
+```{r}
+n_tosses = 1000
+
+fair_coin_p_heads = 0.5
+load_coin_p_heads = 0.7
+
+long_run_fair_coin = sample(coin, size = n_tosses, replace = TRUE, prob = c(fair_coin_p_heads, 1-fair_coin_p_heads))
+long_run_load_coin = sample(coin, size = n_tosses, replace = TRUE, prob = c(load_coin_p_heads, 1-load_coin_p_heads))
+```
+
+```{r}
+table(long_run_fair_coin)
+mean(long_run_fair_coin == "H")
+
+table(long_run_load_coin)
+mean(long_run_load_coin == "H")
+```
+
+```{r}
+long_run_fair_coin_relfreq <- cumsum(long_run_fair_coin == 'H') / 1:n_tosses
+plot(long_run_fair_coin_relfreq,      # vector
+     type = 'l',      # line type
+     lwd = 2,         # width of line
+     col = 'tomato',  # color of line
+     las = 1,         # orientation of tick-mark labels
+     ylim = c(0, 1),  # range of y-axis
+     xlab = "number of fair coin tosses",    # x-axis label
+     ylab = "relative frequency of heads")  # y-axis label
+abline(h = fair_coin_p_heads, col = 'gray50')
+```
+
 ## Random variables
 
-$\text{rv} \sim \text{Binomial}(\text{prob}, \text{n})$
+$\text{rv = no. of heads in n coin tosses}$
+
+$\text{no. of heads in n coin tosses} \sim \text{Binomial}(\text{prob}, \text{n})$
 
 ```{r}
 #| output: false
@@ -20,21 +101,34 @@ library(tidyverse)
 
 ```{r}
 coin = c("H", "T")
-n = 10
-prob = 0.7
+n_tosses = 10
+prob_heads = 0.7
 
-sample.space = expand.grid(rep(list(coin), times = n), stringsAsFactors = FALSE) %>% tibble %>% unite("outcome", all_of(1:n), sep = "")
+# number of all possible outcomes
+2^n_tosses
+
+# sample space = set of all possible outcomes of a random experiment/trial = population
+sample.space = expand.grid(rep(list(coin), times = n_tosses),
+                           stringsAsFactors = FALSE) %>%
+  tibble %>%
+  unite("outcome", all_of(1:n_tosses), sep = "")
 
 sample.space
 
-probability.table = sample.space %>% mutate(p = prob^str_count(outcome, pattern = "H") * (1 - prob)^str_count(outcome, pattern = "T"))
+# probability table = table of probabilities for each elementary/atomic event/sample point ("outcome") in the sample space
+
+# i.i.d. assumption of independent and identically distributed (Bernoulli with same prob param) series/set of outcomes (random sample)
+probability.table = sample.space %>%
+  mutate(p = prob_heads^str_count(outcome, pattern = "H") * (1 - prob_heads)^str_count(outcome, pattern = "T"))
 
 probability.table
 
 sum(probability.table$p)
 
+# random variable = function that maps each outcome in the sample space to a real number
 random.variable <- function(outcome) { str_count(outcome, pattern = "H") }
 
+# probability distribution = table of probabilities of events (i.e., set of outcomes) corresponding to each possible value returned by the random variable when applied to each outcome in the sample space
 probability.distribution = probability.table %>% mutate(rv = random.variable(outcome))
 
 probability.distribution
