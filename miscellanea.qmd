@@ -130,7 +130,7 @@ sum(probability.table$p)
 # random variable = function that maps each outcome in the sample space to a real number
 random.variable <- function(outcome) { str_count(outcome, pattern = "H") }
 
-# probability distribution = table of probabilities of events (i.e., set of outcomes) corresponding to each possible value returned by the random variable when applied to each outcome in the sample space
+# probability distribution = table of probabilities of events (i.e., set of outcomes) corresponding to each possible value of the random variable
 probability.distribution = probability.table %>% mutate(rv = random.variable(outcome))
 
 probability.distribution
@@ -139,5 +139,5 @@ probability.distribution %<>% group_by(rv) %>% summarise(p = sum(p))
 
 probability.distribution
 
-probability.distribution %>% ggplot(aes(x=rv, xend=rv, y=p, yend=0)) + geom_point() + geom_segment()
+probability.distribution %>% ggplot(aes(x=rv, xend=rv, y=p, yend=0)) + geom_point() + geom_segment() + scale_x_continuous(breaks=0:n_tosses)
 ```
