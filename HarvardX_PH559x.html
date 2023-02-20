@@ -60,10 +60,12 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="association-vs.-causation" class="level2">
-<h2 class="anchored" data-anchor-id="association-vs.-causation">Association vs.&nbsp;causation</h2>
-<section id="what-do-we-mean-by-causal-effect" class="level3">
-<h3 class="anchored" data-anchor-id="what-do-we-mean-by-causal-effect">What do we mean by causal effect?</h3>
+<section id="causal-diagramsdags" class="level2">
+<h2 class="anchored" data-anchor-id="causal-diagramsdags">Causal diagrams/DAGs</h2>
+<section id="association-vs.-causation" class="level3">
+<h3 class="anchored" data-anchor-id="association-vs.-causation">Association vs.&nbsp;causation</h3>
+<section id="what-do-we-mean-by-causal-effect" class="level4">
+<h4 class="anchored" data-anchor-id="what-do-we-mean-by-causal-effect">What do we mean by causal effect?</h4>
 <p>Suppose we have a large population of individuals who have cancer and that they are all given a treatment. Suppose 20% of them die.</p>
 <p>Suppose we can go back in time and not give them the treatment/give them a placebo. Suppose 50% of them die.</p>
 <p>If we could do this then we would have proven that the treatment has, on average, a causal effect (on death) in this population.</p>
@@ -71,19 +73,103 @@ ul.task-list li input[type="checkbox"] {
 <p>Quantifying causal effects requires the contrast of the same, or very similar/essentially identical, groups of individuals at different levels of treatment.</p>
 <p>Formally, we say that <strong>causal effects are defined by counterfactual contrasts</strong>.</p>
 </section>
-<section id="what-do-we-mean-by-association" class="level3">
-<h3 class="anchored" data-anchor-id="what-do-we-mean-by-association">What do we mean by association?</h3>
+<section id="what-do-we-mean-by-association" class="level4">
+<h4 class="anchored" data-anchor-id="what-do-we-mean-by-association">What do we mean by association?</h4>
 <p>Suppose we have a large population of individuals who have cancer. Some of them received the treatment and some of them do not.</p>
 <p>Suppose 30% of the treated die and 10% of the untreated die.</p>
 <p>This does not mean that the treatment has a causal effect on death in this population. Perhaps the treatment has no effect but it is given to people who are at a higher risk of death anyway.</p>
 <p>We say that treatment and death are associated because the risk of death is different in the treated and the untreated.</p>
-<p>Quantifying associations requires the contrast of groups of individuals at different levels of treatment.</p>
-<p>Formally, we say that associations are defined by simple contrasts.</p>
-<p>The association may be present because the treatment has a causal effect or because the groups of individuals are different. Therefore there may be association without causation.</p>
-<p>We can also say that treatment and death are associated when having information about the treatment level allows us to predict death better, on average.</p>
-<p>Causal diagrams/DAGs are very helpful because they represent both association and causation simultaneously! They are both a causal and a statistical (albeit only qualitative) model.</p>
-<p><br>
-</p>
+<p>Quantifying associations requires the contrast of two groups of individuals at different levels of treatment.</p>
+<p>Formally, we say that associations are defined by simple? contrasts.</p>
+<p>The association may be present because the treatment has a causal effect or because the groups of individuals are different. Thus there may be association without causation.</p>
+<p>We can also say that treatment and death are associated when having information about the treatment status allows us to predict death better, on average.</p>
+<p>Causal diagrams/DAGs are both causal and a statistical (albeit only qualitative) models at the same time. They represent both association and causation simultaneously.</p>
+<p>This dual nature of causal DAGs is based on the fact that a causal effect implies dependence/association and lack of a causal effect implies independence/lack of association.</p>
+</section>
+</section>
+<section id="directed-acyclic-graphs-dags-as-causal-diagramsdags" class="level3">
+<h3 class="anchored" data-anchor-id="directed-acyclic-graphs-dags-as-causal-diagramsdags">Directed acyclic graphs (DAGs) as causal diagrams/DAGs</h3>
+<section id="directed-acyclic-graphs" class="level4">
+<h4 class="anchored" data-anchor-id="directed-acyclic-graphs">Directed acyclic graphs</h4>
+<p>Arrows of causal graphs are not meant to be deterministic.</p>
+</section>
+<section id="causal-markov-condition" class="level4">
+<h4 class="anchored" data-anchor-id="causal-markov-condition">Causal Markov condition</h4>
+<p>A DAG is causal if the causes shared by any pair of variables on the graph are also on the DAG.</p>
+<p>If our expert knowledge is insufficient for us to rule out a direct causal effect of variable A on variable Y, we should draw an arrow from A to Y on the causal DAG.</p>
+</section>
+</section>
+<section id="the-building-blocks-of-causal-diagramsdags" class="level3">
+<h3 class="anchored" data-anchor-id="the-building-blocks-of-causal-diagramsdags">The building blocks of causal diagrams/DAGs</h3>
+<section id="the-pipe-cause-and-effect" class="level4">
+<h4 class="anchored" data-anchor-id="the-pipe-cause-and-effect">The pipe (cause and effect)</h4>
+<p>A causes Y through the mediator B.</p>
+<p>There is association between A and Y.</p>
+<p>The flow of association between A and Y is interrupted when we condition on the mediator B, even though A has a causal effect on Y.</p>
+<p><img src="images/image-252211351.png" class="img-fluid"></p>
+<p><img src="images/image-289860445.png" class="img-fluid"></p>
+<p><img src="images/image-1379316732.png" class="img-fluid"></p>
+</section>
+<section id="the-fork-common-cause-confounding" class="level4">
+<h4 class="anchored" data-anchor-id="the-fork-common-cause-confounding">The fork (common cause, confounding)</h4>
+<p>L causes both A and Y/Both A and Y are caused by L (i.e., A and Y share a common cause L).</p>
+<p>There is association between A and Y, even though A has no causal effect on Y.</p>
+<p>The flow of association between A and Y is blocked when we condition on the common cause L.</p>
+<p>When we’re using data to estimate the causal effect of A on Y, any component of the association between A and Y that is not due to the causal effect of A on Y is considered a systematic bias. In particular, when there is bias due to [NOT conditioning on] a common cause of A and Y, we say that there is <strong>confounding bias</strong>.</p>
+<p>Common causes create [confounding] bias (association w/o causation), unless they are conditioned on.</p>
+<p><img src="images/image-2100358086.png" class="img-fluid"></p>
+<p><img src="images/image-2110736205.png" class="img-fluid"></p>
+<p>[Marginal (i.e., unconditional) vs conditional dependence/association.]</p>
+</section>
+<section id="the-collider-common-effect-selection-bias" class="level4">
+<h4 class="anchored" data-anchor-id="the-collider-common-effect-selection-bias">The collider (common effect, selection bias)</h4>
+<p>L is caused by both A and Y/Both A and Y causes L (i.e., A and Y share a common effect L).</p>
+<p>There is no association between A and Y. The flow of association between A and Y is blocked by the commont effect/collider L.</p>
+<p>The flow of association between A and Y is unblocked when we condition on the common effect/collider L, even though A has no causal effect on Y.</p>
+<p>When we’re using data to estimate the causal effect of A on Y, any component of the association between A and Y that is not due to the causal effect of A on Y is considered a systematic bias. In particular, when there is bias due to [conditioning on] a common effect of A and Y, we say that there is <strong>selection bias</strong>.</p>
+<p>Common causes DO NOT create [selection] bias (association w/o causation), unless they are conditioned on.</p>
+<p><img src="images/image-1226041162.png" class="img-fluid"></p>
+<p><img src="images/image-1917333239.png" class="img-fluid"></p>
+<p>Selection bias will arise whether we condition on a collider or on something affected by/a descendant of a collider.</p>
+<p><img src="images/image-313362252.png" class="img-fluid"></p>
+<p><img src="images/image-826398816.png" class="img-fluid"></p>
+</section>
+</section>
+<section id="d-separation" class="level3">
+<h3 class="anchored" data-anchor-id="d-separation">D-separation</h3>
+<p>We have identified three sources of association between two variables A and Y:</p>
+<ol type="1">
+<li><p>Cause and effect</p></li>
+<li><p>A common cause (confouding bias)</p></li>
+<li><p>Conditioning on a common effect (or one or more of its descendants) (selection bias)</p></li>
+</ol>
+<p>These are also called structural sources of association.</p>
+<p>Another source of association is:</p>
+<ol start="4" type="1">
+<li>Chance</li>
+</ol>
+<p>Unlike structural sources of association which remain and become sharper as sample size increases, chance associations (due to sampling variability) decrease and eventually disappear as sample size increases.</p>
+<p>In this course, we are going to focus on the structural sources of associations, two of which are sources of systematic bias when estimating causal effects. That means that we’re always going to assume that we’re working with a very large study population. That means that we won’t have to worry about chance and we’ll leave statistical inference for another course.</p>
+<hr>
+<p>A path is any route between two variables on the DAG. Some paths follow the direction of the arrows (causal paths), while other paths do not follow the direction of the arrows (non-causal paths).</p>
+<p>Paths can be either blocked or open according to a set of graphical rules known as D-separation rules. We use D-separation rules to decide whether two variables are D-separated, where D stands for directional.</p>
+<p><strong>D-separation rule #1:</strong></p>
+<p>If there are no variables being conditioned on, a path is blocked if, and only if, two arrowheads on the path collide at some variable on the path.</p>
+<p>As an aside, the definition of collider is path-specific!</p>
+<p><strong>D-separation rule #2:</strong></p>
+<p>Any path that contains a non-collider that has been conditioned on is blocked.</p>
+<p><strong>D-separation rule #3:</strong></p>
+<p>A collider that has been conditioned on does not block a path.</p>
+<p><strong>D-separation rule #4:</strong></p>
+<p>A collider that has a descendant that has been conditioned on does not block a path.</p>
+<hr>
+<p>The summary of these D-separation rules is that a path is blocked if, and only if, it contains a non-collider that has been conditioned on, or a collider that has not been conditioned on and has no descendant that had been conditioned on.</p>
+<p>So two variables are D-separated if all paths between them are blocked. And two variables are marginally (or unconditionally) independent if they are D-separated without conditioning on all the variables.</p>
+<p>On the other hand, we say that two variables are conditionally independent, given a set of variables L, if they are D-separated after conditioning on the set of variables L.</p>
+<p>All D-separation says is that two variables would be associated if one causes the other, if they share common causes, or they have a common effect and we condition on the common effect (or one or more of its descendants).</p>
+</section>
+<section id="faithfulness" class="level3">
+<h3 class="anchored" data-anchor-id="faithfulness">Faithfulness</h3>
 </section>
 </section>
 
