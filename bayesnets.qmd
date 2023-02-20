@@ -1,0 +1,18 @@
+---
+title: "Bayesian networks"
+format:
+  html:
+    df-print: paged
+---
+
+$P(A \mid B) = \frac{P(A, B)}{P(B)}$
+
+$P(A,B \mid C) = \frac{P(A,B,C)}{P(C)}$
+
+$P(A \mid B,C) = \frac{P(A,B,C)}{P(B,C)}$
+
+$P(A,B) = \sum_C P(A,B,C)$
+
+$P(A) = \sum_B \sum_C P(A,B,C)$
+
+$P(A,B,C) = P(A | A^p) P(B | B^p) P(C | C^p)$
