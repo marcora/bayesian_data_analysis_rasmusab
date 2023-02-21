@@ -1,0 +1,44 @@
+---
+title: "Introduction to modern statistics"
+format:
+  html:
+    df-print: paged
+---
+
+```{r}
+#| output: false
+library(tidyverse)
+library(magrittr)
+library(janitor)
+library(openintro)
+```
+
+## Introduction to data
+
+Statistics is the study of how best to collect, analyze, and draw conclusions/learn from data.
+
+We start by writing the main question researchers hope to answer:
+
+> Does the use of stents reduce the risk of stroke?
+
+Researchers randomly assigned 224 patients to the treatment group and 227 to the control group. In this study, the control group provides a reference point against which we can measure the medical impact of stents in the treatment group.
+
+Researchers studied the effect of stents at two time points: 30 days after enrollment and 365 days after enrollment.
+
+```{r}
+stent30
+```
+
+```{r}
+stent365
+```
+
+```{r}
+rbind(stent30 %>% mutate(time = "30"), stent365 %>% mutate(time = "365")) %>%
+  tabyl(group, outcome, time) %>%
+  adorn_totals("row") %>%
+  adorn_percentages("all") %>%
+  adorn_pct_formatting(digits = 0) %>%
+  adorn_ns %>%
+  adorn_title
+```
