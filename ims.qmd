@@ -5,15 +5,23 @@ format:
     df-print: paged
 ---
 
+<https://openintro-ims.netlify.app/>
+
 ```{r}
 #| output: false
 library(tidyverse)
 library(magrittr)
 library(janitor)
 library(openintro)
+
+theme_set(theme_minimal())
 ```
 
 ## Introduction to data
+
+### Hello data
+
+#### Case study: Using stents to prevent strokes
 
 Statistics is the study of how best to collect, analyze, and draw conclusions/learn from data.
 
@@ -21,7 +29,7 @@ We start by writing the main question researchers hope to answer:
 
 > Does the use of stents reduce the risk of stroke?
 
-Researchers randomly assigned 224 patients to the treatment group and 227 to the control group. In this study, the control group provides a reference point against which we can measure the medical impact of stents in the treatment group.
+Researchers randomly assigned 224 patients to the treatment group and 227 to the control group.
 
 Researchers studied the effect of stents at two time points: 30 days after enrollment and 365 days after enrollment.
 
@@ -33,12 +41,58 @@ stent30
 stent365
 ```
 
+A **summary statistic** is a single number summarizing data from a sample, e.g., the proportion of people who had a stroke in the treatment and control groups.
+
 ```{r}
 rbind(stent30 %>% mutate(time = "30"), stent365 %>% mutate(time = "365")) %>%
   tabyl(group, outcome, time) %>%
   adorn_totals("row") %>%
-  adorn_percentages("all") %>%
+  adorn_percentages("row") %>%
   adorn_pct_formatting(digits = 0) %>%
   adorn_ns %>%
   adorn_title
 ```
+
+Suppose you flip a fair coin 100 times. While the chance a fair coin landing heads in any given flip is 50%, we probably won't observe exactly 50 heads. **Variation is part of almost any type of data generating process**. It is possible that the 8% difference in strokes between the control and treatment group after one year is due to this variation. However, the larger the difference we observe (for a particular sample size), the less believable it is that the difference is due to chance. So, what we are really asking is the following: if in fact stents have no effect, how likely is it that we observe such a large difference?
+
+### Data basics
+
+#### Observations, variables, and data frames
+
+```{r}
+loan50
+```
+
+Each row in the table represents a single loan. The formal name for a row is a **case** or **observational unit**. The columns represent characteristics of each loan, where each column is referred to as a **variable**. It is especially important to know what each variable means and its units of measurement.
+
+The table above represents a **data frame**, which is a convenient and common way to organize data, especially if collecting data in a spreadsheet. A data frame where each row is a unique case (observational unit), each column is a variable, and each cell is a single value is commonly referred to as **tidy data**.
+
+When recording data, use a tidy data frame unless you have a very good reason to use a different structure. This structure allows new cases to be added as rows or new variables as new columns and facilitates visualization, summarization, and other statistical analyses.
+
+#### Types of variables
+
+![](images/image-544687951.png)
+
+#### Relationships between variables
+
+Many analyses are motivated by researchers looking for a relationship between two or more variables.
+
+**Scatterplots** are one type of graph used to study the relationship between two numerical variables.
+
+```{r}
+county
+```
+
+```{r}
+county %>% ggplot(aes(x=multi_unit, y=homeownership)) + geom_point()
+```
+
+The `multi_unit` and `homeownership` variables are said to be associated because the plot shows a discernible pattern. When two variables show some connection with one another, they are called **associated** variables.
+
+If two variables are not associated, then they are said to be **independent**. That is, two variables are independent if there is no evident relationship between the two.
+
+We might brainstorm as to why this relationship exists and investigate each idea to determine which are the most reasonable explanations.
+
+#### Explanatory and response variables
+
+XXX
