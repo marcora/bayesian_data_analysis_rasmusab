@@ -20,7 +20,11 @@ Causal inference:
 -   Estimate causal effect
 
 $$
-P(\text{cause} \mid \text{effect}) = \frac{P(\text{cause}) P(\text{effect} \mid \text{cause})}{P(\text{effect})} \propto P(\text{cause}) P(\text{effect} \mid \text{cause})
+P(\text{cause} \mid \text{effect}) = \frac{P(\text{cause}) P(\text{effect} \mid \text{cause})}{P(\text{effect})} = \frac{P(\text{cause}) P(\text{effect} \mid \text{cause})}{\sum_{\text{cause}} P(\text{cause}, \text{effect})} = \frac{P(\text{cause}) P(\text{effect} \mid \text{cause})}{\sum_{\text{cause}} P(\text{cause}) P(\text{effect} \mid \text{cause})}
+$$
+
+$$
+P(\text{cause} \mid \text{effect}) \propto P(\text{cause}) P(\text{effect} \mid \text{cause})
 $$
 
 ![<https://www.nature.com/articles/s41573-023-00638-0/figures/1>](images/image-302188697.png)
