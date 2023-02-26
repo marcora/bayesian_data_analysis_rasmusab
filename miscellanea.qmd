@@ -19,6 +19,14 @@ Causal inference:
 -   Check model
 -   Estimate causal effect
 
+## Probability
+
+Probability: $P(A)$
+
+Conditional probability: $P(A \mid B)$
+
+Joint probability: $P(A,B)$
+
 ## Bayes' rule
 
 $$
