@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Maximum likelihood estimation for beginners</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="mle_files/libs/clipboard/clipboard.min.js"></script>
+<script src="mle_files/libs/quarto-html/quarto.js"></script>
+<script src="mle_files/libs/quarto-html/popper.min.js"></script>
+<script src="mle_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="mle_files/libs/quarto-html/anchor.min.js"></script>
+<link href="mle_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="mle_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="mle_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="mle_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="mle_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+<link href="mle_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="mle_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Maximum likelihood estimation for beginners</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="probability-likelihood" class="level2">
+<h2 class="anchored" data-anchor-id="probability-likelihood">Probability ≠ Likelihood</h2>
+<p><a href="https://digestize.medium.com/stat-digest-likelihood-is-not-probability-b5bce82eded5" class="uri">https://digestize.medium.com/stat-digest-likelihood-is-not-probability-b5bce82eded5</a></p>
+<p><img src="images/image-1159962028.png" class="img-fluid"></p>
+<p><strong>Probability</strong> = <span class="math inline">\(P(\text{event} \mid \text{distribution})\)</span></p>
+<p><strong>Likelihood</strong> = <span class="math inline">\(L(\text{distribution} \mid \text{data})\)</span></p>
+</section>
+<section id="maximum-likelihood-estimation-for-beginners" class="level2">
+<h2 class="anchored" data-anchor-id="maximum-likelihood-estimation-for-beginners">Maximum likelihood estimation for beginners</h2>
+<p><a href="https://medium.com/@jaekim8080/a-laymans-guide-to-maximum-likelihood-estimation-with-r-code-9e992a10ecd9">https://medium.com/@jaekim8080/a-laymans-guide-to-maximum-likelihood-estimation-with-r-code-9e992a10ecd9</a></p>
+<p>Suppose you have three data points <span class="math inline">\(x = (1, 2, 3)\)</span> and you believe that they are generated from a normal distribution with unknown mean <span class="math inline">\(\mu\)</span> and standard deviation equal to 1, i.e., <span class="math inline">\(N(\mu,1)\)</span>.</p>
+<p><em>Given these data points you have, what is the most likely value of</em> <span class="math inline">\(\mu\)</span><em>?</em></p>
+<p>This is the question that the method of maximum likelihood estimation is designed to answer.</p>
+<p>Suppose the researcher considers three possible values of <span class="math inline">\(\mu = (0, 2, 6)\)</span> as likely candidates. Which one of these values are most likely for the data observed?</p>
+<p>The figure above plots three normal distribution probability (density) functions for <span class="math inline">\(N(0,1)\)</span>, <span class="math inline">\(N(2,1)\)</span>, and <span class="math inline">\(N(6,1)\)</span>, respectively in blue, black, and green. That is, they are respectively <span class="math inline">\(f(X \mid \mu=0)\)</span>, <span class="math inline">\(f(X \mid \mu=2)\)</span>, <span class="math inline">\(f(X \mid \mu=6)\)</span>, where:</p>
+<p><span class="math display">\[
+f(X \mid \mu) = \frac{1}{\sqrt{2\pi}}e^{-0.5(X - \mu)^2}
+\]</span></p>
+<p>The red square dots at the bottom indicate <span class="math inline">\(x=(1, 2, 3)\)</span>, which are the observed data points.</p>
+<p>It is obvious from the above plots that the data points <span class="math inline">\(x\)</span> is most likely to have generated from <span class="math inline">\(N(2,1)\)</span>. They are quite unlikely from <span class="math inline">\(N(0,1)\)</span>, and even more so from <span class="math inline">\(N(6,1)\)</span>. Hence, we can say that the value of <span class="math inline">\(\mu = 2\)</span> is associated with the highest likelihood or compatibility with <span class="math inline">\(x=(1, 2, 3)\)</span>.</p>
+<p>If we consider all other possible values of μ, and convinced that 2 is most likely to have generated x, then it is the maximum likelihood estimate for μ.</p>
+<p>Let us define some mathematical details:</p>
+<p><span class="math inline">\(f(X1,X2,X3 \mid \mu)\)</span>: joint probability density function of <span class="math inline">\(X\)</span>, given <span class="math inline">\(\mu\)</span>. It shows the probability density of <span class="math inline">\(X\)</span>, given the value of <span class="math inline">\(\mu\)</span>.</p>
+<p><span class="math inline">\(L(\mu \mid x1,x2,x3)\)</span>: likelihood function of <span class="math inline">\(\mu\)</span>, given $x4. It shows the likelihood of <span class="math inline">\(\mu\)</span>, given the observed data <span class="math inline">\(x=(x1, x2, x3)\)</span>.</p>
+<p>The difference is that the density function is indexed by random variable <span class="math inline">\(X\)</span>, given a value of parameter such as <span class="math inline">\(\mu\)</span>; while the likelihood function is indexed by the parameter, given the observed data <span class="math inline">\(x\)</span>.</p>
+<p>The two functions are related as</p>
+<p><span class="math inline">\(L(\mu \mid x1,x2,x3) = k f(x1,x2,x3 \mid \mu)\)</span>,</p>
+<p>where <span class="math inline">\(k &gt; 0\)</span> is any constant. Let us assume that <span class="math inline">\(k = 1\)</span> for simplicity. Then the two functions are almost the same, with the difference being their arguments and the conditioning values. If we assume for simplicity that <span class="math inline">\(X\)</span>’s are independent, then we can write (since the joint probability is a product of individual probabilities under independence)</p>
+<p><span class="math inline">\(L(\mu \mid x1,x2,x3) = f(x1 \mid \mu) × f(x2 \mid \mu) × f(x3 \mid \mu)\)</span>.</p>
+<p>The above table shows the values of the likelihood function <span class="math inline">\(L(\mu \mid x1,x2,x3)\)</span> when <span class="math inline">\(x=(1, 2, 3)\)</span>: the values listed in the last column as a product of those in the first three. The highest likelihood value achieved is at <span class="math inline">\(\mu = 2\)</span>.</p>
+<p>Now we consider all possible values of <span class="math inline">\(\mu\)</span>, and plot the likelihood and log-of-likelihood functions as a function of <span class="math inline">\(\mu\)</span>. The log-of-likelihood function is defined as</p>
+<p><span class="math inline">\(l(\mu \mid x1,x2,x3) = log[L(\mu \mid x1,x2,x3)]\)</span>,</p>
+<p>where log() is the natural logarithmic function. The log-of-likelihood is a monotonic transformation of the likelihood function. It is widely used because it is analytically tractable, being additive and linear.</p>
+<p>The functions are plotted as above. It is clear from the above plots that the likelihood or log-of-likelihood is maximized at <span class="math inline">\(\mu = 2\)</span>, which is the maximum likelihood estimate for <span class="math inline">\(x = (1, 2, 3)\)</span>.</p>
+<p>Analytically, it can be shown that the sample mean is the maximum likelihood estimator for a sample generated independently from <span class="math inline">\(N(\mu,1)\)</span>, and the sample mean of <span class="math inline">\(x = (1, 2, 3)\)</span> is indeed 2.</p>
+<p>The maximum likelihood estimation method is widely used for many models with non-linearity. This post is aimed to provide an intuitive explanation of the method without introducing the analytical details.</p>
+<p>R code for the calculations and plots are as below:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>) <span class="co"># Data observed</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>X<span class="ot">=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">9</span>,<span class="fl">0.01</span>) <span class="co"># X range</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot density functions</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(X,<span class="fu">dnorm</span>(X, <span class="at">mean=</span><span class="dv">2</span>, <span class="at">sd=</span><span class="dv">1</span>), <span class="at">type =</span><span class="st">"l"</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="st">"black"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">yaxt=</span><span class="st">"n"</span>,<span class="at">ylab=</span><span class="st">"density"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dnorm</span>(x, <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span><span class="dv">1</span>), <span class="at">type =</span><span class="st">"l"</span>, <span class="at">col=</span><span class="st">"blue"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">yaxt=</span><span class="st">"n"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dnorm</span>(x, <span class="at">mean=</span><span class="dv">6</span>, <span class="at">sd=</span><span class="dv">1</span>), <span class="at">type =</span><span class="st">"l"</span>, <span class="at">col=</span><span class="st">"green"</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        , <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">yaxt=</span><span class="st">"n"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># points for data X</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(x,<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>),<span class="at">col=</span><span class="st">"red"</span>,<span class="at">pch=</span><span class="dv">15</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">"N(0,1)"</span>, <span class="st">"N(2,1)"</span>,<span class="st">"N(6,1)"</span>),</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"black"</span>,<span class="st">"green"</span>), <span class="at">lty=</span><span class="dv">1</span>,<span class="at">cex=</span><span class="dv">1</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">2</span>,<span class="dv">6</span>),<span class="at">col=</span><span class="fu">c</span>(<span class="st">"blue"</span>,<span class="st">"black"</span>,<span class="st">"green"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="mle_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculation of Likelihood vales at different mean values</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(<span class="fu">dnorm</span>(x,<span class="at">mean=</span><span class="dv">0</span>,<span class="at">sd=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0000579</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(<span class="fu">dnorm</span>(x,<span class="at">mean=</span><span class="dv">2</span>,<span class="at">sd=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.02336</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(<span class="fu">dnorm</span>(x,<span class="at">mean=</span><span class="dv">6</span>,<span class="at">sd=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0000000000008818</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting likelihood and log-of-likelihood </span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>m<span class="ot">=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">8</span>,<span class="fl">0.1</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>m1<span class="ot">=</span><span class="fu">rep</span>(<span class="dv">0</span>,<span class="fu">length</span>(m))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>m2<span class="ot">=</span><span class="fu">rep</span>(<span class="dv">0</span>,<span class="fu">length</span>(m))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(m)) {</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Likelihood</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  m1[i]<span class="ot">=</span><span class="fu">prod</span>(<span class="fu">dnorm</span>(x,<span class="at">mean=</span>m[i],<span class="at">sd=</span><span class="dv">1</span>))</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># log-of-Likelihood</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  m2[i]<span class="ot">=</span><span class="fu">sum</span>(<span class="fu">log</span>(<span class="fu">dnorm</span>(x,<span class="at">mean=</span>m[i],<span class="at">sd=</span><span class="dv">1</span>)))</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># plotting</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Likelihood</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m,m1,<span class="at">type=</span><span class="st">"l"</span>,<span class="at">ylab=</span><span class="st">"L(mu|X)"</span>,<span class="at">xlab =</span> <span class="st">"mu"</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">2</span>,<span class="at">col=</span><span class="st">"red"</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Log-of-Likelihood</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m,m2,<span class="at">type=</span><span class="st">"l"</span>,<span class="at">ylab=</span><span class="st">"log of L(mu|X)"</span>,<span class="at">xlab =</span> <span class="st">"mu"</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">2</span>,<span class="at">col=</span><span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="mle_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
