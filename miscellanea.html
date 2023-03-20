@@ -141,6 +141,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Check model</li>
 <li>Estimate causal effect</li>
 </ul>
+<section id="probability" class="level2">
+<h2 class="anchored" data-anchor-id="probability">Probability</h2>
+<p>Probability: <span class="math inline">\(P(A)\)</span></p>
+<p>Conditional probability: <span class="math inline">\(P(A \mid B)\)</span></p>
+<p>Joint probability: <span class="math inline">\(P(A,B)\)</span></p>
+</section>
+<section id="bayes-rule" class="level2">
+<h2 class="anchored" data-anchor-id="bayes-rule">Bayes’ rule</h2>
+<p><span class="math display">\[
+P(\text{cause} \mid \text{effect}) = \frac{P(\text{cause}) P(\text{effect} \mid \text{cause})}{P(\text{effect})} = \frac{P(\text{cause}) P(\text{effect} \mid \text{cause})}{\sum_{\text{cause}} P(\text{cause}, \text{effect})} = \frac{P(\text{cause}) P(\text{effect} \mid \text{cause})}{\sum_{\text{cause}} P(\text{cause}) P(\text{effect} \mid \text{cause})}
+\]</span></p>
+<p><span class="math display">\[
+P(\text{cause} \mid \text{effect}) \propto P(\text{cause}) P(\text{effect} \mid \text{cause})
+\]</span></p>
+</section>
+<section id="independence" class="level2">
+<h2 class="anchored" data-anchor-id="independence">Independence</h2>
+<p><span class="math display">\[
+P(X,Y) = P(X) P(Y \mid X)
+\]</span></p>
+<p>Two variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent (<span class="math inline">\(X \perp\!\!\!\!\perp Y\)</span>) if:</p>
+<p><span class="math display">\[
+P(X,Y) = P(X)P(Y)
+\]</span></p>
+<p><span class="math display">\[
+\forall x,y: P(x,y) = P(x)P(y)
+\]</span></p>
+</section>
+<section id="frequentist-vs.-bayesian-inference" class="level2">
+<h2 class="anchored" data-anchor-id="frequentist-vs.-bayesian-inference">Frequentist vs.&nbsp;Bayesian inference</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/image-302188697.png" class="img-fluid figure-img"></p>
@@ -148,6 +178,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </figure>
 </div>
 <p>The frequentist approach evaluates evidence from a single new experiment, most often using a p-value as a measure for deciding whether a hypothesis is true or false. The Bayesian approach formally and statistically quantifies prior knowledge (<span class="math inline">\(D_0\)</span>) about a hypothesis (<span class="math inline">\(H\)</span>) in the form of a prior probability (<span class="math inline">\(P_0\)</span>), which is then combined with the evidence from a new experiment (<span class="math inline">\(D_N\)</span>) to compute a posterior probability (<span class="math inline">\(P_1\)</span>) about the veracity of that hypothesis. The posterior probability can be recycled as input to form the prior for a subsequent experiment, thereby creating a virtuous cycle of synthesizing scientific knowledge about a hypothesis.</p>
+</section>
 <section id="random-experiment" class="level2">
 <h2 class="anchored" data-anchor-id="random-experiment">Random experiment</h2>
 <p>Let’s create a coin object (see also <a href="https://www.gastonsanchez.com/packyourcode" class="uri">https://www.gastonsanchez.com/packyourcode</a>):</p>

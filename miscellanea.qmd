@@ -19,6 +19,42 @@ Causal inference:
 -   Check model
 -   Estimate causal effect
 
+## Probability
+
+Probability: $P(A)$
+
+Conditional probability: $P(A \mid B)$
+
+Joint probability: $P(A,B)$
+
+## Bayes' rule
+
+$$
+P(\text{cause} \mid \text{effect}) = \frac{P(\text{cause}) P(\text{effect} \mid \text{cause})}{P(\text{effect})} = \frac{P(\text{cause}) P(\text{effect} \mid \text{cause})}{\sum_{\text{cause}} P(\text{cause}, \text{effect})} = \frac{P(\text{cause}) P(\text{effect} \mid \text{cause})}{\sum_{\text{cause}} P(\text{cause}) P(\text{effect} \mid \text{cause})}
+$$
+
+$$
+P(\text{cause} \mid \text{effect}) \propto P(\text{cause}) P(\text{effect} \mid \text{cause})
+$$
+
+## Independence
+
+$$
+P(X,Y) = P(X) P(Y \mid X)
+$$
+
+Two variables $X$ and $Y$ are independent ($X \perp\!\!\!\!\perp Y$) if:
+
+$$
+P(X,Y) = P(X)P(Y)
+$$
+
+$$
+\forall x,y: P(x,y) = P(x)P(y)
+$$
+
+## Frequentist vs. Bayesian inference
+
 ![<https://www.nature.com/articles/s41573-023-00638-0/figures/1>](images/image-302188697.png)
 
 The frequentist approach evaluates evidence from a single new experiment, most often using a p-value as a measure for deciding whether a hypothesis is true or false. The Bayesian approach formally and statistically quantifies prior knowledge ($D_0$) about a hypothesis ($H$) in the form of a prior probability ($P_0$), which is then combined with the evidence from a new experiment ($D_N$) to compute a posterior probability ($P_1$) about the veracity of that hypothesis. The posterior probability can be recycled as input to form the prior for a subsequent experiment, thereby creating a virtuous cycle of synthesizing scientific knowledge about a hypothesis.
