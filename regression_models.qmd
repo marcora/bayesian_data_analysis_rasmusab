@@ -1,0 +1,364 @@
+---
+title: "Regression models"
+author: "Edoardo \"Dado\" Marcora"
+date: "2023-04-07"
+format:
+  html:
+    df-print: paged
+    toc: true
+  pdf: default
+---
+
+## Regression (variate-covariate) models
+
+Regression models the probabilistic/statistical relationship between variates ($y$) and covariates ($x$).
+
+Data (one or more tuples):
+
+$$
+(y,x)
+$$
+
+Model (joint probability distribution):
+
+$$
+\pi(y,x \mid \theta)
+$$
+
+Given the multiplication rule of probability:
+
+$$
+\pi(y,x \mid \theta) = \pi(y \mid x,\theta)\pi(x \mid \theta)
+$$
+
+The $\pi(y \mid x,\theta)$ probability distribution is the regression component of this model.
+
+We typically assume that the covariates are independent of the model parameters ($\theta$), i.e., the process that generates the covariates is independent of the process that relates the variates with the covariates, therefore:
+
+$$
+\pi(x \mid \theta) = \pi(x)
+$$
+
+This assumption does not always hold, e.g., in the presence of selection bias.
+
+Therefore, under this assumption, we can rewrite the model as:
+
+$$
+\pi(y,x \mid \theta) = \pi(y \mid x,\theta)\pi(x)
+$$
+
+Since $\pi(x)$ does not depend on the model parameters, it becomes a normalizing constant.
+
+Therefore, we can rewrite the model as:
+
+$$
+\pi(y,x \mid \theta) \propto \pi(y \mid x,\theta)
+$$
+
+In other words, the joint probability distribution (i.e., the model) reduces to the regression likelihood!
+
+The regression likelihood can take an infinite number of forms to model the probabilistic relationship between variates and covariates.
+
+Covariates are often linked to a single effective parameter through a deterministic mapping (but it easily generalizes to multiple effective parameters):
+
+$$
+\pi(y \mid x, \theta) = \pi(y \mid \theta_1 = f(x,\beta),\theta_2)
+$$
+
+In other words, the covariates affect only one of the model parameters through a deterministic function $f(x,\beta)$.
+
+## Linear regression models
+
+In linear regression models, $f(x,\beta)$ is a linear function/predictor/combination of one or more covariates (unconstrained from -Inf to Inf).
+
+For example:
+
+$$
+f(x,\beta) = \beta_0 + \beta_1 x
+$$
+
+### Normal linear regression
+
+For example, in the case of a continuous and unbounded outcome variable, the linear predictor can be linked to the mean $\mu$ of a normal/gaussian distribution with standard deviation $\sigma$:
+
+$$
+\pi(y \mid x, \theta) = \text{Normal}(\theta_1 = \mu = f(x, \beta), \theta_2 = \sigma)
+$$
+
+For example:
+
+$$
+\pi(y \mid x, \beta_0, \beta_1, \sigma) = \text{Normal}(\beta_0 + \beta_1 x, \sigma)
+$$
+
+$$
+E[y \mid x, \beta_0, \beta_1, \sigma] = \mu = \beta_0 + \beta_1 x
+$$
+
+$$
+y \sim \text{Normal}(\beta_0 + \beta_1 x, \sigma)
+$$
+
+which can also be formulated as:
+
+$$
+y = \beta_0 + \beta_1 x + \epsilon
+$$
+
+$$
+\epsilon \sim \text{Normal}(0, \sigma)
+$$
+
+to highlight the two components (deterministic/signal + stochastic/noise) of a probabilistic/statistical model:
+
+$$
+\text{y} = \text{signal} + \text{noise} = [\beta_0 \times 1 + \beta_1 \times x] + \epsilon
+$$
+
+```{r}
+#| eval: FALSE
+model = lm(formula = y ~ 1 + x, data = d)
+```
+
+## Generalized linear regression models
+
+In generalized linear regression models, the linear predictor $f(x, \beta)$ is linked to a single effective parameter of the regression likelihood by the link function $g$:
+
+$$
+\pi(y \mid x, \theta) = \pi(y \mid \theta_1 = g[f(x,\beta)],\theta_2)
+$$
+
+In this context, normal linear regression models are generalized linear regression models in which the link function $g$ is the identity function, i.e., $g[f(x,\beta)] = f(x, \beta)$.
+
+```{r}
+#| eval: FALSE
+model = lm(formula = y ~ 1 + x, data = d)
+
+model = glm(formula = y ~ 1 + x, family = gaussian(link = "identity"), data = d)
+```
+
+### Poisson regression
+
+For example, in the case of a count outcome variable, the linear predictor $f(x, \beta)$ can be linked to the rate of occurrences $k$ of a Poisson distribution by the (inverse of the) natural log function:
+
+$$
+\text{ln}(k) = f(x, \beta)
+$$
+
+$$
+k = e^{f(x,\beta)}
+$$
+
+$$
+\pi(y \mid x, \theta) = \text{Poisson}(\theta = k = e^{f(x, \beta)})
+$$
+
+For example:
+
+$$
+\pi(y \mid x, \beta_0, \beta_1) = \text{Poisson}(e^{\beta_0 + \beta_1 x})
+$$
+
+$$
+E[y \mid x, \beta_0, \beta_1] = k = e^{\beta_0 + \beta_1 x}
+$$
+
+$$
+y \sim \text{Poisson}(e^{\beta_0 + \beta_1 x})
+$$
+
+```{r}
+#| eval: FALSE
+model = glm(formula = y ~ 1 + x, family = poisson(link = "log"), data = d)
+```
+
+### Logistic regression
+
+For example, in the case of a binary outcome variable, the linear predictor $f(x, \beta)$ can be linked to the probability of success $p$ of a Bernoulli distribution by the (inverse of the) logit/log-odds function:
+
+$$
+\text{ln}(\frac{p}{1-p}) = f(x,\beta)
+$$
+
+$$
+\frac{p}{1-p} = e^{f(x,\beta)}
+$$
+
+$$
+p = \frac{e^{f(x,\beta)}}{1 + e^{f(x,\beta)}} = \frac{1}{1+e^{-f(x,\beta)}}
+$$
+
+$$
+\pi(y \mid x, \theta) = \text{Bernoulli}(\theta = p = \frac{1}{1+e^{-f(x,\beta)}})
+$$
+
+For example:
+
+$$
+\pi(y \mid x, \beta_0, \beta_1) = \text{Bernoulli}(\frac{1}{1+e^{-(\beta_0 + \beta_1 x)}})
+$$
+
+$$
+E[y \mid x, \beta_0, \beta_1] = p = \frac{1}{1+e^{-(\beta_0 + \beta_1 x)}}
+$$
+
+$$
+y \sim \text{Bernoulli}(\frac{1}{1+e^{-(\beta_0 + \beta_1 x)}})
+$$
+
+\[when $f(x,\beta) = -\infty$ the term $e^{-(-\infty)} = \infty$ and therefore $p = \frac{1}{1 + \infty} = 0$. On the other hand, when $f(x,\beta) = \infty$ the term $e^{(-\infty)} = 0$ and therefore $p = \frac{1}{1 + 0} = 1$\]
+
+```{r}
+#| eval: FALSE
+model = glm(formula = y ~ 1 + x, family = binomial(link = "logit"), data = d)
+```
+
+## References
+
+-   <https://youtu.be/uSjsJg8fcwY>
+-   <https://towardsdatascience.com/generalized-linear-models-9cbf848bb8ab>
+-   <https://stats.stackexchange.com/questions/219828/interpretation-of-coefficients-in-logistic-regression-output>
+-   <https://stats.stackexchange.com/questions/96236/understanding-r-output-in-logistic-regression>
+
+## From probability to inference
+
+### The impossibility of inference without assumptions
+
+#### How to fit a line to a scatterplot?
+
+-   Some "rule": Least squares? Least absolute deviations?
+
+-   Visually, by hand: Tends to be principal components
+
+-   Based on statistical criterion: Unbiasedness, efficiency, consistency, etc.
+
+-   Based on a full theory of inference, and for a specific purpose (e.g., causal inference, prediction, etc.
+
+#### Quantities of interest
+
+The goals of empirical quantitative research:
+
+-   Summaries of data: Functions of facts you know
+
+-   Inference: "Using facts you know to learn about facts you don't know"
+
+    -   Descriptive inference (inference about facts you don't know but that actually exists, e.g., average age in the US population)
+
+    -   Counterfactual inference (inference about facts that do not actually exists, but might exist...)
+
+        -   Prediction (...in the future)
+
+        -   What-if questions (...if the world were different)
+
+        -   Causal inference (difference between the actual state of the world and if the world were different)
+
+#### The problem of inference
+
+-   Probability:
+
+    $$
+    P(y \mid M) = P(\text{known} \mid \text{unknown})
+    $$
+
+-   Inverse probability:
+
+    $$
+    P(M \mid y) = P(\text{unknown} \mid \text{known})
+    $$
+
+-   A more reasonable, limited goal:\
+    Let $M = (M^*, \theta)$, where $M^*$ is assumed and $\theta$ is to be estimated
+
+    $$
+    P(\theta \mid y, M^*) \equiv P(\theta \mid y)
+    $$
+
+### Theories of inference
+
+Everything on this page is true; no assumptions
+
+-   Bayes' theorem (as distinct from Bayesian inference):
+
+$$
+P(\theta \mid y) = \frac{P(\theta, y)}{P(y)} = \frac{P(\theta)P(y \mid \theta)}{P(y)} = \frac{P(\theta)P(y \mid \theta)}{\int{P(\theta, y)d\theta}} = \frac{P(\theta)P(y \mid \theta)}{\int{P(\theta)P(y \mid \theta)d\theta}}
+$$
+
+-   If we knew the right side of this equation, we could compute the inverse probability
+
+-   Two theories of inference arose to **interpret** this equation: Likelihood and Bayesian inference
+
+-   In both theories of inference, $P(y \mid \theta)$ is a traditional probability density \[$P(\text{known} \mid \text{unknown})$\]
+
+-   The two theories of inference differ on the rest
+
+#### Interpretation 1: The likelihood theory of inference
+
+-   R.A. Fisher's idea
+
+-   $\theta$ is fixed (yet unknown) and $y$ is random (yet observed)
+
+    let:
+
+    $$
+    k(y) \equiv \frac{P(\theta)}{\int{P(\theta)P(y \mid \theta)d\theta}}
+    $$
+
+    such that:
+
+    $$
+    P(\theta \mid y) = k(y)P(y \mid \theta)
+    $$
+
+-   $k(y)$ is an unknown function of $y$ with $\theta$ fixed at its true value (which is also unknown)
+
+-   The likelihood theory of inference has four axioms: the three probability axioms plus the likelihood axiom (neither true nor false):
+
+    $$
+    L(\theta \mid y) \equiv k(y)P(y \mid \theta)
+    $$
+
+    since $k(y)$ is a constant:
+
+$$
+L(\theta \mid y) \propto P(y \mid \theta)
+$$
+
+-   $L(\theta \mid y)$ is a function of $\theta$ with $y$ fixed at its observed value
+
+    -   Given a dataset ($y$), it returns the "likelihood" of any value of $\theta$
+
+    -   Given a dataset ($y$), "likelihood" is a relative measure of uncertainty of $\theta$
+
+-   Comparing values of $L(\theta \mid y)$ for different values of $\theta$:
+
+    -   within a dataset ($y$): meaningful
+
+    -   across datasets ($y_1$ and $y_2$): meaningless
+
+-   The likelihood theory of inference obeys the likelihood principle: the data ($y$) only affect inferences through the likelihood function
+
+#### Interpretation 2: The Bayesian theory of inference
+
+-   All unknown quantities ($\theta$, $Y$) are treated as random variables and have a joint probability distribution
+
+-   All known quantities ($y$) are treated as fixed
+
+-   $P(\theta \mid y)$ is the posterior density
+
+-   $P(y \mid \theta)$ is the traditional probability (proportional to the likelihood)
+
+-   $P(y)$ is a constant
+
+-   $P(\theta)$ is the prior density (a probability density that represents all prior information about $\theta$)
+
+    -   An opportunity: to get other information outside of the data into the model and estimator
+
+    -   An annoyance: the "other information" is required
+
+    -   A philosophical assumption: non-sample information matters
+
+-   The Bayesian theory of inference obeys the likelihood principle: the data ($y$) only affect inferences through the likelihood function
+
+#### Neyman-Pearson hypothesis testing
+
+XXX
