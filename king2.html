@@ -72,8 +72,9 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#probability-is-a-function" id="toc-probability-is-a-function" class="nav-link" data-scroll-target="#probability-is-a-function">Probability is a function</a></li>
   <li><a href="#probability-distributions-are-also-functions" id="toc-probability-distributions-are-also-functions" class="nav-link" data-scroll-target="#probability-distributions-are-also-functions">Probability distributions are also functions</a></li>
-  <li><a href="#probability-vs-likelihood" id="toc-probability-vs-likelihood" class="nav-link" data-scroll-target="#probability-vs-likelihood">Probability vs likelihood</a></li>
   </ul></li>
+  <li><a href="#probability-vs-likelihood" id="toc-probability-vs-likelihood" class="nav-link" data-scroll-target="#probability-vs-likelihood">Probability vs likelihood</a></li>
+  <li><a href="#statistical-thinking" id="toc-statistical-thinking" class="nav-link" data-scroll-target="#statistical-thinking">Statistical thinking</a></li>
   </ul>
 </nav>
 </div>
@@ -439,8 +440,9 @@ Knowing a cause means being able to impute unobserved counterfactual outcomes<br
 </ul></li>
 </ul>
 </section>
-<section id="probability-vs-likelihood" class="level3">
-<h3 class="anchored" data-anchor-id="probability-vs-likelihood">Probability vs likelihood</h3>
+</section>
+<section id="probability-vs-likelihood" class="level2">
+<h2 class="anchored" data-anchor-id="probability-vs-likelihood">Probability vs likelihood</h2>
 <p><a href="https://youtu.be/eDMGDhyDxuY" class="uri">https://youtu.be/eDMGDhyDxuY</a></p>
 <p>Statisticians use <strong>probability</strong> to describe <strong>uncertainty</strong></p>
 <p>Probability is a well-defined mathematical concept, uncertainty is a ill-defined English word!</p>
@@ -469,6 +471,28 @@ p(\theta \mid X = x) \sim p(\theta) l(\theta \mid X = x)
 <p>Epistemic uncertainty, also known as model uncertainty or knowledge uncertainty, arises from the lack of knowledge or incomplete understanding about the underlying system being modeled. It is a result of limitations in the available data or the model’s inability to fully capture the true complexity of the system. Unlike aleatoric uncertainty, epistemic uncertainty can, in principle, be reduced with additional information or improved modeling techniques. It represents uncertainty that could be resolved with more data or a better model.</p>
 <p>To summarize, aleatoric uncertainty represents the irreducible randomness or inherent variability in the data, while epistemic uncertainty arises from the lack of knowledge or incomplete understanding about the system being modeled. Aleatoric uncertainty cannot be reduced even with more data, while epistemic uncertainty can be reduced through further investigation, better data collection, or improved modeling techniques.</p>
 </section>
+<section id="statistical-thinking" class="level2">
+<h2 class="anchored" data-anchor-id="statistical-thinking">Statistical thinking</h2>
+<p><a href="https://youtu.be/be2wuOaglFY" class="uri">https://youtu.be/be2wuOaglFY</a></p>
+<p>Statistics is mathematical modeling under uncertainty = statistical thinking!</p>
+<p>Statistical thinking (the golden rules of statistics):</p>
+<ol type="1">
+<li><p>Know thy problem</p></li>
+<li><p>Know thy tools (based on the problem)</p></li>
+<li><p>Know thy data (based on the problem)</p></li>
+</ol>
+<p>opposite flow compared to STAT 101 (data myopia):</p>
+<ol type="1">
+<li><p>Look at the data</p></li>
+<li><p>Pick a test (based on the data)</p></li>
+<li><p>Calculate p-value</p></li>
+</ol>
+<p>tools/statistical methods are based on probabilistic models, e.g.:</p>
+<p><span class="math inline">\(y_i = \beta_0 + \beta_1 x_i + \epsilon_i\)</span></p>
+<p><span class="math inline">\(\epsilon \sim \text{Normal}(\mu = 0, \sigma)\)</span></p>
+<p><span class="math inline">\(Y \sim \text{Normal}(\mu = \beta_0 + \beta_1 x, \sigma)\)</span></p>
+<p><span class="math inline">\(\hat{y} = E[Y] = \mu = \beta_0 + \beta_1 x\)</span></p>
+<p>All models are wrong, some are useful!</p>
 </section>
 
 </main>

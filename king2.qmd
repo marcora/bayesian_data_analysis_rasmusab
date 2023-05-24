@@ -415,7 +415,7 @@ Computing probabilities from PDFs/PMFs:
 
     -   $P(Y = y) = 0$
 
-### Probability vs likelihood
+## Probability vs likelihood
 
 <https://youtu.be/eDMGDhyDxuY>
 
@@ -466,3 +466,37 @@ Aleatoric uncertainty, also known as statistical uncertainty or inherent uncerta
 Epistemic uncertainty, also known as model uncertainty or knowledge uncertainty, arises from the lack of knowledge or incomplete understanding about the underlying system being modeled. It is a result of limitations in the available data or the model's inability to fully capture the true complexity of the system. Unlike aleatoric uncertainty, epistemic uncertainty can, in principle, be reduced with additional information or improved modeling techniques. It represents uncertainty that could be resolved with more data or a better model.
 
 To summarize, aleatoric uncertainty represents the irreducible randomness or inherent variability in the data, while epistemic uncertainty arises from the lack of knowledge or incomplete understanding about the system being modeled. Aleatoric uncertainty cannot be reduced even with more data, while epistemic uncertainty can be reduced through further investigation, better data collection, or improved modeling techniques.
+
+## Statistical thinking
+
+<https://youtu.be/be2wuOaglFY>
+
+Statistics is mathematical modeling under uncertainty = statistical thinking!
+
+Statistical thinking (the golden rules of statistics):
+
+1.  Know thy problem
+
+2.  Know thy tools (based on the problem)
+
+3.  Know thy data (based on the problem)
+
+opposite flow compared to STAT 101 (data myopia):
+
+1.  Look at the data
+
+2.  Pick a test (based on the data)
+
+3.  Calculate p-value
+
+tools/statistical methods are based on probabilistic models, e.g.:
+
+$y_i = \beta_0 + \beta_1 x_i + \epsilon_i$
+
+$\epsilon \sim \text{Normal}(\mu = 0, \sigma)$
+
+$Y \sim \text{Normal}(\mu = \beta_0 + \beta_1 x, \sigma)$
+
+$\hat{y} = E[Y] = \mu = \beta_0 + \beta_1 x$
+
+All models are wrong, some are useful!
