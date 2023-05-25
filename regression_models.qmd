@@ -362,3 +362,5 @@ $$
 #### Neyman-Pearson hypothesis testing
 
 XXX
+
+![](statistical_modeling_workflow.png)
