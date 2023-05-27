@@ -70,8 +70,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-is-statistics" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-statistics">What is statistics?</h2>
 <ul>
-<li><p>Analytics deals with what we know, the facts (data) we have</p></li>
-<li><p>Statistics (statistical inference) deals with what we don’t know, the facts we wish we had</p></li>
+<li><p>Analytics deals with what we know, the facts/data/information we have</p></li>
+<li><p>Statistics (statistical inference) deals with what we don’t know, the facts/data/information we wish we had</p></li>
 <li><p>Statistics is the science of changing your mind under uncertainty</p>
 <ul>
 <li><p>Bayesians change their mind about <em>beliefs</em></p></li>
@@ -82,39 +82,73 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-is-a-populationsample" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-a-populationsample">What is a population/sample?</h2>
 <ul>
-<li><p>Population: Collection/set of all things/items we are interested in</p></li>
-<li><p>Sample: Any subset of the population of interest</p></li>
-<li><p>By definition, only the population is interesting to us (it is the legal contract of statistics), not a single item (observation) or a sample of the population</p></li>
+<li><p>Population: A collection/set of all things/items/objects we are interested in (e.g., all trees in Central Park)<br>
+<img src="trees_1.png" class="img-fluid" width="569"></p></li>
+<li><p>Sample: Any subset of/collection of items from the population<br>
+<img src="trees_2.webp" class="img-fluid" width="569"></p></li>
+<li><p>By definition, only the population is of interest to us (it is the legal contract at the heart of the whole pursuit of statistics), not a single item/object or a subset of the population<br>
+<img src="trees_3.webp" class="img-fluid" width="569"></p></li>
+<li><p>Here's the deal: by writing down a description of the population, you're agreeing that only the population, the whole population, and nothing but the population is what you are interested in. By reading further, you accept these terms and conditions.</p></li>
+<li><p>It's up to you to pick what you are interested in.</p></li>
+<li><p>The sample is the facts/data/information we have and the population is the facts/data/information we wish we had</p></li>
+<li><p>Observation: A measurement from a single item in a sample</p></li>
 </ul>
 </section>
 <section id="what-is-a-statisticparameter" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-a-statisticparameter">What is a statistic/parameter?</h2>
 <ul>
-<li><p>Statistic: A summary measure computed from a sample, i.e., any way of mushing up data (boring!)</p></li>
-<li><p>Parameter: A summary measure of a population (interesting!)</p></li>
-<li><p>Statistics digests a statistic into a parameter</p></li>
-<li><p>If you have all the data/facts/information re: the population of interest, the sample is the population and the statistic = the parameter, you know the parameter with certainty (analytics)</p></li>
-<li><p>If you don’t have all the data/facts/information re: the population of interest, you can’t know the parameter with certainty (statistics)</p></li>
+<li><p>Statistic: A summary measure computed from a sample, i.e., any way of mushing up the facts/data/information we have (boring!)<br>
+<img src="trees_4.webp" class="img-fluid" width="569"></p></li>
+<li><p>Parameter: A summary measure of a population, i.e., any way of mushing up the facts/data/information we don’t have (interesting!)<br>
+<img src="trees_5.webp" class="img-fluid" width="569"></p></li>
+<li><p>Statistics (the discipline) is the digestion of statistics (summary measures of a sample) into parameters (summary measures of a population)</p></li>
+<li><p>If you have all the facts/data/information about the population of interest you know its parameters with certainty (analytics)</p></li>
+<li><p>If you don’t have all the data/facts/information about the population of interest, you can’t know its parameters with certainty (statistics)</p></li>
+<li><p>What's it going to take to know the parameter? You'll have to measure all the trees with no errors! Once you've done that, do you have any uncertainty? Nope, you have all the information. You can finish up by using analytics — just go ahead calculate the average. Then the statistic <strong><em>is</em></strong> the parameter because your sample <strong><em>is</em></strong> the population.</p></li>
 </ul>
 </section>
-<section id="what-is-an-estimatehypothesis" class="level2">
-<h2 class="anchored" data-anchor-id="what-is-an-estimatehypothesis">What is an estimate/hypothesis?</h2>
+<section id="what-is-a-hypothesis" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-a-hypothesis">What is a hypothesis?</h2>
 <ul>
-<li><p>Parameter: The datum/fact/information/number we wish we had</p></li>
-<li><p>Hypothesis: A description of what this number might be (e.g., the average height of all the trees in Central Park is less than 20m!)</p></li>
-<li><p>Estimate: A best guess about the true value of a parameter</p>
+<li><p>Parameter: The fact we wish we had</p></li>
+<li><p>Hypothesis: A description of what the true value of a parameter might be, but it doesn't have to be true!<br>
+<img src="trees_6.webp" class="img-fluid"><br>
+We'll be figuring out whether our sample makes our hypothesis look ridiculous to determine whether we should change our minds.</p></li>
+</ul>
+</section>
+<section id="what-is-an-estimateestimandestimator" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-an-estimateestimandestimator">What is an estimate/estimand/estimator?</h2>
 <ul>
+<li><p>Estimate: Just a fancy word for best guess (of the true value of a parameter, the <em>estimand</em>)<br>
+<img src="trees_7.webp" class="img-fluid" width="569"></p></li>
+<li><p>It's the value our best guess takes, while an <em>estimator</em> is the formula we use for arriving at that number.</p></li>
 <li><p>The intuitive best guess (that comes from treating the sample as if it was the population) is pretty good (most of the time)</p>
 <ol type="1">
-<li><p>The best guess if we only have the height of one tree is the height of that tree</p></li>
+<li><p>The best guess if we only have the height of one tree is the height of that tree<br>
+Let's suppose that all you know is that one of the trees is 23m tall. Can you please tell me your <em>estimate</em> for the true average height of all the trees?</p>
+<p>23m? Yeah, me too!</p>
+<p>We'd have to guess 23m if this is our <em>only</em> information — if we guess anything else, we're just makin' stuff up. 23m is all we know, so we have to guess 23m. To get something else, we'd have to be incorporating more information (which we don't have in this example) or we'd have to make assumptions… at which point we're again dealing with something other than the facts we have in this example.<br>
+<br>
+In 99%+ of cases you encounter in real life, just treating your sample as if it's your population and going with whatever's in it is how you get the best guess.</p></li>
 <li><p>The best guess if we have the height of a few trees is the average height of that sample/set of trees</p></li>
 <li><p>The best guess if we have the height of many trees is the average height of that sample/set of trees</p></li>
-</ol></li>
 <li><p>Intuitively, estimate 3 is better than estimate 2 and estimate 2 is better than estimate 1. More data makes the estimate better!</p></li>
-<li><p>But how much better than estimate 2 is estimate 3? And is it good enough to change your mind? To answer these questions we need statistics/statistical inference</p></li>
-<li><p>Why do we need statistical inference? Why not just use the intuitive best guess? Because it may be wrong and the only way to know if it is right or wrong is if you had certainty, i.e., you have all the data/facts/information re: the population of interest!</p></li>
-<li><p>But any other guess is worse than the best guess!</p></li>
-</ul></li>
+<li><p>But how much better than estimate 2 is estimate 3? And how good is it? To answer these questions we need statistics/statistical inference</p></li>
+<li><p>Why do we need statistical inference? Why not just use the intuitive best guess? Because it may be wrong and the only way to know if it is right or wrong is if you had certainty, i.e., you have the data/facts/information about all things/items/objects in the population of interest!</p></li>
+<li><p>It may be wrong, but any other guess is worse than the best guess!</p></li>
+<li><p>But is it good enough? Good enough for what? To change your mind!</p></li>
+<li><p>What does it mean to change your mind with data? Is the evidence <em>strong enough</em> to change your mind?</p></li>
+<li><p>In order to change your mind, you need to have your mind set before the data are known to you, i.e., you need to have either a default action (frequentists) or a prior opinion (bayesians)!</p></li>
+<li><p>If you mind cannot be changed then forget about statistics and just go with the best guess (analytics)!</p></li>
+<li><p>When we don't have all the facts, all we can hope for is combining the facts/data/information we have with assumptions to <em>make reasonable decisions</em>.</p></li>
+</ol></li>
+</ul>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li><p>https://towardsdatascience.com/statistician-proves-that-statistics-are-boring-4fc22c95031b</p></li>
+<li></li>
 </ul>
 </section>
 
