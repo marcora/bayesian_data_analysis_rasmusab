@@ -1,0 +1,67 @@
+---
+title: "Statistical thinking"
+author: "Cassie Kozyrkov"
+format: html
+---
+
+## What is statistics?
+
+-   Analytics deals with what we know, the facts (data) we have
+
+-   Statistics (statistical inference) deals with what we don't know, the facts we wish we had
+
+-   Statistics is the science of changing your mind under uncertainty
+
+    -   Bayesians change their mind about *beliefs*
+
+    -   Frequentists change their mind about *actions*
+
+## What is a population/sample?
+
+-   Population: Collection/set of all things/items we are interested in
+
+-   Sample: Any subset of the population of interest
+
+-   By definition, only the population is interesting to us (it is the legal contract of statistics), not a single item (observation) or a sample of the population
+
+## What is a statistic/parameter?
+
+-   Statistic: A summary measure computed from a sample, i.e., any way of mushing up data (boring!)
+
+-   Parameter: A summary measure of a population (interesting!)
+
+-   Statistics digests a statistic into a parameter
+
+-   If you have all the data/facts/information re: the population of interest, the sample is the population and the statistic = the parameter, you know the parameter with certainty (analytics)
+
+-   If you don't have all the data/facts/information re: the population of interest, you can't know the parameter with certainty (statistics)
+
+## What is an estimate/hypothesis?
+
+-   Parameter: The datum/fact/information/number we wish we had
+
+-   Hypothesis: A description of what this number might be (e.g., the average height of all the trees in Central Park is less than 20m!)
+
+-   Estimate: A best guess about the true value of a parameter
+
+    -   The intuitive best guess (that comes from treating the sample as if it was the population) is pretty good (most of the time)
+
+        1.  The best guess if we only have the height of one tree is the height of that tree
+
+        2.  The best guess if we have the height of a few trees is the average height of that sample/set of trees
+
+        3.  The best guess if we have the height of many trees is the average height of that sample/set of trees
+
+    -   Intuitively, estimate 3 is better than estimate 2 and estimate 2 is better than estimate 1. More data makes the estimate better!
+
+    -   But how much better than estimate 2 is estimate 3? And is it good enough? To answer these questions we need statistics/statistical inference
+
+    -   Why do we need statistical inference? Why not just use the intuitive best guess? Because it may be wrong and the only way to know if it is right or wrong is if you had certainty, i.e., you have all the data/facts/information re: the population of interest!
+
+    -   It may be wrong, but any other guess is worse than the best guess!
+
+    -   But is it good enough? Good enough for what? To change your mind!
+
+    -   What does it mean to change your mind with data? Is the evidence strong enough to change your mind?
+
+    -   In order to change your mind, you need to have either a default action (frequentists) or a prior opinion (bayesians) to begin with before the data are known to you!
