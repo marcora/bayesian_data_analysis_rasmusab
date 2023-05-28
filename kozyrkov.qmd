@@ -6,15 +6,21 @@ format: html
 
 ## What is statistics?
 
--   Analytics deals with what we know, the facts/data/information we have
+-   Analytics deals with what we know, the facts/information we have (data)
 
--   Statistics (statistical inference) deals with what we don't know, the facts/data/information we wish we had
+-   Statistics (statistical inference) deals with what we don't know, the facts/information we wish we had (quaesita)
 
 -   Statistics is the science of changing your mind under uncertainty
 
     -   Bayesians change their mind about *beliefs*
 
     -   Frequentists change their mind about *actions*
+
+-   Latin:
+
+    -   Data = "What's given"
+
+    -   Quaesita = "What's sought"
 
 ## What is a population/sample?
 
@@ -31,23 +37,23 @@ format: html
 
 -   It\'s up to you to pick what you are interested in.
 
--   The sample is the facts/data/information we have and the population is the facts/data/information we wish we had
+-   The sample is the facts/information we have (data) and the population is the facts/information we wish we had (quaesita)
 
--   Observation: A measurement from a single item in a sample
+-   Observation: A measurement of a (property of a) single item in a sample
 
 ## What is a statistic/parameter?
 
--   Statistic: A summary measure computed from a sample, i.e., any way of mushing up the facts/data/information we have (boring!)\
+-   Statistic: A summary measure computed from a sample, i.e., any way of mushing up the facts/information we have (data, boring!)\
     ![](trees_4.webp){width="569"}
 
--   Parameter: A summary measure of a population, i.e., any way of mushing up the facts/data/information we don't have (interesting!)\
+-   Parameter: A summary measure of a population, i.e., any way of mushing up the facts/information we don't have (quaesita, interesting!)\
     ![](trees_5.webp){width="569"}
 
 -   Statistics (the discipline) is the digestion of statistics (summary measures of a sample) into parameters (summary measures of a population)
 
--   If you have all the facts/data/information about the population of interest you know its parameters with certainty (analytics)
+-   If you have all the facts/information about the population of interest you know its parameters with certainty (analytics)
 
--   If you don't have all the data/facts/information about the population of interest, you can't know its parameters with certainty (statistics)
+-   If you don't have all the facts/information about the population of interest, you can't know its parameters with certainty (statistics)
 
 -   What\'s it going to take to know the parameter? You\'ll have to measure all the trees with no errors! Once you\'ve done that, do you have any uncertainty? Nope, you have all the information. You can finish up by using analytics --- just go ahead calculate the average. Then the statistic ***is*** the parameter because your sample ***is*** the population.
 
@@ -85,7 +91,7 @@ format: html
 
     5.  But how much better than estimate 2 is estimate 3? And how good is it? To answer these questions we need statistics/statistical inference
 
-    6.  Why do we need statistical inference? Why not just use the intuitive best guess? Because it may be wrong and the only way to know if it is right or wrong is if you had certainty, i.e., you have the data/facts/information about all things/items/objects in the population of interest!
+    6.  Why do we need statistical inference? Why not just use the intuitive best guess? Because it may be wrong and the only way to know if it is right or wrong is if you had certainty, i.e., you have the facts/information about all things/items/objects in the population of interest!
 
     7.  It may be wrong, but any other guess is worse than the best guess!
 
@@ -97,7 +103,7 @@ format: html
 
     11. If you mind cannot be changed then forget about statistics and just go with the best guess (analytics)!
 
-    12. When we don\'t have all the facts, all we can hope for is combining the facts/data/information we have with assumptions to *make reasonable decisions*.
+    12. When we don\'t have all the facts, all we can hope for is combining the facts/information we have with assumptions to *make reasonable decisions*.
 
 ## References
 
