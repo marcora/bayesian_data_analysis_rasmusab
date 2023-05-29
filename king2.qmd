@@ -419,7 +419,7 @@ Computing probabilities from PDFs/PMFs:
 
 <https://youtu.be/eDMGDhyDxuY>
 
-Statisticians use **probability** to describe **uncertainty**
+Statisticians use **probability** to describe/quantify/measure **uncertainty**
 
 Probability is a well-defined mathematical concept, uncertainty is a ill-defined English word!
 

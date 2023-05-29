@@ -33,9 +33,9 @@ format: html
 -   By definition, only the population is of interest to us (it is the legal contract at the heart of the whole pursuit of statistics), not a single item/object or a subset of the population\
     ![](trees_3.webp){width="569"}
 
--   Here\'s the deal: by writing down a description of the population, you\'re agreeing that only the population, the whole population, and nothing but the population is what you are interested in. By reading further, you accept these terms and conditions.
+-   Here's the deal: by writing down a description of the population, you're agreeing that only the population, the whole population, and nothing but the population is what you are interested in. By reading further, you accept these terms and conditions.
 
--   It\'s up to you to pick what you are interested in.
+-   It's up to you to pick what you are interested in.
 
 -   The sample is the facts/information we have (data) and the population is the facts/information we wish we had (quaesita)
 
@@ -55,33 +55,33 @@ format: html
 
 -   If you don't have all the facts/information about the population of interest, you can't know its parameters with certainty (statistics)
 
--   What\'s it going to take to know the parameter? You\'ll have to measure all the trees with no errors! Once you\'ve done that, do you have any uncertainty? Nope, you have all the information. You can finish up by using analytics --- just go ahead calculate the average. Then the statistic ***is*** the parameter because your sample ***is*** the population.
+-   What's it going to take to know the parameter? You'll have to measure all the trees with no errors! Once you've done that, do you have any uncertainty? Nope, you have all the information. You can finish up by using analytics --- just go ahead calculate the average. Then the statistic ***is*** the parameter because your sample ***is*** the population.
 
 ## What is a hypothesis?
 
 -   Parameter: The fact we wish we had
 
--   Hypothesis: A description of what the true value of a parameter might be, but it doesn\'t have to be true!\
+-   Hypothesis: A description of what the true value of a parameter might be, but it doesn't have to be true!\
     ![](trees_6.webp)\
-    We\'ll be figuring out whether our sample makes our hypothesis look ridiculous to determine whether we should change our minds.
+    We'll be figuring out whether our sample makes our hypothesis look ridiculous to determine whether we should change our minds.
 
 ## What is an estimate/estimand/estimator?
 
 -   Estimate: Just a fancy word for best guess (of the true value of a parameter, the *estimand*)\
     ![](trees_7.webp){width="569"}
 
--   It\'s the value our best guess takes, while an *estimator* is the formula we use for arriving at that number.
+-   It's the value our best guess takes, while an *estimator* is the formula we use for arriving at that number.
 
 -   The intuitive best guess (that comes from treating the sample as if it was the population) is pretty good (most of the time)
 
     1.  The best guess if we only have the height of one tree is the height of that tree\
-        Let\'s suppose that all you know is that one of the trees is 23m tall. Can you please tell me your *estimate* for the true average height of all the trees?
+        Let's suppose that all you know is that one of the trees is 23m tall. Can you please tell me your *estimate* for the true average height of all the trees?
 
         23m? Yeah, me too!
 
-        We\'d have to guess 23m if this is our *only* information --- if we guess anything else, we\'re just makin\' stuff up. 23m is all we know, so we have to guess 23m. To get something else, we\'d have to be incorporating more information (which we don\'t have in this example) or we\'d have to make assumptions... at which point we\'re again dealing with something other than the facts we have in this example.\
+        We'd have to guess 23m if this is our *only* information --- if we guess anything else, we're just makin' stuff up. 23m is all we know, so we have to guess 23m. To get something else, we'd have to be incorporating more information (which we don't have in this example) or we'd have to make assumptions... at which point we're again dealing with something other than the facts we have in this example.\
         \
-        In 99%+ of cases you encounter in real life, just treating your sample as if it\'s your population and going with whatever\'s in it is how you get the best guess.
+        In 99%+ of cases you encounter in real life, just treating your sample as if it's your population and going with whatever's in it is how you get the best guess.
 
     2.  The best guess if we have the height of a few trees is the average height of that sample/set of trees
 
@@ -103,7 +103,7 @@ format: html
 
     11. If you mind cannot be changed then forget about statistics and just go with the best guess (analytics)!
 
-    12. When we don\'t have all the facts, all we can hope for is combining the facts/information we have with assumptions to *make reasonable decisions*.
+    12. When we don't have all the facts, all we can hope for is combining the facts/information we have with assumptions to *make reasonable decisions*.
 
 ## References
 
