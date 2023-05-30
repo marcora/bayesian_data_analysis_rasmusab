@@ -22,21 +22,21 @@ $$
 Model (joint probability distribution):
 
 $$
-\pi(y,x \mid \theta)
+p(y,x \mid \theta)
 $$
 
 Given the multiplication rule of probability:
 
 $$
-\pi(y,x \mid \theta) = \pi(y \mid x,\theta)\pi(x \mid \theta)
+p(y,x \mid \theta) = p(y \mid x,\theta)p(x \mid \theta)
 $$
 
-The $\pi(y \mid x,\theta)$ probability distribution is the regression component of this model.
+The $p(y \mid x,\theta)$ probability distribution is the regression component of this model.
 
 We typically assume that the covariates are independent of the model parameters ($\theta$), i.e., the process that generates the covariates is independent of the process that relates the variates with the covariates, therefore:
 
 $$
-\pi(x \mid \theta) = \pi(x)
+p(x \mid \theta) = p(x)
 $$
 
 This assumption does not always hold, e.g., in the presence of selection bias.
@@ -44,15 +44,15 @@ This assumption does not always hold, e.g., in the presence of selection bias.
 Therefore, under this assumption, we can rewrite the model as:
 
 $$
-\pi(y,x \mid \theta) = \pi(y \mid x,\theta)\pi(x)
+p(y,x \mid \theta) = p(y \mid x,\theta)p(x)
 $$
 
-Since $\pi(x)$ does not depend on the model parameters, it becomes a normalizing constant.
+Since $p(x)$ does not depend on the model parameters, it becomes a normalizing constant.
 
 Therefore, we can rewrite the model as:
 
 $$
-\pi(y,x \mid \theta) \propto \pi(y \mid x,\theta)
+p(y,x \mid \theta) \propto p(y \mid x,\theta)
 $$
 
 In other words, the joint probability distribution (i.e., the model) reduces to the regression likelihood!
@@ -62,7 +62,7 @@ The regression likelihood can take an infinite number of forms to model the prob
 Covariates are often linked to a single effective parameter through a deterministic mapping (but it easily generalizes to multiple effective parameters):
 
 $$
-\pi(y \mid x, \theta) = \pi(y \mid \theta_1 = f(x,\beta),\theta_2)
+p(y \mid x, \theta) = p(y \mid \theta_1 = f(x,\beta),\theta_2)
 $$
 
 In other words, the covariates affect only one of the model parameters through a deterministic function $f(x,\beta)$.
@@ -82,13 +82,13 @@ $$
 For example, in the case of a continuous and unbounded outcome variable, the linear predictor can be linked to the mean $\mu$ of a normal/gaussian distribution with standard deviation $\sigma$:
 
 $$
-\pi(y \mid x, \theta) = \text{Normal}(\theta_1 = \mu = f(x, \beta), \theta_2 = \sigma)
+p(y \mid x, \theta) = \text{Normal}(\theta_1 = \mu = f(x, \beta), \theta_2 = \sigma)
 $$
 
 For example:
 
 $$
-\pi(y \mid x, \beta_0, \beta_1, \sigma) = \text{Normal}(\beta_0 + \beta_1 x, \sigma)
+p(y \mid x, \beta_0, \beta_1, \sigma) = \text{Normal}(\mu = \beta_0 + \beta_1 x, \sigma)
 $$
 
 $$
@@ -96,7 +96,7 @@ E[y \mid x, \beta_0, \beta_1, \sigma] = \mu = \beta_0 + \beta_1 x
 $$
 
 $$
-y \sim \text{Normal}(\beta_0 + \beta_1 x, \sigma)
+y \sim \text{Normal}(\mu = \beta_0 + \beta_1 x, \sigma)
 $$
 
 which can also be formulated as:
@@ -125,7 +125,7 @@ model = lm(formula = y ~ 1 + x, data = d)
 In generalized linear regression models, the linear predictor $f(x, \beta)$ is linked to a single effective parameter of the regression likelihood by the link function $g$:
 
 $$
-\pi(y \mid x, \theta) = \pi(y \mid \theta_1 = g[f(x,\beta)],\theta_2)
+p(y \mid x, \theta) = p(y \mid \theta_1 = g[f(x,\beta)],\theta_2)
 $$
 
 In this context, normal linear regression models are generalized linear regression models in which the link function $g$ is the identity function, i.e., $g[f(x,\beta)] = f(x, \beta)$.
@@ -150,13 +150,13 @@ k = e^{f(x,\beta)}
 $$
 
 $$
-\pi(y \mid x, \theta) = \text{Poisson}(\theta = k = e^{f(x, \beta)})
+p(y \mid x, \theta) = \text{Poisson}(\theta = k = e^{f(x, \beta)})
 $$
 
 For example:
 
 $$
-\pi(y \mid x, \beta_0, \beta_1) = \text{Poisson}(e^{\beta_0 + \beta_1 x})
+p(y \mid x, \beta_0, \beta_1) = \text{Poisson}(k = e^{\beta_0 + \beta_1 x})
 $$
 
 $$
@@ -164,7 +164,7 @@ E[y \mid x, \beta_0, \beta_1] = k = e^{\beta_0 + \beta_1 x}
 $$
 
 $$
-y \sim \text{Poisson}(e^{\beta_0 + \beta_1 x})
+y \sim \text{Poisson}(k = e^{\beta_0 + \beta_1 x})
 $$
 
 ```{r}
@@ -174,36 +174,36 @@ model = glm(formula = y ~ 1 + x, family = poisson(link = "log"), data = d)
 
 ### Logistic regression
 
-For example, in the case of a binary outcome variable, the linear predictor $f(x, \beta)$ can be linked to the probability of success $p$ of a Bernoulli distribution by the (inverse of the) logit/log-odds function:
+For example, in the case of a binary outcome variable, the linear predictor $f(x, \beta)$ can be linked to the probability of success $\pi$ of a Bernoulli distribution by the (inverse of the) logit/log-odds function:
 
 $$
-\text{ln}(\frac{p}{1-p}) = f(x,\beta)
-$$
-
-$$
-\frac{p}{1-p} = e^{f(x,\beta)}
+\text{ln}(\frac{\pi}{1-\pi}) = f(x,\beta)
 $$
 
 $$
-p = \frac{e^{f(x,\beta)}}{1 + e^{f(x,\beta)}} = \frac{1}{1+e^{-f(x,\beta)}}
+\frac{\pi}{1-\pi} = e^{f(x,\beta)}
 $$
 
 $$
-\pi(y \mid x, \theta) = \text{Bernoulli}(\theta = p = \frac{1}{1+e^{-f(x,\beta)}})
+\pi = \frac{e^{f(x,\beta)}}{1 + e^{f(x,\beta)}} = \frac{1}{1+e^{-f(x,\beta)}}
+$$
+
+$$
+p(y \mid x, \theta) = \text{Bernoulli}(\theta = \pi = \frac{1}{1+e^{-f(x,\beta)}})
 $$
 
 For example:
 
 $$
-\pi(y \mid x, \beta_0, \beta_1) = \text{Bernoulli}(\frac{1}{1+e^{-(\beta_0 + \beta_1 x)}})
+p(y \mid x, \beta_0, \beta_1) = \text{Bernoulli}(\pi = \frac{1}{1+e^{-(\beta_0 + \beta_1 x)}})
 $$
 
 $$
-E[y \mid x, \beta_0, \beta_1] = p = \frac{1}{1+e^{-(\beta_0 + \beta_1 x)}}
+E[y \mid x, \beta_0, \beta_1] = \pi = \frac{1}{1+e^{-(\beta_0 + \beta_1 x)}}
 $$
 
 $$
-y \sim \text{Bernoulli}(\frac{1}{1+e^{-(\beta_0 + \beta_1 x)}})
+y \sim \text{Bernoulli}(\pi = \frac{1}{1+e^{-(\beta_0 + \beta_1 x)}})
 $$
 
 \[when $f(x,\beta) = -\infty$ the term $e^{-(-\infty)} = \infty$ and therefore $p = \frac{1}{1 + \infty} = 0$. On the other hand, when $f(x,\beta) = \infty$ the term $e^{(-\infty)} = 0$ and therefore $p = \frac{1}{1 + 0} = 1$\]

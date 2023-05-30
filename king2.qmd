@@ -80,6 +80,8 @@ $$
 P(A \mid B) = \frac{P(A \cap B)}{P(B)} = \frac{P(B \mid A)P(A)}{P(B)}
 $$
 
+### Frequentist vs Bayesian uncertainty
+
 ### Frequentist vs Bayesian inference
 
 <https://www.health.ny.gov/diseases/chronic/discreen.htm>
@@ -122,7 +124,7 @@ PPV = (sensitivity x prevalence) / \[ (sensitivity x prevalence) + ((1 -- specif
 
     -   $P(S^- \mid H_A) = 0.7$ (false negative a.k.a. type II error rate)
 
-    -   $P(H_A) = 0.1$ (prevalence)
+    -   $P(H_A) = 0.1$ (prior)
 
     -   $P(H_0) = 0.9$
 
@@ -207,7 +209,7 @@ Statistical inference workflow:
     -   QOI point and interval estimates
     -   Weaknesses and limitations
 
-## Statistical models
+## Statistical models (King's)
 
 A model is an abstraction/approximation (e.g., sketch of a person).
 
@@ -221,27 +223,23 @@ Statistical models are very useful for inference.
 
     -   $Y$ is a $n \times 1$ vector (column)
 
-        -   $y_i$ is a number (after we know it)
+        -   $y_i$ is a number (after we know it; within a dataset; fixed because observed)
 
-        -   $Y_i$ is a random variable (before we know it)
-
-    -   A dependent variable $Y$ is therefore either fixed or random:
-
-        -   A column of numbers within a dataset
-
-        -   A column of random variables across datasets
+        -   $Y_i$ is a random variable (before we know it; across datasets; random because unobserved)
 
 -   Explanatory (or "independent" or "exogeneous") variables (aka "covariates", "predictors")
 
-    -   $X = \{x_{ij}\}$ is a $n \times k$ matrix ($n \times k$ numbers organized in a table with $n$ rows and $k$ columns).
+    -   $X = \{x_{ij}\}$ $X$ is a $n \times k$ matrix ($n \times k$ cells/numbers organized in a table with $n$ rows and $k$ columns)
 
-    -   Every column is a variable.
+    -   $\{x_{ij}\}$ represents the number within a specific cell
 
-    -   Every row is an observation: $x_i = \{ x_{i1}, \ldots, x_{ik} \}$
+    -   Each column is a variable.
 
     -   $X$ as a set of columns (variables): $X = \{ x_1, \ldots, x_k \}$
 
-    -   $X$ is fixed, not random!
+    -   Each row is an observation: $\{ x_{i1}, \ldots, x_{ik} \}$
+
+    -   $X$ is (usually but not always) fixed (i.e., not random!)
 
 ### Equivalent linear regression notation
 
@@ -255,7 +253,7 @@ Statistical models are very useful for inference.
 
 -   Alternative notation:
 
-    -   [Stochastic]{.underline}: $Y_i = \text{Normal}(\mu_i, \sigma)$
+    -   [Stochastic]{.underline}: $Y_i \sim \text{Normal}(\mu_i, \sigma)$
 
     -   [Systematic]{.underline}: $\mu_i = x_i \beta$
 
