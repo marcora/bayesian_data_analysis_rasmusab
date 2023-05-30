@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.475">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Cassie Kozyrkov">
+
+<title>Statistical thinking</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="kozyrkov_files/libs/clipboard/clipboard.min.js"></script>
+<script src="kozyrkov_files/libs/quarto-html/quarto.js"></script>
+<script src="kozyrkov_files/libs/quarto-html/popper.min.js"></script>
+<script src="kozyrkov_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="kozyrkov_files/libs/quarto-html/anchor.min.js"></script>
+<link href="kozyrkov_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="kozyrkov_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="kozyrkov_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="kozyrkov_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="kozyrkov_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Statistical thinking</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Cassie Kozyrkov </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="what-is-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-statistics">What is statistics?</h2>
+<ul>
+<li><p>Analytics deals with what we know, the facts/information we have (data)</p></li>
+<li><p>Statistics (statistical inference) deals with what we don’t know, the facts/information we wish we had (quaesita)</p></li>
+<li><p>Statistics is the science of changing your mind under uncertainty</p>
+<ul>
+<li><p>Bayesians change their mind about <em>beliefs</em></p></li>
+<li><p>Frequentists change their mind about <em>actions</em></p></li>
+</ul></li>
+<li><p>Latin:</p>
+<ul>
+<li><p>Data = “What’s given”</p></li>
+<li><p>Quaesita = “What’s sought”</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="what-is-a-populationsample" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-a-populationsample">What is a population/sample?</h2>
+<ul>
+<li><p>Population: A collection/set of all things/items/objects we are interested in (e.g., all trees in Central Park)<br>
+<img src="trees_1.png" class="img-fluid" width="569"></p></li>
+<li><p>Sample: Any subset of/collection of items from the population<br>
+<img src="trees_2.webp" class="img-fluid" width="569"></p></li>
+<li><p>By definition, only the population is of interest to us (it is the legal contract at the heart of the whole pursuit of statistics), not a single item/object or a subset of the population<br>
+<img src="trees_3.webp" class="img-fluid" width="569"></p></li>
+<li><p>Here’s the deal: by writing down a description of the population, you’re agreeing that only the population, the whole population, and nothing but the population is what you are interested in. By reading further, you accept these terms and conditions.</p></li>
+<li><p>It’s up to you to pick what you are interested in.</p></li>
+<li><p>The sample is the facts/information we have (data) and the population is the facts/information we wish we had (quaesita)</p></li>
+<li><p>Observation: A measurement of a (property of a) single item in a sample</p></li>
+</ul>
+</section>
+<section id="what-is-a-statisticparameter" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-a-statisticparameter">What is a statistic/parameter?</h2>
+<ul>
+<li><p>Statistic: A summary measure computed from a sample, i.e., any way of mushing up the facts/information we have (data, boring!)<br>
+<img src="trees_4.webp" class="img-fluid" width="569"></p></li>
+<li><p>Parameter: A summary measure of a population, i.e., any way of mushing up the facts/information we don’t have (quaesita, interesting!)<br>
+<img src="trees_5.webp" class="img-fluid" width="569"></p></li>
+<li><p>Statistics (the discipline) is the digestion of statistics (summary measures of a sample) into parameters (summary measures of a population)</p></li>
+<li><p>If you have all the facts/information about the population of interest you know its parameters with certainty (analytics)</p></li>
+<li><p>If you don’t have all the facts/information about the population of interest, you can’t know its parameters with certainty (statistics)</p></li>
+<li><p>What’s it going to take to know the parameter? You’ll have to measure all the trees with no errors! Once you’ve done that, do you have any uncertainty? Nope, you have all the information. You can finish up by using analytics — just go ahead calculate the average. Then the statistic <strong><em>is</em></strong> the parameter because your sample <strong><em>is</em></strong> the population.</p></li>
+</ul>
+</section>
+<section id="what-is-a-hypothesis" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-a-hypothesis">What is a hypothesis?</h2>
+<ul>
+<li><p>Parameter: The fact we wish we had</p></li>
+<li><p>Hypothesis: A description of what the true value of a parameter might be, but it doesn’t have to be true!<br>
+<img src="trees_6.webp" class="img-fluid"><br>
+We’ll be figuring out whether our sample makes our hypothesis look ridiculous to determine whether we should change our minds.</p></li>
+</ul>
+</section>
+<section id="what-is-an-estimateestimandestimator" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-an-estimateestimandestimator">What is an estimate/estimand/estimator?</h2>
+<ul>
+<li><p>Estimate: Just a fancy word for best guess (of the true value of a parameter, the <em>estimand</em>)<br>
+<img src="trees_7.webp" class="img-fluid" width="569"></p></li>
+<li><p>It’s the value our best guess takes, while an <em>estimator</em> is the formula we use for arriving at that number.</p></li>
+<li><p>The intuitive best guess (that comes from treating the sample as if it was the population) is pretty good (most of the time)</p>
+<ol type="1">
+<li><p>The best guess if we only have the height of one tree is the height of that tree<br>
+Let’s suppose that all you know is that one of the trees is 23m tall. Can you please tell me your <em>estimate</em> for the true average height of all the trees?</p>
+<p>23m? Yeah, me too!</p>
+<p>We’d have to guess 23m if this is our <em>only</em> information — if we guess anything else, we’re just makin’ stuff up. 23m is all we know, so we have to guess 23m. To get something else, we’d have to be incorporating more information (which we don’t have in this example) or we’d have to make assumptions… at which point we’re again dealing with something other than the facts we have in this example.<br>
+<br>
+In 99%+ of cases you encounter in real life, just treating your sample as if it’s your population and going with whatever’s in it is how you get the best guess.</p></li>
+<li><p>The best guess if we have the height of a few trees is the average height of that sample/set of trees</p></li>
+<li><p>The best guess if we have the height of many trees is the average height of that sample/set of trees</p></li>
+<li><p>Intuitively, estimate 3 is better than estimate 2 and estimate 2 is better than estimate 1. More data makes the estimate better!</p></li>
+<li><p>But how much better than estimate 2 is estimate 3? And how good is it? To answer these questions we need statistics/statistical inference</p></li>
+<li><p>Why do we need statistical inference? Why not just use the intuitive best guess? Because it may be wrong and the only way to know if it is right or wrong is if you had certainty, i.e., you have the facts/information about all things/items/objects in the population of interest!</p></li>
+<li><p>It may be wrong, but any other guess is worse than the best guess!</p></li>
+<li><p>But is it good enough? Good enough for what? To change your mind!</p></li>
+<li><p>What does it mean to change your mind with data? Is the evidence <em>strong enough</em> to change your mind?</p></li>
+<li><p>In order to change your mind, you need to have your mind set before the data are known to you, i.e., you need to have either a default action (frequentists) or a prior opinion (bayesians)!</p></li>
+<li><p>If you mind cannot be changed then forget about statistics and just go with the best guess (analytics)!</p></li>
+<li><p>When we don’t have all the facts, all we can hope for is combining the facts/information we have with assumptions to <em>make reasonable decisions</em>.</p></li>
+</ol></li>
+</ul>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li><p>https://towardsdatascience.com/statistician-proves-that-statistics-are-boring-4fc22c95031b</p></li>
+<li></li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

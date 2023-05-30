@@ -54,6 +54,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#theorems-a.k.a.-rules-of-probability-theory" id="toc-theorems-a.k.a.-rules-of-probability-theory" class="nav-link" data-scroll-target="#theorems-a.k.a.-rules-of-probability-theory">Theorems (a.k.a. rules) of probability theory</a></li>
   <li><a href="#definitions-of-probability-theory" id="toc-definitions-of-probability-theory" class="nav-link" data-scroll-target="#definitions-of-probability-theory">Definitions of probability theory</a></li>
   <li><a href="#bayes-theoremrule" id="toc-bayes-theoremrule" class="nav-link" data-scroll-target="#bayes-theoremrule">Bayes’ theorem/rule</a></li>
+  <li><a href="#frequentist-vs-bayesian-uncertainty" id="toc-frequentist-vs-bayesian-uncertainty" class="nav-link" data-scroll-target="#frequentist-vs-bayesian-uncertainty">Frequentist vs Bayesian uncertainty</a></li>
   <li><a href="#frequentist-vs-bayesian-inference" id="toc-frequentist-vs-bayesian-inference" class="nav-link" data-scroll-target="#frequentist-vs-bayesian-inference">Frequentist vs Bayesian inference</a></li>
   </ul></li>
   <li><a href="#quantities-of-interest-in-empirical-quantitative-research" id="toc-quantities-of-interest-in-empirical-quantitative-research" class="nav-link" data-scroll-target="#quantities-of-interest-in-empirical-quantitative-research">Quantities of interest in empirical quantitative research</a></li>
@@ -73,6 +74,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#probability-is-a-function" id="toc-probability-is-a-function" class="nav-link" data-scroll-target="#probability-is-a-function">Probability is a function</a></li>
   <li><a href="#probability-distributions-are-also-functions" id="toc-probability-distributions-are-also-functions" class="nav-link" data-scroll-target="#probability-distributions-are-also-functions">Probability distributions are also functions</a></li>
   </ul></li>
+  <li><a href="#probability-vs-likelihood" id="toc-probability-vs-likelihood" class="nav-link" data-scroll-target="#probability-vs-likelihood">Probability vs likelihood</a></li>
+  <li><a href="#statistical-thinking" id="toc-statistical-thinking" class="nav-link" data-scroll-target="#statistical-thinking">Statistical thinking</a></li>
   </ul>
 </nav>
 </div>
@@ -163,8 +166,11 @@ A subjective degree of belief in a proposition or the occurrence of an event. E.
 <section id="bayes-theoremrule" class="level3">
 <h3 class="anchored" data-anchor-id="bayes-theoremrule">Bayes’ theorem/rule</h3>
 <p><span class="math display">\[
-P(A \mid B) = \frac{P(A \cap B)}{P(B)} = \frac{P(B \mid A)P(A)}{P(B)}
+P(A \mid B) = \frac{P(B \mid A) P(A)}{P(B)}
 \]</span></p>
+</section>
+<section id="frequentist-vs-bayesian-uncertainty" class="level3">
+<h3 class="anchored" data-anchor-id="frequentist-vs-bayesian-uncertainty">Frequentist vs Bayesian uncertainty</h3>
 </section>
 <section id="frequentist-vs-bayesian-inference" class="level3">
 <h3 class="anchored" data-anchor-id="frequentist-vs-bayesian-inference">Frequentist vs Bayesian inference</h3>
@@ -434,6 +440,59 @@ Knowing a cause means being able to impute unobserved counterfactual outcomes<br
 </ul></li>
 </ul>
 </section>
+</section>
+<section id="probability-vs-likelihood" class="level2">
+<h2 class="anchored" data-anchor-id="probability-vs-likelihood">Probability vs likelihood</h2>
+<p><a href="https://youtu.be/eDMGDhyDxuY" class="uri">https://youtu.be/eDMGDhyDxuY</a></p>
+<p>Statisticians use <strong>probability</strong> to describe/quantify/measure <strong>uncertainty</strong></p>
+<p>Probability is a well-defined mathematical concept, uncertainty is a ill-defined English word!</p>
+<p>Frequentists and Bayesians disagree on what kind of uncertainty [aleatoric vs epistemic] can be described/measured using probability!</p>
+<p>What is probability? What is uncertainty?</p>
+<p>Probability is a measure [of the uncertainty] [of occurrence of an event]</p>
+<p>Probability distributions allocate parcels of probability to each possible outcome [in the sample space, such that they sum to one]</p>
+<p>Probability distributions are often described by mathematical equations that are defined by one or more parameters</p>
+<p>Probability fixes parameters and varies data</p>
+<p><span class="math inline">\(f(x) = p(x) = p(x \mid \Theta = \theta) = P(X = x \mid \Theta = \theta)\)</span> probability distribution (sums to 1)</p>
+<p>Likelihood fixes data and varies parameters</p>
+<p><span class="math inline">\(f(\theta) = l(\theta) = l(\theta \mid X = x) = P(X = x \mid \Theta = \theta)\)</span> not a probability distribution (does not sum to 1)</p>
+<p>[what about a joint distribution of data and parameters? <a href="https://youtu.be/yakg94HyWdE" class="uri">https://youtu.be/yakg94HyWdE</a>]</p>
+<p>Bayes’ theorem:</p>
+<p><span class="math display">\[
+P(\Theta = \theta \mid X = x) = \frac{P(\Theta = \theta)P(X = x \mid \Theta = \theta)}{P(X = x)}
+\]</span></p>
+<p><span class="math display">\[
+p(\theta \mid X = x) \sim p(\theta) l(\theta \mid X = x)
+\]</span></p>
+<hr>
+<p>Aleatoric and epistemic uncertainties are two types of uncertainties commonly encountered in probabilistic modeling and decision-making under uncertainty. They represent different sources and interpretations of uncertainty.</p>
+<p><u>Aleatoric uncertainty</u>:</p>
+<p>Aleatoric uncertainty, also known as statistical uncertainty or inherent uncertainty, arises from the inherent randomness or variability in the observed data. It is irreducible even with infinite amounts of data and reflects the inherent unpredictability of the system being modeled. Aleatoric uncertainty is often associated with noise or variability within the data itself. It can be thought of as the uncertainty that remains even when we have observed all there is to know about a particular phenomenon.</p>
+<p><u>Epistemic uncertainty</u>:</p>
+<p>Epistemic uncertainty, also known as model uncertainty or knowledge uncertainty, arises from the lack of knowledge or incomplete understanding about the underlying system being modeled. It is a result of limitations in the available data or the model’s inability to fully capture the true complexity of the system. Unlike aleatoric uncertainty, epistemic uncertainty can, in principle, be reduced with additional information or improved modeling techniques. It represents uncertainty that could be resolved with more data or a better model.</p>
+<p>To summarize, aleatoric uncertainty represents the irreducible randomness or inherent variability in the data, while epistemic uncertainty arises from the lack of knowledge or incomplete understanding about the system being modeled. Aleatoric uncertainty cannot be reduced even with more data, while epistemic uncertainty can be reduced through further investigation, better data collection, or improved modeling techniques.</p>
+</section>
+<section id="statistical-thinking" class="level2">
+<h2 class="anchored" data-anchor-id="statistical-thinking">Statistical thinking</h2>
+<p><a href="https://youtu.be/be2wuOaglFY" class="uri">https://youtu.be/be2wuOaglFY</a></p>
+<p>Statistics is mathematical modeling under uncertainty = statistical thinking!</p>
+<p>Statistical thinking (the golden rules of statistics):</p>
+<ol type="1">
+<li><p>Know thy problem</p></li>
+<li><p>Know thy tools (based on the problem)</p></li>
+<li><p>Know thy data (based on the problem)</p></li>
+</ol>
+<p>opposite flow compared to STAT 101 (data myopia):</p>
+<ol type="1">
+<li><p>Look at the data</p></li>
+<li><p>Pick a test (based on the data)</p></li>
+<li><p>Calculate p-value</p></li>
+</ol>
+<p>tools/statistical methods are based on probabilistic models, e.g.:</p>
+<p><span class="math inline">\(y_i = \beta_0 + \beta_1 x_i + \epsilon_i\)</span></p>
+<p><span class="math inline">\(\epsilon \sim \text{Normal}(\mu = 0, \sigma)\)</span></p>
+<p><span class="math inline">\(Y \sim \text{Normal}(\mu = \beta_0 + \beta_1 x, \sigma)\)</span></p>
+<p><span class="math inline">\(\hat{y} = E[Y] = \mu = \beta_0 + \beta_1 x\)</span></p>
+<p>All models are wrong, some are useful!</p>
 </section>
 
 </main>
