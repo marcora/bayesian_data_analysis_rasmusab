@@ -77,7 +77,7 @@ Reasoning = the process of thinking about something in a logical way in order to
 ### Bayes' theorem/rule
 
 $$
-P(A \mid B) = \frac{P(A \cap B)}{P(B)} = \frac{P(B \mid A)P(A)}{P(B)}
+P(A \mid B) = \frac{P(B \mid A) P(A)}{P(B)}
 $$
 
 ### Frequentist vs Bayesian uncertainty
@@ -412,3 +412,89 @@ Computing probabilities from PDFs/PMFs:
     -   $P(a \le Y \le b) = \int_a^b p(y)dy$
 
     -   $P(Y = y) = 0$
+
+## Probability vs likelihood
+
+<https://youtu.be/eDMGDhyDxuY>
+
+Statisticians use **probability** to describe/quantify/measure **uncertainty**
+
+Probability is a well-defined mathematical concept, uncertainty is a ill-defined English word!
+
+Frequentists and Bayesians disagree on what kind of uncertainty \[aleatoric vs epistemic\] can be described/measured using probability!
+
+What is probability? What is uncertainty?
+
+Probability is a measure \[of the uncertainty\] \[of occurrence of an event\]
+
+Probability distributions allocate parcels of probability to each possible outcome \[in the sample space, such that they sum to one\]
+
+Probability distributions are often described by mathematical equations that are defined by one or more parameters
+
+Probability fixes parameters and varies data
+
+$f(x) = p(x) = p(x \mid \Theta = \theta) = P(X = x \mid \Theta = \theta)$ probability distribution (sums to 1)
+
+Likelihood fixes data and varies parameters
+
+$f(\theta) = l(\theta) = l(\theta \mid X = x) = P(X = x \mid \Theta = \theta)$ not a probability distribution (does not sum to 1)
+
+\[what about a joint distribution of data and parameters? <https://youtu.be/yakg94HyWdE>\]
+
+Bayes' theorem:
+
+$$
+P(\Theta = \theta \mid X = x) = \frac{P(\Theta = \theta)P(X = x \mid \Theta = \theta)}{P(X = x)} 
+$$
+
+$$
+p(\theta \mid X = x) \sim p(\theta) l(\theta \mid X = x)
+$$
+
+------------------------------------------------------------------------
+
+Aleatoric and epistemic uncertainties are two types of uncertainties commonly encountered in probabilistic modeling and decision-making under uncertainty. They represent different sources and interpretations of uncertainty.
+
+[Aleatoric uncertainty]{.underline}:
+
+Aleatoric uncertainty, also known as statistical uncertainty or inherent uncertainty, arises from the inherent randomness or variability in the observed data. It is irreducible even with infinite amounts of data and reflects the inherent unpredictability of the system being modeled. Aleatoric uncertainty is often associated with noise or variability within the data itself. It can be thought of as the uncertainty that remains even when we have observed all there is to know about a particular phenomenon.
+
+[Epistemic uncertainty]{.underline}:
+
+Epistemic uncertainty, also known as model uncertainty or knowledge uncertainty, arises from the lack of knowledge or incomplete understanding about the underlying system being modeled. It is a result of limitations in the available data or the model's inability to fully capture the true complexity of the system. Unlike aleatoric uncertainty, epistemic uncertainty can, in principle, be reduced with additional information or improved modeling techniques. It represents uncertainty that could be resolved with more data or a better model.
+
+To summarize, aleatoric uncertainty represents the irreducible randomness or inherent variability in the data, while epistemic uncertainty arises from the lack of knowledge or incomplete understanding about the system being modeled. Aleatoric uncertainty cannot be reduced even with more data, while epistemic uncertainty can be reduced through further investigation, better data collection, or improved modeling techniques.
+
+## Statistical thinking
+
+<https://youtu.be/be2wuOaglFY>
+
+Statistics is mathematical modeling under uncertainty = statistical thinking!
+
+Statistical thinking (the golden rules of statistics):
+
+1.  Know thy problem
+
+2.  Know thy tools (based on the problem)
+
+3.  Know thy data (based on the problem)
+
+opposite flow compared to STAT 101 (data myopia):
+
+1.  Look at the data
+
+2.  Pick a test (based on the data)
+
+3.  Calculate p-value
+
+tools/statistical methods are based on probabilistic models, e.g.:
+
+$y_i = \beta_0 + \beta_1 x_i + \epsilon_i$
+
+$\epsilon \sim \text{Normal}(\mu = 0, \sigma)$
+
+$Y \sim \text{Normal}(\mu = \beta_0 + \beta_1 x, \sigma)$
+
+$\hat{y} = E[Y] = \mu = \beta_0 + \beta_1 x$
+
+All models are wrong, some are useful!
