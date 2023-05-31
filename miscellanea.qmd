@@ -191,3 +191,9 @@ probability.distribution
 
 probability.distribution %>% ggplot(aes(x=rv, xend=rv, y=p, yend=0)) + geom_point() + geom_segment() + scale_x_continuous(breaks=0:n_tosses)
 ```
+
+## Exploratory vs confirmatory research
+
+![](exploratory_vs_confirmatory_research.jpg)
+
+Source: <https://doi.org/10.1177/1745691612463078>
