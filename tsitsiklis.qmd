@@ -17,7 +17,7 @@ $$
 X(\omega_1) = 5
 $$
 
--   A random variable often describes a measurable quantity associated with the outcome of random experiment or it indicates whether a specific event has occurred (e.g., $x = 1$ if $s_1 \in A$ or $x = 0$ if $s_1 \notin A$).
+-   A random variable often describes a measurable quantity associated with the outcome of random experiment or it indicates whether an event ($A$) has occurred (e.g., $x = 1$ if $\omega_1 \in A$ or $x = 0$ if $\omega_1 \notin A$).
 
 -   One or more random variables can be defined on the same sample space.
 
