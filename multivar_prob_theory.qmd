@@ -1,0 +1,16 @@
+---
+title: "Multivariate probability theory"
+format: html
+---
+
+Sources:
+
+-   <https://towardsdatascience.com/practical-probability-theory-all-about-a-single-random-variable-8935cfa21a96>
+
+-   <https://towardsdatascience.com/multivariate-probability-theory-all-about-those-random-variables-ef921e099a6f>
+
+![](singlevar_prob_theory.webp)
+
+![](multivar_prob_theory.webp)
+
+A random vector is a list of random variables. For example, given two random variables $X_1$ and $X_2$ then $X = [X_1, X_2]$ constitutes a random vector.

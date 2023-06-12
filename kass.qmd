@@ -1,0 +1,12 @@
+---
+title: "Kass"
+format:
+  html:
+    df-print: paged
+---
+
+Source: [Analysis of Neural Data](https://link.springer.com/book/10.1007/978-1-4614-9602-1)
+
+## ![](workflow.kass.1.png){width="100%"}
+
+![](workflow.kass.2.png){width="100%"}
