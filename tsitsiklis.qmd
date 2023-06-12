@@ -34,3 +34,5 @@ $$
 $$
 
 -   $p_X(x) = P(X = x) = P(\{ \omega \in \Omega : X(\omega) = x \})$
+-   $p_X(x) \ge 0$
+-   $\sum_x p_X(x) = 1$
