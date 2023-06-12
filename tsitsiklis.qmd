@@ -30,5 +30,7 @@ $$
 -   If $x$ is fixed (e.g., $x = 5$) then $X = x$ (i.e., $X = 5$) is an event (a subset of the sample space $\Omega = \{ \omega_1, \omega_2, \ldots, \omega_n \}$):
 
 $$
-\{\omega : X(\omega) = 5 \}
+\{\omega \in \Omega: X(\omega) = 5 \}
 $$
+
+-   $p_X(x) = P(X = x) = P(\{ \omega \in \Omega : X(\omega) = x \})$
