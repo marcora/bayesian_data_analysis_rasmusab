@@ -3,9 +3,50 @@ title: "Introduction to probability theory"
 format: html
 ---
 
-## Random variables
+## LECTURE 1: XXX
 
--   A random variable is defined as a variable whose numeric value depends on the outcome of a random experiment.
+## LECTURE 2: XXX
+
+## LECTURE 3: XXX
+
+## LECTURE 4: XXX
+
+## LECTURE 5: Discrete random variables
+
+### Functions
+
+A function is a rule that maps each element of set $A$ to at least one element of set $B$.
+
+$$
+f : A \rightarrow B
+$$
+
+More precisely, a function is a set of pairs $(x, y)$ such that $x \in A$, $y \in B$ and each $x$ appears in exactly one pair.
+
+For example, for the "square" function $f(x) = x^2$:
+
+$A = \{ -1, 0, 1, 2 \}$
+
+$B = \mathbb{R}$
+
+$f = \{ (-1, 1), (0,0), (1,1), (2, 4) \}$
+
+A function can also be described by a table:
+
+|     |     |
+|-----|-----|
+| -1  | 1   |
+| 0   | 0   |
+| 1   | 1   |
+| 2   | 4   |
+
+A function can also be described by a set of points in a plot.
+
+For example, the "square" function $f : \mathbb{R} \rightarrow \mathbb{R}$ $f(x) = x^2$ can also be described by a parabula in a plot, where each pair $(x, x^2)$ is a point on the parabula.
+
+### Random variables
+
+-   A random variable is a numerical quantity whose value is determined by the outcome of a random experiment.
 
 -   A random variable ($X$) associates a value (a real number $x \in \mathbb{R}$) to every possible outcome ($\omega$ in the sample space $\Omega = \{ \omega_1, \omega_2, \ldots, \omega_n \}$) of a random experiment.
 
@@ -23,7 +64,7 @@ $$
 
 -   A function of one or more random variables is also a random variable.
 
-## Probability mass function (PMF) or a discrete r.v.
+### Probability mass function (PMF) or a discrete r.v.
 
 -   The PMF is the "probability law" or "probability distribution" of $X$.
 
@@ -33,14 +74,44 @@ $$
 \{\omega \in \Omega: X(\omega) = x \}
 $$
 
--   $P(X = x) = P(\{ \omega \in \Omega : X(\omega) = x \})$
+-   $P(X = x) = p_X(x) = P(\{ \omega \in \Omega : X(\omega) = x \})$
 -   $P(X = x) \ge 0$
 -   $\sum_x P(X = x) =1$
 
-## Expected value
+### Expected value
 
 $$
-\mathbb{E} = \sum_x x P(X = x)
+E[X] = \sum_x x P(X = x)
 $$
 
-## Variance
+### Expected value rule
+
+$E[g(X)]$
+
+$Y = g(X)$
+
+$E[Y] = \sum_y y P(Y = y)$
+
+$E[Y] = E[g(X)] = \sum_x g(x) P(X = x)$
+
+For example:
+
+$E[X^{2}] = \sum_x x^2 P(X = x)$
+
+In general:
+
+$E[g(X)] \ne g(E[X])$
+
+For example:
+
+$E[X^2] \ne E[X]^2$
+
+### Linearity of expectation
+
+The exception to the general rule above is when $g(X)$ is a linear function:
+
+$Y = g(X) = aX + b$
+
+$E[Y] = E[g(X)] = E[aX + b] = aE[X] + b$
+
+## LECTURE 6: Variance; Conditioning a r.v. on an event; Multiple random variables

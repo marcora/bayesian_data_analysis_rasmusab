@@ -62,10 +62,59 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="random-variables" class="level2">
-<h2 class="anchored" data-anchor-id="random-variables">Random variables</h2>
+<section id="lecture-1-xxx" class="level2">
+<h2 class="anchored" data-anchor-id="lecture-1-xxx">LECTURE 1: XXX</h2>
+</section>
+<section id="lecture-2-xxx" class="level2">
+<h2 class="anchored" data-anchor-id="lecture-2-xxx">LECTURE 2: XXX</h2>
+</section>
+<section id="lecture-3-xxx" class="level2">
+<h2 class="anchored" data-anchor-id="lecture-3-xxx">LECTURE 3: XXX</h2>
+</section>
+<section id="lecture-4-xxx" class="level2">
+<h2 class="anchored" data-anchor-id="lecture-4-xxx">LECTURE 4: XXX</h2>
+</section>
+<section id="lecture-5-discrete-random-variables" class="level2">
+<h2 class="anchored" data-anchor-id="lecture-5-discrete-random-variables">LECTURE 5: Discrete random variables</h2>
+<section id="functions" class="level3">
+<h3 class="anchored" data-anchor-id="functions">Functions</h3>
+<p>A function is a rule that maps each element of set <span class="math inline">\(A\)</span> to at least one element of set <span class="math inline">\(B\)</span>.</p>
+<p><span class="math display">\[
+f : A \rightarrow B
+\]</span></p>
+<p>More precisely, a function is a set of pairs <span class="math inline">\((x, y)\)</span> such that <span class="math inline">\(x \in A\)</span>, <span class="math inline">\(y \in B\)</span> and each <span class="math inline">\(x\)</span> appears in exactly one pair.</p>
+<p>For example, for the “square” function <span class="math inline">\(f(x) = x^2\)</span>:</p>
+<p><span class="math inline">\(A = \{ -1, 0, 1, 2 \}\)</span></p>
+<p><span class="math inline">\(B = \mathbb{R}\)</span></p>
+<p><span class="math inline">\(f = \{ (-1, 1), (0,0), (1,1), (2, 4) \}\)</span></p>
+<p>A function can also be described by a table:</p>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td>-1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p>A function can also be described by a set of points in a plot.</p>
+<p>For example, the “square” function <span class="math inline">\(f : \mathbb{R} \rightarrow \mathbb{R}\)</span> <span class="math inline">\(f(x) = x^2\)</span> can also be described by a parabula in a plot, where each pair <span class="math inline">\((x, x^2)\)</span> is a point on the parabula.</p>
+</section>
+<section id="random-variables" class="level3">
+<h3 class="anchored" data-anchor-id="random-variables">Random variables</h3>
 <ul>
-<li><p>A random variable is defined as a variable whose numeric value depends on the outcome of a random experiment.</p></li>
+<li><p>A random variable is a numerical quantity whose value is determined by the outcome of a random experiment.</p></li>
 <li><p>A random variable (<span class="math inline">\(X\)</span>) associates a value (a real number <span class="math inline">\(x \in \mathbb{R}\)</span>) to every possible outcome (<span class="math inline">\(\omega\)</span> in the sample space <span class="math inline">\(\Omega = \{ \omega_1, \omega_2, \ldots, \omega_n \}\)</span>) of a random experiment.</p></li>
 <li><p>A random variable is a function from the sample space to the real numbers.</p></li>
 <li><p>A random variable is a function that takes the outcome of a random experiment as input and returns a real number as output, for example:</p></li>
@@ -79,8 +128,8 @@ X(\omega_1) = 5
 <li><p>A function of one or more random variables is also a random variable.</p></li>
 </ul>
 </section>
-<section id="probability-mass-function-pmf-or-a-discrete-r.v." class="level2">
-<h2 class="anchored" data-anchor-id="probability-mass-function-pmf-or-a-discrete-r.v.">Probability mass function (PMF) or a discrete r.v.</h2>
+<section id="probability-mass-function-pmf-or-a-discrete-r.v." class="level3">
+<h3 class="anchored" data-anchor-id="probability-mass-function-pmf-or-a-discrete-r.v.">Probability mass function (PMF) or a discrete r.v.</h3>
 <ul>
 <li><p>The PMF is the “probability law” or “probability distribution” of <span class="math inline">\(X\)</span>.</p></li>
 <li><p><span class="math inline">\(X = x\)</span> is an event, i.e., a subset of the sample space <span class="math inline">\(\Omega = \{ \omega_1, \omega_2, \ldots, \omega_n \}\)</span>:</p></li>
@@ -89,19 +138,39 @@ X(\omega_1) = 5
 \{\omega \in \Omega: X(\omega) = x \}
 \]</span></p>
 <ul>
-<li><span class="math inline">\(P(X = x) = P(\{ \omega \in \Omega : X(\omega) = x \})\)</span></li>
+<li><span class="math inline">\(P(X = x) = p_X(x) = P(\{ \omega \in \Omega : X(\omega) = x \})\)</span></li>
 <li><span class="math inline">\(P(X = x) \ge 0\)</span></li>
 <li><span class="math inline">\(\sum_x P(X = x) =1\)</span></li>
 </ul>
 </section>
-<section id="expected-value" class="level2">
-<h2 class="anchored" data-anchor-id="expected-value">Expected value</h2>
+<section id="expected-value" class="level3">
+<h3 class="anchored" data-anchor-id="expected-value">Expected value</h3>
 <p><span class="math display">\[
-\mathbb{E} = \sum_x x P(X = x)
+E[X] = \sum_x x P(X = x)
 \]</span></p>
 </section>
-<section id="variance" class="level2">
-<h2 class="anchored" data-anchor-id="variance">Variance</h2>
+<section id="expected-value-rule" class="level3">
+<h3 class="anchored" data-anchor-id="expected-value-rule">Expected value rule</h3>
+<p><span class="math inline">\(E[g(X)]\)</span></p>
+<p><span class="math inline">\(Y = g(X)\)</span></p>
+<p><span class="math inline">\(E[Y] = \sum_y y P(Y = y)\)</span></p>
+<p><span class="math inline">\(E[Y] = E[g(X)] = \sum_x g(x) P(X = x)\)</span></p>
+<p>For example:</p>
+<p><span class="math inline">\(E[X^{2}] = \sum_x x^2 P(X = x)\)</span></p>
+<p>In general:</p>
+<p><span class="math inline">\(E[g(X)] \ne g(E[X])\)</span></p>
+<p>For example:</p>
+<p><span class="math inline">\(E[X^2] \ne E[X]^2\)</span></p>
+</section>
+<section id="linearity-of-expectation" class="level3">
+<h3 class="anchored" data-anchor-id="linearity-of-expectation">Linearity of expectation</h3>
+<p>The exception to the general rule above is when <span class="math inline">\(g(X)\)</span> is a linear function:</p>
+<p><span class="math inline">\(Y = g(X) = aX + b\)</span></p>
+<p><span class="math inline">\(E[Y] = E[g(X)] = E[aX + b] = aE[X] + b\)</span></p>
+</section>
+</section>
+<section id="lecture-6-variance-conditioning-a-r.v.-on-an-event-multiple-random-variables" class="level2">
+<h2 class="anchored" data-anchor-id="lecture-6-variance-conditioning-a-r.v.-on-an-event-multiple-random-variables">LECTURE 6: Variance; Conditioning a r.v. on an event; Multiple random variables</h2>
 </section>
 
 </main>
