@@ -15,34 +15,36 @@ format: html
 
 ### Functions
 
-A function is a rule that maps each element of set $A$ to at least one element of set $B$.
+A function is a rule that assigns an element of set $Y$ to each element of set $X$.
 
 $$
-f : A \rightarrow B
+f : X \rightarrow Y
 $$
 
-More precisely, a function is a set of pairs $(x, y)$ such that $x \in A$, $y \in B$ and each $x$ appears in exactly one pair.
+More precisely, a function is a set of pairs $(x, y)$ such that $x \in X$, $y \in Y$ and each $x$ appears in exactly one pair.
 
 For example, for the "square" function $f(x) = x^2$:
 
-$A = \{ -1, 0, 1, 2 \}$
+$X = \{ -1, 0, 1, 2 \}$
 
-$B = \mathbb{R}$
+$Y = \mathbb{R}$
 
 $f = \{ (-1, 1), (0,0), (1,1), (2, 4) \}$
 
 A function can also be described by a table:
 
-|     |     |
-|-----|-----|
-| -1  | 1   |
-| 0   | 0   |
-| 1   | 1   |
-| 2   | 4   |
+| $x$ | $y = x^2$ |
+|-----|-----------|
+| -1  | 1         |
+| 0   | 0         |
+| 1   | 1         |
+| 2   | 4         |
 
 A function can also be described by a set of points in a plot.
 
 For example, the "square" function $f : \mathbb{R} \rightarrow \mathbb{R}$ $f(x) = x^2$ can also be described by a parabula in a plot, where each pair $(x, x^2)$ is a point on the parabula.
+
+![<https://en.wikipedia.org/wiki/Function_(mathematics)>](function.png){width="50%"}
 
 ### Random variables
 

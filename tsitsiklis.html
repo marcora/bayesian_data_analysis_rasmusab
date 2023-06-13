@@ -78,17 +78,23 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="lecture-5-discrete-random-variables">LECTURE 5: Discrete random variables</h2>
 <section id="functions" class="level3">
 <h3 class="anchored" data-anchor-id="functions">Functions</h3>
-<p>A function is a rule that maps each element of set <span class="math inline">\(A\)</span> to at least one element of set <span class="math inline">\(B\)</span>.</p>
+<p>A function is a rule that assigns an element of set <span class="math inline">\(Y\)</span> to each element of set <span class="math inline">\(X\)</span>.</p>
 <p><span class="math display">\[
-f : A \rightarrow B
+f : X \rightarrow Y
 \]</span></p>
-<p>More precisely, a function is a set of pairs <span class="math inline">\((x, y)\)</span> such that <span class="math inline">\(x \in A\)</span>, <span class="math inline">\(y \in B\)</span> and each <span class="math inline">\(x\)</span> appears in exactly one pair.</p>
+<p>More precisely, a function is a set of pairs <span class="math inline">\((x, y)\)</span> such that <span class="math inline">\(x \in X\)</span>, <span class="math inline">\(y \in Y\)</span> and each <span class="math inline">\(x\)</span> appears in exactly one pair.</p>
 <p>For example, for the “square” function <span class="math inline">\(f(x) = x^2\)</span>:</p>
-<p><span class="math inline">\(A = \{ -1, 0, 1, 2 \}\)</span></p>
-<p><span class="math inline">\(B = \mathbb{R}\)</span></p>
+<p><span class="math inline">\(X = \{ -1, 0, 1, 2 \}\)</span></p>
+<p><span class="math inline">\(Y = \mathbb{R}\)</span></p>
 <p><span class="math inline">\(f = \{ (-1, 1), (0,0), (1,1), (2, 4) \}\)</span></p>
 <p>A function can also be described by a table:</p>
 <table class="table">
+<thead>
+<tr class="header">
+<th><span class="math inline">\(x\)</span></th>
+<th><span class="math inline">\(y = x^2\)</span></th>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>-1</td>
@@ -110,6 +116,12 @@ f : A \rightarrow B
 </table>
 <p>A function can also be described by a set of points in a plot.</p>
 <p>For example, the “square” function <span class="math inline">\(f : \mathbb{R} \rightarrow \mathbb{R}\)</span> <span class="math inline">\(f(x) = x^2\)</span> can also be described by a parabula in a plot, where each pair <span class="math inline">\((x, x^2)\)</span> is a point on the parabula.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="function.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption class="figure-caption"><a href="https://en.wikipedia.org/wiki/Function_(mathematics)" class="uri">https://en.wikipedia.org/wiki/Function_(mathematics)</a></figcaption>
+</figure>
+</div>
 </section>
 <section id="random-variables" class="level3">
 <h3 class="anchored" data-anchor-id="random-variables">Random variables</h3>
