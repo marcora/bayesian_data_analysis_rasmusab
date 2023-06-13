@@ -78,7 +78,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="lecture-5-discrete-random-variables">LECTURE 5: Discrete random variables</h2>
 <section id="functions" class="level3">
 <h3 class="anchored" data-anchor-id="functions">Functions</h3>
-<p>A function is a rule that assigns an element of set <span class="math inline">\(Y\)</span> to each element of set <span class="math inline">\(X\)</span>.</p>
+<p>A function is a procedure that assigns an element of set <span class="math inline">\(Y\)</span> to each element of set <span class="math inline">\(X\)</span>.</p>
 <p><span class="math display">\[
 f : X \rightarrow Y
 \]</span></p>
@@ -115,13 +115,24 @@ f : X \rightarrow Y
 </tbody>
 </table>
 <p>A function can also be described by a set of points in a plot.</p>
-<p>For example, the “square” function <span class="math inline">\(f : \mathbb{R} \rightarrow \mathbb{R}\)</span> <span class="math inline">\(f(x) = x^2\)</span> can also be described by a parabula in a plot, where each pair <span class="math inline">\((x, x^2)\)</span> is a point on the parabula.</p>
+<p>For example, the “square” function <span class="math inline">\(f : \mathbb{R} \rightarrow \mathbb{R}\)</span> <span class="math inline">\(f(x) = x^2\)</span> can also be described by a parabula in a plot, where each pair <span class="math inline">\((x, y = x^2)\)</span> is a point on the parabula.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="function.png" class="img-fluid figure-img" style="width:50.0%"></p>
 <figcaption class="figure-caption"><a href="https://en.wikipedia.org/wiki/Function_(mathematics)" class="uri">https://en.wikipedia.org/wiki/Function_(mathematics)</a></figcaption>
 </figure>
 </div>
+<p>Probability <span class="math inline">\(P\)</span> is a function (“probability law”) that assigns a real number <span class="math inline">\(\mathbb{R}\)</span> to each element <span class="math inline">\(E\)</span> of the event space <span class="math inline">\(\Sigma\)</span> (i.e., each subset of the sample space <span class="math inline">\(\Omega\)</span>):</p>
+<p><span class="math display">\[
+P : \Sigma \rightarrow \mathbb{R}
+\]</span></p>
+<p>such that:</p>
+<p><span class="math display">\[
+P(E) \ge 0 \\
+P(\Omega) = 1 \\
+P(\cup^{\infty}_{i=1}E_i) = \sum^{\infty}_{i=1}P(E_i)
+\]</span></p>
+<p>for disjoint sets/mutually exclusive events <span class="math inline">\(E_1, E_2, \ldots\)</span></p>
 </section>
 <section id="random-variables" class="level3">
 <h3 class="anchored" data-anchor-id="random-variables">Random variables</h3>
@@ -155,8 +166,8 @@ X(\omega_1) = 5
 <li><span class="math inline">\(\sum_x P(X = x) =1\)</span></li>
 </ul>
 </section>
-<section id="expected-value" class="level3">
-<h3 class="anchored" data-anchor-id="expected-value">Expected value</h3>
+<section id="expected-value-a-measure-of-the-center-of-a-pmf" class="level3">
+<h3 class="anchored" data-anchor-id="expected-value-a-measure-of-the-center-of-a-pmf">Expected value: a measure of the center of a PMF</h3>
 <p><span class="math display">\[
 E[X] = \sum_x x P(X = x)
 \]</span></p>
@@ -183,6 +194,37 @@ E[X] = \sum_x x P(X = x)
 </section>
 <section id="lecture-6-variance-conditioning-a-r.v.-on-an-event-multiple-random-variables" class="level2">
 <h2 class="anchored" data-anchor-id="lecture-6-variance-conditioning-a-r.v.-on-an-event-multiple-random-variables">LECTURE 6: Variance; Conditioning a r.v. on an event; Multiple random variables</h2>
+<section id="variance-a-measure-of-the-spread-of-a-pmf" class="level3">
+<h3 class="anchored" data-anchor-id="variance-a-measure-of-the-spread-of-a-pmf">Variance: a measure of the spread of a PMF</h3>
+<ul>
+<li><p>Random variable <span class="math inline">\(X\)</span> with mean <span class="math inline">\(\mu = E[X]\)</span></p></li>
+<li><p>Distance from the mean: <span class="math inline">\(X - \mu\)</span></p></li>
+<li><p>Average distance from the mean: <span class="math inline">\(E[X - \mu] = E[X] - \mu = \mu - \mu = 0\)</span></p></li>
+<li><p>Variance = average of the squared distance from the mean:</p></li>
+</ul>
+<p><span class="math display">\[
+E[(X - \mu)^2] = \text{Var}(X) = \sigma_X^2  \ge 0
+\]</span></p>
+<ul>
+<li>Using the expected value rule:</li>
+</ul>
+<p><span class="math display">\[
+\sigma^2 = \text{Var}(X) = E[(X - \mu)^2] = \sum_x(x - \mu)^2 P(X = x)
+\]</span></p>
+<ul>
+<li>Standard deviation = square root of the variance (has the same unit of measurement as the r.v.):</li>
+</ul>
+<p><span class="math display">\[
+\sigma_X = \sqrt{\text{Var}(X)} = \sqrt{\sigma_X^2}
+\]</span></p>
+</section>
+</section>
+<section id="properties-of-the-variance" class="level2">
+<h2 class="anchored" data-anchor-id="properties-of-the-variance">Properties of the variance</h2>
+<ul>
+<li><p>Let <span class="math inline">\(Y = aX + b\)</span>: <span class="math inline">\(\text{Var}(Y) = \text{Var}(aX + b) = a^2\text{Var}(X)\)</span></p></li>
+<li><p>A useful formula: <span class="math inline">\(\text{Var}(X) = E[X^2] - (E[X])^2\)</span></p></li>
+</ul>
 </section>
 
 </main>

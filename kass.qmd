@@ -10,3 +10,9 @@ Source: [Analysis of Neural Data](https://link.springer.com/book/10.1007/978-1-4
 ## ![](workflow.kass.1.png){width="100%"}
 
 ![](workflow.kass.2.png){width="100%"}
+
+------------------------------------------------------------------------
+
+Source: <https://www.nature.com/articles/s43586-020-00001-2>
+
+![](bayesian_data_analysis_workflow.nat_methods_primers.webp)

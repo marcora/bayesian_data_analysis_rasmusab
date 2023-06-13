@@ -15,7 +15,7 @@ format: html
 
 ### Functions
 
-A function is a rule that assigns an element of set $Y$ to each element of set $X$.
+A function is a procedure that assigns an element of set $Y$ to each element of set $X$.
 
 $$
 f : X \rightarrow Y
@@ -42,9 +42,25 @@ A function can also be described by a table:
 
 A function can also be described by a set of points in a plot.
 
-For example, the "square" function $f : \mathbb{R} \rightarrow \mathbb{R}$ $f(x) = x^2$ can also be described by a parabula in a plot, where each pair $(x, x^2)$ is a point on the parabula.
+For example, the "square" function $f : \mathbb{R} \rightarrow \mathbb{R}$ $f(x) = x^2$ can also be described by a parabula in a plot, where each pair $(x, y = x^2)$ is a point on the parabula.
 
 ![<https://en.wikipedia.org/wiki/Function_(mathematics)>](function.png){width="50%"}
+
+Probability $P$ is a function ("probability law") that assigns a real number $\mathbb{R}$ to each element $E$ of the event space $\Sigma$ (i.e., each subset of the sample space $\Omega$):
+
+$$
+P : \Sigma \rightarrow \mathbb{R}
+$$
+
+such that:
+
+$$
+P(E) \ge 0 \\
+P(\Omega) = 1 \\
+P(\cup^{\infty}_{i=1}E_i) = \sum^{\infty}_{i=1}P(E_i) 
+$$
+
+for disjoint sets/mutually exclusive events $E_1, E_2, \ldots$
 
 ### Random variables
 
@@ -80,7 +96,7 @@ $$
 -   $P(X = x) \ge 0$
 -   $\sum_x P(X = x) =1$
 
-### Expected value
+### Expected value: a measure of the center of a PMF
 
 $$
 E[X] = \sum_x x P(X = x)
@@ -117,3 +133,35 @@ $Y = g(X) = aX + b$
 $E[Y] = E[g(X)] = E[aX + b] = aE[X] + b$
 
 ## LECTURE 6: Variance; Conditioning a r.v. on an event; Multiple random variables
+
+### Variance: a measure of the spread of a PMF
+
+-   Random variable $X$ with mean $\mu = E[X]$
+
+-   Distance from the mean: $X - \mu$
+
+-   Average distance from the mean: $E[X - \mu] = E[X] - \mu = \mu - \mu = 0$
+
+-   Variance = average of the squared distance from the mean:
+
+$$
+E[(X - \mu)^2] = \text{Var}(X) = \sigma_X^2  \ge 0
+$$
+
+-   Using the expected value rule:
+
+$$
+\sigma^2 = \text{Var}(X) = E[(X - \mu)^2] = \sum_x(x - \mu)^2 P(X = x)
+$$
+
+-   Standard deviation = square root of the variance (has the same unit of measurement as the r.v.):
+
+$$
+\sigma_X = \sqrt{\text{Var}(X)} = \sqrt{\sigma_X^2}
+$$
+
+## Properties of the variance
+
+-   Let $Y = aX + b$: $\text{Var}(Y) = \text{Var}(aX + b) = a^2\text{Var}(X)$
+
+-   A useful formula: $\text{Var}(X) = E[X^2] - (E[X])^2$
