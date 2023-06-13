@@ -27,12 +27,20 @@ $$
 
 -   The PMF is the "probability law" or "probability distribution" of $X$.
 
--   If $x$ is fixed (e.g., $x = 5$) then $X = x$ (i.e., $X = 5$) is an event (a subset of the sample space $\Omega = \{ \omega_1, \omega_2, \ldots, \omega_n \}$):
+-   $X = x$ is an event, i.e., a subset of the sample space $\Omega = \{ \omega_1, \omega_2, \ldots, \omega_n \}$:
 
 $$
-\{\omega \in \Omega: X(\omega) = 5 \}
+\{\omega \in \Omega: X(\omega) = x \}
 $$
 
--   $p_X(x) = P(X = x) = P(\{ \omega \in \Omega : X(\omega) = x \})$
--   $p_X(x) \ge 0$
--   $\sum_x p_X(x) = 1$
+-   $P(X = x) = P(\{ \omega \in \Omega : X(\omega) = x \})$
+-   $P(X = x) \ge 0$
+-   $\sum_x P(X = x) =1$
+
+## Expected value
+
+$$
+\mathbb{E} = \sum_x x P(X = x)
+$$
+
+## Variance
