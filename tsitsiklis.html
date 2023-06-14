@@ -78,7 +78,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="lecture-5-discrete-random-variables">LECTURE 5: Discrete random variables</h2>
 <section id="functions" class="level3">
 <h3 class="anchored" data-anchor-id="functions">Functions</h3>
-<p>A function is a procedure that assigns an element of set <span class="math inline">\(Y\)</span> to each element of set <span class="math inline">\(X\)</span>.</p>
+<p>A function is a procedure that assigns an element of set <span class="math inline">\(Y\)</span> to each element of set <span class="math inline">\(X\)</span> (often also referred to as a mapping).</p>
 <p><span class="math display">\[
 f : X \rightarrow Y
 \]</span></p>
@@ -122,7 +122,7 @@ f : X \rightarrow Y
 <figcaption class="figure-caption"><a href="https://en.wikipedia.org/wiki/Function_(mathematics)" class="uri">https://en.wikipedia.org/wiki/Function_(mathematics)</a></figcaption>
 </figure>
 </div>
-<p>Probability <span class="math inline">\(P\)</span> is a function (“probability law”) that assigns a real number <span class="math inline">\(\mathbb{R}\)</span> to each element <span class="math inline">\(E\)</span> of the event space <span class="math inline">\(\Sigma\)</span> (i.e., each subset of the sample space <span class="math inline">\(\Omega\)</span>):</p>
+<p>For example, probability <span class="math inline">\(P\)</span> is a function (“probability law”) that assigns a real number <span class="math inline">\(\mathbb{R}\)</span> to each element <span class="math inline">\(E\)</span> of the event space <span class="math inline">\(\Sigma\)</span> (i.e., each subset of the sample space <span class="math inline">\(\Omega\)</span>):</p>
 <p><span class="math display">\[
 P : \Sigma \rightarrow \mathbb{R}
 \]</span></p>
@@ -132,13 +132,13 @@ P(E) \ge 0 \\
 P(\Omega) = 1 \\
 P(\cup^{\infty}_{i=1}E_i) = \sum^{\infty}_{i=1}P(E_i)
 \]</span></p>
-<p>for disjoint sets/mutually exclusive events <span class="math inline">\(E_1, E_2, \ldots\)</span></p>
+<p>for mutually exclusive events/disjoint sets <span class="math inline">\(E_1, E_2, \ldots\)</span></p>
 </section>
 <section id="random-variables" class="level3">
 <h3 class="anchored" data-anchor-id="random-variables">Random variables</h3>
 <ul>
 <li><p>A random variable is a numerical quantity whose value is determined by the outcome of a random experiment.</p></li>
-<li><p>A random variable (<span class="math inline">\(X\)</span>) associates a value (a real number <span class="math inline">\(x \in \mathbb{R}\)</span>) to every possible outcome (<span class="math inline">\(\omega\)</span> in the sample space <span class="math inline">\(\Omega = \{ \omega_1, \omega_2, \ldots, \omega_n \}\)</span>) of a random experiment.</p></li>
+<li><p>A random variable (<span class="math inline">\(X\)</span>) is a function that assigns a real number <span class="math inline">\(x \in \mathbb{R}\)</span> to every possible outcome <span class="math inline">\(\omega \in \Omega = \{ \omega_1, \omega_2, \ldots, \omega_n \}\)</span> of a random experiment.</p></li>
 <li><p>A random variable is a function from the sample space to the real numbers.</p></li>
 <li><p>A random variable is a function that takes the outcome of a random experiment as input and returns a real number as output, for example:</p></li>
 </ul>
@@ -151,8 +151,8 @@ X(\omega_1) = 5
 <li><p>A function of one or more random variables is also a random variable.</p></li>
 </ul>
 </section>
-<section id="probability-mass-function-pmf-or-a-discrete-r.v." class="level3">
-<h3 class="anchored" data-anchor-id="probability-mass-function-pmf-or-a-discrete-r.v.">Probability mass function (PMF) or a discrete r.v.</h3>
+<section id="probability-mass-function-pmf-of-a-discrete-r.v." class="level3">
+<h3 class="anchored" data-anchor-id="probability-mass-function-pmf-of-a-discrete-r.v.">Probability mass function (PMF) of a discrete r.v.</h3>
 <ul>
 <li><p>The PMF is the “probability law” or “probability distribution” of <span class="math inline">\(X\)</span>.</p></li>
 <li><p><span class="math inline">\(X = x\)</span> is an event, i.e., a subset of the sample space <span class="math inline">\(\Omega = \{ \omega_1, \omega_2, \ldots, \omega_n \}\)</span>:</p></li>
@@ -215,16 +215,35 @@ E[(X - \mu)^2] = \text{Var}(X) = \sigma_X^2  \ge 0
 <li>Standard deviation = square root of the variance (has the same unit of measurement as the r.v.):</li>
 </ul>
 <p><span class="math display">\[
-\sigma_X = \sqrt{\text{Var}(X)} = \sqrt{\sigma_X^2}
+\sigma_X = \sqrt{\sigma_X^2} = \sqrt{\text{Var}(X)}
 \]</span></p>
-</section>
-</section>
-<section id="properties-of-the-variance" class="level2">
-<h2 class="anchored" data-anchor-id="properties-of-the-variance">Properties of the variance</h2>
+<section id="properties-of-the-variance" class="level4">
+<h4 class="anchored" data-anchor-id="properties-of-the-variance">Properties of the variance</h4>
 <ul>
 <li><p>Let <span class="math inline">\(Y = aX + b\)</span>: <span class="math inline">\(\text{Var}(Y) = \text{Var}(aX + b) = a^2\text{Var}(X)\)</span></p></li>
 <li><p>A useful formula: <span class="math inline">\(\text{Var}(X) = E[X^2] - (E[X])^2\)</span></p></li>
 </ul>
+</section>
+<section id="variance-of-bernoulli-and-uniform-r.v." class="level4">
+<h4 class="anchored" data-anchor-id="variance-of-bernoulli-and-uniform-r.v.">Variance of Bernoulli and uniform r.v.</h4>
+<p>Bernoulli: <span class="math inline">\(\text{Var(X)} = p (1 - p)\)</span></p>
+<p>Uniform: <span class="math inline">\(n = (b - a)\)</span> <span class="math inline">\(\text{Var(X)} = \frac{1}{12}n(n+2)\)</span></p>
+</section>
+</section>
+<section id="conditional-pmf-expectation-and-variance" class="level3">
+<h3 class="anchored" data-anchor-id="conditional-pmf-expectation-and-variance">Conditional PMF, expectation and variance</h3>
+<ul>
+<li><p><span class="math inline">\(p_{X \mid A}(x) = P(X = x \mid A)\)</span></p></li>
+<li><p><span class="math inline">\(\sum_x p_{X \mid A}(x) = 1\)</span></p></li>
+<li><p><span class="math inline">\(E[X \mid A] = \sum_x x p_{X \mid A}(x)\)</span></p></li>
+<li><p><span class="math inline">\(E[g(X) \mid A] = \sum_x g(x) p_{X \mid A}(x)\)</span></p></li>
+</ul>
+<p>Conditional PMFs, expectations and variances are the same as the unconditional ones except that we use conditional probabilities rather than unconditional probabilities.</p>
+<section id="total-expectation-theorem" class="level4">
+<h4 class="anchored" data-anchor-id="total-expectation-theorem">Total expectation theorem</h4>
+<p>XXX</p>
+</section>
+</section>
 </section>
 
 </main>

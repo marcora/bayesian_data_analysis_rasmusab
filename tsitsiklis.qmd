@@ -15,7 +15,7 @@ format: html
 
 ### Functions
 
-A function is a procedure that assigns an element of set $Y$ to each element of set $X$.
+A function is a procedure that assigns an element of set $Y$ to each element of set $X$ (often also referred to as a mapping).
 
 $$
 f : X \rightarrow Y
@@ -46,7 +46,7 @@ For example, the "square" function $f : \mathbb{R} \rightarrow \mathbb{R}$ $f(x)
 
 ![<https://en.wikipedia.org/wiki/Function_(mathematics)>](function.png){width="50%"}
 
-Probability $P$ is a function ("probability law") that assigns a real number $\mathbb{R}$ to each element $E$ of the event space $\Sigma$ (i.e., each subset of the sample space $\Omega$):
+For example, probability $P$ is a function ("probability law") that assigns a real number $\mathbb{R}$ to each element $E$ of the event space $\Sigma$ (i.e., each subset of the sample space $\Omega$):
 
 $$
 P : \Sigma \rightarrow \mathbb{R}
@@ -60,13 +60,13 @@ P(\Omega) = 1 \\
 P(\cup^{\infty}_{i=1}E_i) = \sum^{\infty}_{i=1}P(E_i) 
 $$
 
-for disjoint sets/mutually exclusive events $E_1, E_2, \ldots$
+for mutually exclusive events/disjoint sets $E_1, E_2, \ldots$
 
 ### Random variables
 
 -   A random variable is a numerical quantity whose value is determined by the outcome of a random experiment.
 
--   A random variable ($X$) associates a value (a real number $x \in \mathbb{R}$) to every possible outcome ($\omega$ in the sample space $\Omega = \{ \omega_1, \omega_2, \ldots, \omega_n \}$) of a random experiment.
+-   A random variable ($X$) is a function that assigns a real number $x \in \mathbb{R}$ to every possible outcome $\omega \in \Omega = \{ \omega_1, \omega_2, \ldots, \omega_n \}$ of a random experiment.
 
 -   A random variable is a function from the sample space to the real numbers.
 
@@ -82,7 +82,7 @@ $$
 
 -   A function of one or more random variables is also a random variable.
 
-### Probability mass function (PMF) or a discrete r.v.
+### Probability mass function (PMF) of a discrete r.v.
 
 -   The PMF is the "probability law" or "probability distribution" of $X$.
 
@@ -157,11 +157,33 @@ $$
 -   Standard deviation = square root of the variance (has the same unit of measurement as the r.v.):
 
 $$
-\sigma_X = \sqrt{\text{Var}(X)} = \sqrt{\sigma_X^2}
+\sigma_X = \sqrt{\sigma_X^2} = \sqrt{\text{Var}(X)}
 $$
 
-## Properties of the variance
+#### Properties of the variance
 
 -   Let $Y = aX + b$: $\text{Var}(Y) = \text{Var}(aX + b) = a^2\text{Var}(X)$
 
 -   A useful formula: $\text{Var}(X) = E[X^2] - (E[X])^2$
+
+#### Variance of Bernoulli and uniform r.v.
+
+Bernoulli: $\text{Var(X)} = p (1 - p)$
+
+Uniform: $n = (b - a)$ $\text{Var(X)} = \frac{1}{12}n(n+2)$
+
+### Conditional PMF, expectation and variance
+
+-   $p_{X \mid A}(x) = P(X = x \mid A)$
+
+-   $\sum_x p_{X \mid A}(x) = 1$
+
+-   $E[X \mid A] = \sum_x x p_{X \mid A}(x)$
+
+-   $E[g(X) \mid A] = \sum_x g(x) p_{X \mid A}(x)$
+
+Conditional PMFs, expectations and variances are the same as the unconditional ones except that we use conditional probabilities rather than unconditional probabilities.
+
+#### Total expectation theorem
+
+XXX
