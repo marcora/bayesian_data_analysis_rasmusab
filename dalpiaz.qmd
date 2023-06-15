@@ -1,0 +1,74 @@
+---
+title: "STAT 432 (David Dalpiaz)"
+format: html
+---
+
+Source: <https://statisticallearning.org/> and <https://youtube.com/playlist?list=PLBgxzZMu3GpMP9t8gz6AGGoxcBgWBKaVq>
+
+Statistics = learning from experience
+
+## Machine learning
+
+-   Machine learning
+    -   Supervised (tabular data with response variable $Y$ and covariates/predictors/features variables $X_1, X_2, \ldots, X_n$)
+        -   Regression (numerical response variable)
+        -   Classification (categorical response variable)
+    -   Unsupervised (tabular data without response variable $Y$, only features variables $X_1, X_2, \ldots, X_n$)
+        -   Density estimation
+        -   Outlier detection
+        -   Clustering
+        -   Dimensionality reduction
+
+## Regression
+
+"Data view" vs "Math view" of prediction.
+
+$y = f(x) + \epsilon$
+
+$f(x)$ is the **signal** (a function that takes the features as input)
+
+$\epsilon$ is the **noise**
+
+We want to learn $f(x)$.
+
+We want $f(x)$ to be close to $y$. In particular, we want $[y - f(x)]^2$ (the *squared error*) to be small. This happens when:
+
+$$
+f(x) = E[Y \mid X = x] = \mu(x)
+$$
+
+$E[Y \mid X = x]$ is the **regression function**, in this case the *conditional mean* function. If we had a different closeness metric, e.g., *absolute deviation*, the regression function would be different, e.g., the *conditional median* function.
+
+### Linear regression models
+
+$$
+Y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_p x_p + \epsilon
+$$
+
+$$
+\epsilon \sim N(0, \sigma)
+$$
+
+or (equivalently):
+
+$$
+Y \mid X = x \sim N(\mu = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_p x_p, \sigma) 
+$$
+
+that is, linear regression models assume that the regression function (conditional mean) is a linear combination of the covariates/predictors/features variables:
+
+$$
+f(x) = E[Y \mid X = x] = \mu(x) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_p x_p
+$$
+
+### How to fit/train a linear regression model with data
+
+We use the "least squares" algorithm to find estimates of $\beta_0$, $\beta_1$, $\beta_2$, $\ldots$, $\beta_p$ \[and thus of $\mu(x)$\] that minimize the sum of squared errors:
+
+$$
+\sum^n_{i = 1} [y_i - (\hat{\beta_{0}} + \hat{\beta_1} x_{i1} + \hat{\beta_2} x_{i2} + \ldots + \hat{\beta_p} x_{ip})]^2
+$$
+
+$$
+\hat{\mu}(x) = \hat{\beta_{0}} + \hat{\beta_1} x_{1} + \hat{\beta_2} x_{2} + \ldots \hat{\beta_p} x_{p}
+$$
