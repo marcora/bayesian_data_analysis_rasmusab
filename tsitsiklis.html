@@ -122,40 +122,53 @@ f : X \rightarrow Y
 <figcaption class="figure-caption"><a href="https://en.wikipedia.org/wiki/Function_(mathematics)" class="uri">https://en.wikipedia.org/wiki/Function_(mathematics)</a></figcaption>
 </figure>
 </div>
-<p>For example, probability <span class="math inline">\(P\)</span> is a function (“probability law”) that assigns a real number <span class="math inline">\(\mathbb{R}\)</span> to each element <span class="math inline">\(E\)</span> of the event space <span class="math inline">\(\Sigma\)</span> (i.e., each subset of the sample space <span class="math inline">\(\Omega\)</span>):</p>
+<p>For example, probability <span class="math inline">\(P\)</span> is a function (“probability law”) that assigns a real number <span class="math inline">\(\mathbb{R}\)</span> to each element <span class="math inline">\(E\)</span> of the event space <span class="math inline">\(\Sigma\)</span> (i.e., the set containing each subset of the sample space <span class="math inline">\(\Omega\)</span>, i.e., the “power set” <span class="math inline">\(2^{\Omega}\)</span> or, more precisely, the <span class="math inline">\(\sigma\)</span>-algebra <span class="math inline">\(A\)</span>):</p>
+<p><span class="math inline">\(P : \Sigma \rightarrow \mathbb{R}\)</span></p>
+<p>such that:</p>
+<ul>
+<li><span class="math inline">\(P(E) \ge 0\)</span></li>
+<li><span class="math inline">\(P(\Omega) = 1\)</span></li>
+<li><span class="math inline">\(P(\cup^{\infty}_{i=1}E_i) = \sum^{\infty}_{i=1}P(E_i) : \forall\)</span> mutually exclusive events <span class="math inline">\(E_1, E_2, \ldots \in \Sigma\)</span></li>
+</ul>
+<p>Probability (i.e., the probability function <span class="math inline">\(P\)</span>) is a measure of how likely an event is to occur or a statement is to be true. A <strong>measure</strong> <span class="math inline">\(\mu\)</span> is a function from a <span class="math inline">\(\sigma\)</span>-algebra <span class="math inline">\(\Sigma\)</span> over set <span class="math inline">\(\Omega\)</span> to the real numbers <span class="math inline">\(\mathbb{R}\)</span></p>
 <p><span class="math display">\[
-P : \Sigma \rightarrow \mathbb{R}
+\mu : \Sigma \rightarrow \mathbb{R}
 \]</span></p>
 <p>such that:</p>
+<ul>
+<li><strong>Non-negativity</strong>: <span class="math inline">\(\mu(E) \ge 0 : \forall E \in \Sigma\)</span></li>
+<li><span class="math inline">\(\mu(\emptyset) = 0\)</span></li>
+<li><strong>Countable additivity</strong>: <span class="math inline">\(\forall\)</span> countable collections <span class="math inline">\(\{ E_i\}_{i =1}^{\infty}\)</span> of pairwise disjoint sets <span class="math inline">\(E_1, E_2, \ldots \in \Sigma\)</span></li>
+</ul>
 <p><span class="math display">\[
-P(E) \ge 0 \\
-P(\Omega) = 1 \\
-P(\cup^{\infty}_{i=1}E_i) = \sum^{\infty}_{i=1}P(E_i)
+\mu(\cup^{\infty}_{i=1}E_i) = \sum^{\infty}_{i=1}\mu(E_i)
 \]</span></p>
-<p>for mutually exclusive events/disjoint sets <span class="math inline">\(E_1, E_2, \ldots\)</span></p>
+<p>The pair <span class="math inline">\((\Omega, \Sigma)\)</span> is called a <strong>measurable space</strong>, and the members of <span class="math inline">\(\Sigma\)</span> are called <strong>measurable sets</strong>.</p>
+<p>The triple <span class="math inline">\((\Omega, \Sigma, \mu)\)</span> is called a <strong>measure space</strong>.</p>
+<p>A probability measure is a measure with total measure one – that is, <span class="math inline">\(\mu(\Omega) = 1\)</span>. A probability space is a measure space with a probability measure.</p>
 </section>
 <section id="random-variables" class="level3">
 <h3 class="anchored" data-anchor-id="random-variables">Random variables</h3>
 <ul>
-<li><p>A random variable is a numerical quantity whose value is determined by the outcome of a random experiment.</p></li>
-<li><p>A random variable (<span class="math inline">\(X\)</span>) is a function that assigns a real number <span class="math inline">\(x \in \mathbb{R}\)</span> to every possible outcome <span class="math inline">\(\omega \in \Omega = \{ \omega_1, \omega_2, \ldots, \omega_n \}\)</span> of a random experiment.</p></li>
-<li><p>A random variable is a function from the sample space to the real numbers.</p></li>
-<li><p>A random variable is a function that takes the outcome of a random experiment as input and returns a real number as output, for example:</p></li>
+<li>A random variable is a numerical quantity whose value is determined by the outcome of a random experiment.</li>
+<li>A random variable (<span class="math inline">\(X\)</span>) is a function that assigns a real number <span class="math inline">\(x \in \mathbb{R}\)</span> to every possible outcome <span class="math inline">\(\omega \in \Omega = \{ \omega_1, \omega_2, \ldots, \omega_n \}\)</span> of a random experiment.</li>
+<li>A random variable is a function from the sample space to the real numbers.</li>
+<li>A random variable is a function that takes the outcome of a random experiment as input and returns a real number as output, for example:</li>
 </ul>
 <p><span class="math display">\[
 X(\omega_1) = 5
 \]</span></p>
 <ul>
-<li><p>A random variable often describes a measurable quantity associated with the outcome of random experiment or it indicates whether an event (<span class="math inline">\(A\)</span>) has occurred (e.g., <span class="math inline">\(x = 1\)</span> if <span class="math inline">\(\omega_1 \in A\)</span> or <span class="math inline">\(x = 0\)</span> if <span class="math inline">\(\omega_1 \notin A\)</span>).</p></li>
-<li><p>One or more random variables can be defined on the same sample space.</p></li>
-<li><p>A function of one or more random variables is also a random variable.</p></li>
+<li>A random variable often describes a measurable quantity associated with the outcome of random experiment or it indicates whether an event (<span class="math inline">\(A\)</span>) has occurred (e.g., <span class="math inline">\(x = 1\)</span> if <span class="math inline">\(\omega_1 \in A\)</span> or <span class="math inline">\(x = 0\)</span> if <span class="math inline">\(\omega_1 \notin A\)</span>).</li>
+<li>One or more random variables can be defined on the same sample space.</li>
+<li>A function of one or more random variables is also a random variable.</li>
 </ul>
 </section>
 <section id="probability-mass-function-pmf-of-a-discrete-r.v." class="level3">
 <h3 class="anchored" data-anchor-id="probability-mass-function-pmf-of-a-discrete-r.v.">Probability mass function (PMF) of a discrete r.v.</h3>
 <ul>
-<li><p>The PMF is the “probability law” or “probability distribution” of <span class="math inline">\(X\)</span>.</p></li>
-<li><p><span class="math inline">\(X = x\)</span> is an event, i.e., a subset of the sample space <span class="math inline">\(\Omega = \{ \omega_1, \omega_2, \ldots, \omega_n \}\)</span>:</p></li>
+<li>The PMF is the “probability law” or “probability distribution” of <span class="math inline">\(X\)</span>.</li>
+<li><span class="math inline">\(X = x\)</span> is an event, i.e., a subset of the sample space <span class="math inline">\(\Omega = \{ \omega_1, \omega_2, \ldots, \omega_n \}\)</span>:</li>
 </ul>
 <p><span class="math display">\[
 \{\omega \in \Omega: X(\omega) = x \}
@@ -197,10 +210,10 @@ E[X] = \sum_x x P(X = x)
 <section id="variance-a-measure-of-the-spread-of-a-pmf" class="level3">
 <h3 class="anchored" data-anchor-id="variance-a-measure-of-the-spread-of-a-pmf">Variance: a measure of the spread of a PMF</h3>
 <ul>
-<li><p>Random variable <span class="math inline">\(X\)</span> with mean <span class="math inline">\(\mu = E[X]\)</span></p></li>
-<li><p>Distance from the mean: <span class="math inline">\(X - \mu\)</span></p></li>
-<li><p>Average distance from the mean: <span class="math inline">\(E[X - \mu] = E[X] - \mu = \mu - \mu = 0\)</span></p></li>
-<li><p>Variance = average of the squared distance from the mean:</p></li>
+<li>Random variable <span class="math inline">\(X\)</span> with mean <span class="math inline">\(\mu = E[X]\)</span></li>
+<li>Distance from the mean: <span class="math inline">\(X - \mu\)</span></li>
+<li>Average distance from the mean: <span class="math inline">\(E[X - \mu] = E[X] - \mu = \mu - \mu = 0\)</span></li>
+<li>Variance = average of the squared distance from the mean:</li>
 </ul>
 <p><span class="math display">\[
 E[(X - \mu)^2] = \text{Var}(X) = \sigma_X^2  \ge 0
@@ -220,8 +233,8 @@ E[(X - \mu)^2] = \text{Var}(X) = \sigma_X^2  \ge 0
 <section id="properties-of-the-variance" class="level4">
 <h4 class="anchored" data-anchor-id="properties-of-the-variance">Properties of the variance</h4>
 <ul>
-<li><p>Let <span class="math inline">\(Y = aX + b\)</span>: <span class="math inline">\(\text{Var}(Y) = \text{Var}(aX + b) = a^2\text{Var}(X)\)</span></p></li>
-<li><p>A useful formula: <span class="math inline">\(\text{Var}(X) = E[X^2] - (E[X])^2\)</span></p></li>
+<li>Let <span class="math inline">\(Y = aX + b\)</span>: <span class="math inline">\(\text{Var}(Y) = \text{Var}(aX + b) = a^2\text{Var}(X)\)</span></li>
+<li>A useful formula: <span class="math inline">\(\text{Var}(X) = E[X^2] - (E[X])^2\)</span></li>
 </ul>
 </section>
 <section id="variance-of-bernoulli-and-uniform-r.v." class="level4">
@@ -233,10 +246,10 @@ E[(X - \mu)^2] = \text{Var}(X) = \sigma_X^2  \ge 0
 <section id="conditional-pmf-expectation-and-variance" class="level3">
 <h3 class="anchored" data-anchor-id="conditional-pmf-expectation-and-variance">Conditional PMF, expectation and variance</h3>
 <ul>
-<li><p><span class="math inline">\(p_{X \mid A}(x) = P(X = x \mid A)\)</span></p></li>
-<li><p><span class="math inline">\(\sum_x p_{X \mid A}(x) = 1\)</span></p></li>
-<li><p><span class="math inline">\(E[X \mid A] = \sum_x x p_{X \mid A}(x)\)</span></p></li>
-<li><p><span class="math inline">\(E[g(X) \mid A] = \sum_x g(x) p_{X \mid A}(x)\)</span></p></li>
+<li><span class="math inline">\(p_{X \mid A}(x) = P(X = x \mid A)\)</span></li>
+<li><span class="math inline">\(\sum_x p_{X \mid A}(x) = 1\)</span></li>
+<li><span class="math inline">\(E[X \mid A] = \sum_x x p_{X \mid A}(x)\)</span></li>
+<li><span class="math inline">\(E[g(X) \mid A] = \sum_x g(x) p_{X \mid A}(x)\)</span></li>
 </ul>
 <p>Conditional PMFs, expectations and variances are the same as the unconditional ones except that we use conditional probabilities rather than unconditional probabilities.</p>
 <section id="total-expectation-theorem" class="level4">

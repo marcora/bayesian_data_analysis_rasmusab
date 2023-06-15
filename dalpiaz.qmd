@@ -3,17 +3,20 @@ title: "STAT 432 (David Dalpiaz)"
 format: html
 ---
 
-Source: <https://statisticallearning.org/> and <https://youtube.com/playlist?list=PLBgxzZMu3GpMP9t8gz6AGGoxcBgWBKaVq>
+Source:
 
-Statistics = learning from experience
+-   <https://statisticallearning.org/>
+-   <https://youtube.com/playlist?list=PLBgxzZMu3GpMP9t8gz6AGGoxcBgWBKaVq>
+
+Statistics = learning from experience (data and prior knowledge)
 
 ## Machine learning
 
 -   Machine learning
-    -   Supervised (tabular data with response variable $Y$ and covariates/predictors/features variables $X_1, X_2, \ldots, X_n$)
+    -   Supervised (tabular data with output \[variate/response/outcome/dependent\] variable $Y$ and input variables \[covariates/treatment/predictors/features/independent\|explanatory variables\] $X_1, X_2, \ldots, X_p$)
         -   Regression (numerical response variable)
         -   Classification (categorical response variable)
-    -   Unsupervised (tabular data without response variable $Y$, only features variables $X_1, X_2, \ldots, X_n$)
+    -   Unsupervised (tabular data without output variable $Y$, only input variables $X_1, X_2, \ldots, X_p$)
         -   Density estimation
         -   Outlier detection
         -   Clustering
