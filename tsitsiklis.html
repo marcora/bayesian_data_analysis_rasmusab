@@ -76,6 +76,14 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="lecture-5-discrete-random-variables" class="level2">
 <h2 class="anchored" data-anchor-id="lecture-5-discrete-random-variables">LECTURE 5: Discrete random variables</h2>
+<p>Statistics has its foundation in probability.</p>
+<p>Statistical analyses involve three basic procedures:</p>
+<ol type="1">
+<li><p>Estimation</p></li>
+<li><p>Inference and Decision Making</p></li>
+<li><p>Model Building: Classification and Prediction</p></li>
+</ol>
+<p>In all cases, statistics is the science of applying the laws and rules of probability to samples, which are collections of values of a random variable or in fact a collection of random variables.</p>
 <section id="functions" class="level3">
 <h3 class="anchored" data-anchor-id="functions">Functions</h3>
 <p>A function is a procedure that assigns an element of set <span class="math inline">\(Y\)</span> to each element of set <span class="math inline">\(X\)</span> (often also referred to as a mapping).</p>
@@ -122,7 +130,7 @@ f : X \rightarrow Y
 <figcaption class="figure-caption"><a href="https://en.wikipedia.org/wiki/Function_(mathematics)" class="uri">https://en.wikipedia.org/wiki/Function_(mathematics)</a></figcaption>
 </figure>
 </div>
-<p>For example, probability <span class="math inline">\(P\)</span> is a function (“probability law”) that assigns a real number <span class="math inline">\(\mathbb{R}\)</span> to each element <span class="math inline">\(E\)</span> of the event space <span class="math inline">\(\Sigma\)</span> (i.e., the set containing each subset of the sample space <span class="math inline">\(\Omega\)</span>, i.e., the “power set” <span class="math inline">\(2^{\Omega}\)</span> or, more precisely, the <span class="math inline">\(\sigma\)</span>-algebra <span class="math inline">\(A\)</span>):</p>
+<p>For example, probability <span class="math inline">\(P\)</span> is a function (a.k.a. “probability law” or “probability distribution”) that assigns a real number <span class="math inline">\(\mathbb{R}\)</span> to each element <span class="math inline">\(E\)</span> of the event space <span class="math inline">\(\Sigma\)</span> (i.e., the set of all subsets of the sample space <span class="math inline">\(\Omega\)</span>, i.e., the <span class="math inline">\(\sigma\)</span>-algebra <span class="math inline">\(\Sigma\)</span>, e.g., the “power set” <span class="math inline">\(2^{\Omega}\)</span> for a finite or countable sample space <span class="math inline">\(\Omega\)</span> or the “Borel set” for an uncountable sample space <span class="math inline">\(\Omega\)</span>):</p>
 <p><span class="math inline">\(P : \Sigma \rightarrow \mathbb{R}\)</span></p>
 <p>such that:</p>
 <ul>
@@ -130,7 +138,8 @@ f : X \rightarrow Y
 <li><span class="math inline">\(P(\Omega) = 1\)</span></li>
 <li><span class="math inline">\(P(\cup^{\infty}_{i=1}E_i) = \sum^{\infty}_{i=1}P(E_i) : \forall\)</span> mutually exclusive events <span class="math inline">\(E_1, E_2, \ldots \in \Sigma\)</span></li>
 </ul>
-<p>Probability (i.e., the probability function <span class="math inline">\(P\)</span>) is a measure of how likely an event is to occur or a statement is to be true. A <strong>measure</strong> <span class="math inline">\(\mu\)</span> is a function from a <span class="math inline">\(\sigma\)</span>-algebra <span class="math inline">\(\Sigma\)</span> over set <span class="math inline">\(\Omega\)</span> to the real numbers <span class="math inline">\(\mathbb{R}\)</span></p>
+<p>Probability measures how likely an event is to occur or a statement is to be true.</p>
+<p>A <strong>measure</strong> <span class="math inline">\(\mu\)</span> is a function from a <span class="math inline">\(\sigma\)</span>-algebra <span class="math inline">\(\Sigma\)</span> over set <span class="math inline">\(\Omega\)</span> to the real numbers <span class="math inline">\(\mathbb{R}\)</span></p>
 <p><span class="math display">\[
 \mu : \Sigma \rightarrow \mathbb{R}
 \]</span></p>
@@ -145,7 +154,7 @@ f : X \rightarrow Y
 \]</span></p>
 <p>The pair <span class="math inline">\((\Omega, \Sigma)\)</span> is called a <strong>measurable space</strong>, and the members of <span class="math inline">\(\Sigma\)</span> are called <strong>measurable sets</strong>.</p>
 <p>The triple <span class="math inline">\((\Omega, \Sigma, \mu)\)</span> is called a <strong>measure space</strong>.</p>
-<p>A probability measure is a measure with total measure one – that is, <span class="math inline">\(\mu(\Omega) = 1\)</span>. A probability space is a measure space with a probability measure.</p>
+<p>A probability measure is a measure with total measure one – that is, <span class="math inline">\(\mu(\Omega) = 1\)</span> (Kolmogorov’s axioms). A probability space is a measure space with a probability measure.</p>
 </section>
 <section id="random-variables" class="level3">
 <h3 class="anchored" data-anchor-id="random-variables">Random variables</h3>

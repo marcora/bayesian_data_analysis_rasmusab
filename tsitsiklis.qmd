@@ -13,6 +13,18 @@ format: html
 
 ## LECTURE 5: Discrete random variables
 
+Statistics has its foundation in probability.
+
+Statistical analyses involve three basic procedures:
+
+1.  Estimation
+
+2.  Inference and Decision Making
+
+3.  Model Building: Classification and Prediction
+
+In all cases, statistics is the science of applying the laws and rules of probability to samples, which are collections of values of a random variable or in fact a collection of random variables.
+
 ### Functions
 
 A function is a procedure that assigns an element of set $Y$ to each element of set $X$ (often also referred to as a mapping).
@@ -46,7 +58,7 @@ For example, the "square" function $f : \mathbb{R} \rightarrow \mathbb{R}$ $f(x)
 
 ![<https://en.wikipedia.org/wiki/Function_(mathematics)>](function.png){width="50%"}
 
-For example, probability $P$ is a function ("probability law") that assigns a real number $\mathbb{R}$ to each element $E$ of the event space $\Sigma$ (i.e., the set containing each subset of the sample space $\Omega$, i.e., the "power set" $2^{\Omega}$ or, more precisely, the $\sigma$-algebra $A$):
+For example, probability $P$ is a function (a.k.a. "probability law" or "probability distribution") that assigns a real number $\mathbb{R}$ to each element $E$ of the event space $\Sigma$ (i.e., the set of all subsets of the sample space $\Omega$, i.e., the $\sigma$-algebra $\Sigma$, e.g., the "power set" $2^{\Omega}$ for a finite or countable sample space $\Omega$ or the "Borel set" for an uncountable sample space $\Omega$):
 
 $P : \Sigma \rightarrow \mathbb{R}$
 
@@ -56,7 +68,9 @@ such that:
 -   $P(\Omega) = 1$
 -   $P(\cup^{\infty}_{i=1}E_i) = \sum^{\infty}_{i=1}P(E_i) : \forall$ mutually exclusive events $E_1, E_2, \ldots \in \Sigma$
 
-Probability (i.e., the probability function $P$) is a measure of how likely an event is to occur or a statement is to be true. A **measure** $\mu$ is a function from a $\sigma$-algebra $\Sigma$ over set $\Omega$ to the real numbers $\mathbb{R}$
+Probability measures how likely an event is to occur or a statement is to be true.
+
+A **measure** $\mu$ is a function from a $\sigma$-algebra $\Sigma$ over set $\Omega$ to the real numbers $\mathbb{R}$
 
 $$
 \mu : \Sigma \rightarrow \mathbb{R}
@@ -76,7 +90,7 @@ The pair $(\Omega, \Sigma)$ is called a **measurable space**, and the members of
 
 The triple $(\Omega, \Sigma, \mu)$ is called a **measure space**.
 
-A probability measure is a measure with total measure one -- that is, $\mu(\Omega) = 1$. A probability space is a measure space with a probability measure.
+A probability measure is a measure with total measure one -- that is, $\mu(\Omega) = 1$ (Kolmogorov's axioms). A probability space is a measure space with a probability measure.
 
 ### Random variables
 
