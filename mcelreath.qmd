@@ -7,7 +7,6 @@ title: "Statistical rethinking (mcelreath)"
 ```{r}
 #| output: false
 library(tidyverse)
-library(magrittr)
 library(rethinking)
 library(triangle)
 library(ggdag)
@@ -214,18 +213,18 @@ P(\pi \mid W = 3, L = 6) \propto \pi^3 (1 - \pi)^6
 $$
 
 ```{r}
-WL = c("W", "W", "L", "L", "L", "L", "W", "L", "L")
+WL <- c("W", "W", "L", "L", "L", "L", "W", "L", "L")
 
-W = sum(WL == "W")
-L = sum(WL == "L")
+W <- sum(WL == "W")
+L <- sum(WL == "L")
 
-#W = 10
-#L = 20
+#W <- 10
+#L <- 20
 
-p = seq(from = 0, to = 1, len = 1000)
+p <- seq(from = 0, to = 1, len = 1000)
 
-a = 0
-b = 1
+a <- 0
+b <- 1
 
 binomial <- function(W, L, p) {
   return(factorial(W + L)/(factorial(W)*factorial(L)) * p^W * (1 - p)^L)
@@ -235,13 +234,13 @@ uniform <- function(p, a, b) {
   return(1/(b - a))
 }
 
-likelihood = binomial(W, L, p)
-prior = uniform(p, a, b)
+likelihood <- binomial(W, L, p)
+prior <- uniform(p, a, b)
 
-#likelihood = dbinom(W, W+L, p)
-#prior = dunif(p, a, b)
+#likelihood <- dbinom(W, W+L, p)
+#prior <- dunif(p, a, b)
 
-posterior = likelihood * prior / sum(likelihood)
+posterior <- likelihood * prior / sum(likelihood)
 
 plot(posterior ~ p)
 ```
@@ -314,14 +313,14 @@ An **estimator** is a rule for calculating an **estimate** of a quantity of inte
 
 ```{r}
 sim_weight <- function(H, beta, sd) {
-  U = rnorm(length(H), 0, sd)
-  W = beta * H + U
+  U <- rnorm(length(H), 0, sd)
+  W <- beta * H + U
   return(W)
 }
 
-n = 100
-H = runif(n, min = 130, max = 170)
-W = sim_weight(H, beta = 0.5, sd = 5)
+n <- 100
+H <- runif(n, min = 130, max = 170)
+W <- sim_weight(H, beta = 0.5, sd = 5)
 plot(W ~ H, col = "red")
 ```
 
@@ -342,9 +341,9 @@ Variables on the left, functions on the right (equal sign for deterministic func
 ### Prior predictive distribution
 
 ```{r}
-n = 1000
-a = rnorm(n, 0, 10)
-b = runif(n, 0, 1)
+n <- 1000
+a <- rnorm(n, 0, 10)
+b <- runif(n, 0, 1)
 plot(NULL,
      xlim = c(130, 170),
      ylim = c(55,95),
@@ -354,11 +353,11 @@ for(j in 1:50) abline(a = a[j], b = b[j], col = "red")
 ```
 
 ```{r}
-n = 10
-H = runif(n, min = 130, max = 170)
-W = sim_weight(H, beta = 0.5, sd = 5)
+n <- 10
+H <- runif(n, min = 130, max = 170)
+W <- sim_weight(H, beta = 0.5, sd = 5)
 
-m3.1 = quap(
+m3.1 <- quap(
   alist(
     W ~ dnorm(mu, sigma),
     mu <- a + b * H,
