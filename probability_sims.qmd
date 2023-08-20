@@ -1,0 +1,30 @@
+---
+title: "Probability simulations"
+format: html
+---
+
+```{r}
+#| output: false
+library(tidyverse)
+```
+
+## Central limit theorem
+
+```{r}
+nsims <- 1000
+n <- 20
+
+x <- map_dbl(1:nsims, ~ mean(runif(n, 0, 1)))
+
+x <- map_dbl(1:nsims, ~ mean(rexp(n, 1)))
+
+# qqnorm(x); qqline(x)
+
+car::qqPlot(x)
+
+normal.density <- function(t) dnorm(t, mean(x), sqrt(var(x)))
+
+curve(normal.density, col = "blue", xlim = c(min(x), max(x)))
+
+lines(density(x))
+```
