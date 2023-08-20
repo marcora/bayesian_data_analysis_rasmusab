@@ -10,6 +10,7 @@ library(tidyverse)
 library(rethinking)
 library(triangle)
 library(ggdag)
+set_ulam_cmdstan(TRUE)
 theme_set(theme_bw())
 set.seed(2020)
 ```
