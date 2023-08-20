@@ -97,32 +97,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="central-limit-theorem" class="level2">
-<h2 class="anchored" data-anchor-id="central-limit-theorem">Central limit theorem</h2>
+<section id="law-of-large-numbers" class="level2">
+<h2 class="anchored" data-anchor-id="law-of-large-numbers">Law of large numbers</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>nsims <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span>nsims, <span class="sc">~</span> <span class="fu">mean</span>(<span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">1</span>)))</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span>nsims, <span class="sc">~</span> <span class="fu">mean</span>(<span class="fu">rexp</span>(n, <span class="dv">1</span>)))</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># qqnorm(x); qqline(x)</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">qqPlot</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>flips <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"heads"</span>, <span class="st">"tails"</span>), <span class="at">size =</span> <span class="dv">500</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">cumsum</span>(flips <span class="sc">==</span> <span class="st">"heads"</span>) <span class="sc">/</span> (<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(flips)), </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),  </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Coin Flips"</span>, </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Number of flips"</span>, <span class="at">ylab =</span> <span class="st">"Proportion of heads"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="fl">0.5</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="probability_sims_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 937 250</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>normal.density <span class="ot">&lt;-</span> <span class="cf">function</span>(t) <span class="fu">dnorm</span>(t, <span class="fu">mean</span>(x), <span class="fu">sqrt</span>(<span class="fu">var</span>(x)))</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(normal.density, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="fu">min</span>(x), <span class="fu">max</span>(x)))</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="central-limit-theorem" class="level2">
+<h2 class="anchored" data-anchor-id="central-limit-theorem">Central limit theorem</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>nsims <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span>nsims, <span class="sc">~</span> <span class="fu">mean</span>(<span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">1</span>)))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span>nsims, <span class="sc">~</span> <span class="fu">mean</span>(<span class="fu">rexp</span>(n, <span class="dv">1</span>)))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># qqnorm(x); qqline(x)</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">qqPlot</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="probability_sims_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid" width="672"></p>
+<p><img src="probability_sims_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 837 754</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>normal.density <span class="ot">&lt;-</span> <span class="cf">function</span>(t) <span class="fu">dnorm</span>(t, <span class="fu">mean</span>(x), <span class="fu">sqrt</span>(<span class="fu">var</span>(x)))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(normal.density, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="fu">min</span>(x), <span class="fu">max</span>(x)))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="probability_sims_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
