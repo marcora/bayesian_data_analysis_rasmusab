@@ -44,3 +44,29 @@ curve(normal.density, col = "blue", xlim = c(min(x), max(x)))
 
 lines(density(x))
 ```
+
+## Confidence interval
+
+source: <https://uw-statistics.github.io/Stat311Tutorial/confidence-intervals.html>
+
+```{r}
+attempts = 100
+curve(expr = dnorm(x, mean = 40, sd = 2), from = 33, to = 48,
+      main = "95% CI simulation results for sample size = 20",
+      xlab = "Chocolate Bar Weight (in g)", ylab = "Density",
+      lwd=2, col="blue")
+abline(v = 40, col = "purple", lwd = 2)
+failed_to_contain <- 0
+for (i in 1:attempts) {
+    col <- rgb(0,0,0,0.5)
+    choc.batch <- rnorm(n = 20, mean = 40, sd = 2) 
+    myCI <- BSDA::z.test(choc.batch, sigma.x = 2, conf.level = 0.95)$conf.int
+    if (min(myCI) > 40 | max(myCI) < 40) {
+        failed_to_contain <- failed_to_contain + 1
+        col <- rgb(1,0,0,1)
+    }
+    segments(min(myCI), 0.2 * i / attempts,
+             max(myCI), 0.2 * i / attempts,
+             lwd = 1, col = col)
+}
+```
