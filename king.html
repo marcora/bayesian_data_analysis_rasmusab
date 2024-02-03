@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -17,7 +17,7 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
 </style>
@@ -34,6 +34,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="king_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="king_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
@@ -63,29 +64,25 @@ ul.task-list li input[type="checkbox"] {
 
 <p><a href="https://j.mp/G2001" class="uri">https://j.mp/G2001</a></p>
 <p><a href="https://youtube.com/playlist?list=PL0n492lUg2sgSevEQ3bLilGbFph4l92gH" class="uri">https://youtube.com/playlist?list=PL0n492lUg2sgSevEQ3bLilGbFph4l92gH</a></p>
-<section id="course-strategy" class="level2">
-<h2 class="anchored" data-anchor-id="course-strategy">Course strategy</h2>
-<p>Teach the fundamentals, the underlying theory of inference, from which statistical models are developed!</p>
-<p>Practical stats: Math proofs when needed, deep concepts and intuition</p>
-</section>
-<section id="data-analysisstatistical-inference" class="level2">
-<h2 class="anchored" data-anchor-id="data-analysisstatistical-inference">Data analysis/Statistical inference</h2>
+<section id="statistical-inference" class="level2">
+<h2 class="anchored" data-anchor-id="statistical-inference">Statistical inference</h2>
 <p>Statistical inference = “Using facts you know to learn about facts you don’t know”</p>
 <p>Statistical inference is impossible! But just because it’s impossible, it doesn’t mean you shouldn’t do it!</p>
-<section id="textbook-list-of-statistical-inference-components" class="level3">
-<h3 class="anchored" data-anchor-id="textbook-list-of-statistical-inference-components">Textbook list of statistical inference components</h3>
+<section id="the-big-picture" class="level3">
+<h3 class="anchored" data-anchor-id="the-big-picture">The big picture</h3>
 <ol type="1">
-<li><p>Choose: Question</p></li>
-<li><p>Formalize: Quantity of interest (QOI), given question</p></li>
-<li><p>Collect: Data, given QOI, question</p></li>
-<li><p>Assume: Class of models, given data, QOI, question</p></li>
-<li><p>Estimate from data: [Use estimator (function of the data) to choose] Best model in class, given all of the above</p></li>
-<li><p>Present results: Given all of the above</p>
+<li><p><strong>Choose</strong>: Question of interest (qualitative)</p></li>
+<li><p><strong>Formalize</strong>: Quantity of interest (QOI), <span style="color: red">given question</span></p></li>
+<li><p><strong>Collect</strong>: Data, <span style="color: red">given QOI, question</span></p></li>
+<li><p><strong>Assume</strong>: Class of models, <span style="color: red">given data, QOI, question</span></p></li>
+<li><p><strong>Estimate from data</strong>: [Use estimator (function of the data) to choose] Best model <span style="color: red">in class, given all of the above</span></p></li>
+<li><p><strong>Present results</strong>: <span style="color: red">Given all of the above</span></p>
 <ol type="1">
-<li><p>QOI estimates</p></li>
-<li><p>Uncertainty estimates</p></li>
+<li><p><u>QOI estimates</u> (should be interpretable by anyone)</p></li>
+<li><p><u>Uncertainty estimates</u> (CIs, SEs, etc.)</p></li>
 </ol></li>
-<li><p>Open questions:</p>
+</ol>
+<p>Open questions:</p>
 <ol type="1">
 <li><p>Better ways of presenting results</p></li>
 <li><p>Model dependence</p></li>
@@ -93,7 +90,6 @@ ul.task-list li input[type="checkbox"] {
 <li><p>Data problems</p></li>
 <li><p>More interesting QOIs</p></li>
 <li><p>More impactful questions to avoid problems in the first place</p></li>
-</ol></li>
 </ol>
 </section>
 </section>
@@ -259,6 +255,234 @@ ul.task-list li input[type="checkbox"] {
 <li><p>Rules can be applied analytically or via simulation</p></li>
 </ul>
 </section>
+<section id="quantities-of-interest-in-empirical-quantitative-research" class="level2">
+<h2 class="anchored" data-anchor-id="quantities-of-interest-in-empirical-quantitative-research">Quantities of interest in empirical quantitative research</h2>
+<p>Empirical research = research based on observation or experimentation</p>
+<p>Quantitative research = research based on measurements, i.e., the quantification of attributes of an object or event, which can be used to compare with other objects or events</p>
+<p>Measurements can be categorized by the following criteria:</p>
+<ul>
+<li><p>type (or level)</p></li>
+<li><p>magnitude</p></li>
+<li><p>unit</p></li>
+<li><p>uncertainty (represents the systemic and random errors of measurement procedures)</p></li>
+</ul>
+<p>Quantities of interest (QOI) in empirical quantitative research:</p>
+<ul>
+<li><p>Data summaries</p></li>
+<li><p>Inference</p>
+<ul>
+<li><p>Descriptive inference</p></li>
+<li><p>Counterfactual inference</p>
+<ul>
+<li><p>Prediction</p></li>
+<li><p>What-If</p></li>
+<li><p>Causal inference (two perspectives):</p>
+<ul>
+<li><p>Causal prediction: Prediction of intervention<br>
+knowing a cause means being able to predict the consequences of an intervention<br>
+“What if I do this?”</p></li>
+<li><p>Causal imputation: Imputation of missing data<br>
+Knowing a cause means being able to impute unobserved counterfactual outcomes<br>
+“What if I had done something else?”</p></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="statistical-inference-1" class="level2">
+<h2 class="anchored" data-anchor-id="statistical-inference-1">Statistical inference</h2>
+<p>Inference is “using facts you know to learn about facts you don’t know”.</p>
+<p>Statistical inference workflow:</p>
+<ol type="1">
+<li><p><strong>Choose</strong>: substantive <u>question</u> of interest</p></li>
+<li><p><strong>Formalize</strong>: <u>quantity of interest</u> (QOI), <em>given question</em></p></li>
+<li><p><strong>Collect</strong>: <u>data</u>, <em>given QOI and question</em></p></li>
+<li><p><strong>Assume</strong>: <u>class of models</u>, <em>given data, QOI and question</em></p></li>
+<li><p><strong>Estimate from data</strong>: <u>best model in class</u>, <em>given class of models, data, QOI and question</em></p>
+<ul>
+<li>An estimator is a function of the data (e.g., the MLE) used to choose the best model in the class of models</li>
+</ul></li>
+<li><p><strong>Present results</strong>: given all of the above</p>
+<ul>
+<li>QOI point and interval estimates</li>
+<li>Weaknesses and limitations</li>
+</ul></li>
+</ol>
+</section>
+<section id="statistical-models-kings" class="level2">
+<h2 class="anchored" data-anchor-id="statistical-models-kings">Statistical models (King’s)</h2>
+<p>A model is an abstraction/approximation (e.g., sketch of a person).</p>
+<p>All models are wrong, some are useful!</p>
+<p>Statistical models are very useful for inference.</p>
+<section id="notation-1" class="level3">
+<h3 class="anchored" data-anchor-id="notation-1">Notation</h3>
+<ul>
+<li><p>Dependent (or “outcome”) variable (aka “variate”):</p>
+<ul>
+<li><p><span class="math inline">\(Y\)</span> is a <span class="math inline">\(n \times 1\)</span> vector (column)</p>
+<ul>
+<li><p><span class="math inline">\(y_i\)</span> is a number (after we know it; within a dataset; fixed because observed)</p></li>
+<li><p><span class="math inline">\(Y_i\)</span> is a random variable (before we know it; across datasets; random because unobserved)</p></li>
+</ul></li>
+</ul></li>
+<li><p>Explanatory (or “independent” or “exogeneous”) variables (aka “covariates”, “predictors”)</p>
+<ul>
+<li><p><span class="math inline">\(X = \{x_{ij}\}\)</span> <span class="math inline">\(X\)</span> is a <span class="math inline">\(n \times k\)</span> matrix (<span class="math inline">\(n \times k\)</span> cells/numbers organized in a table with <span class="math inline">\(n\)</span> rows and <span class="math inline">\(k\)</span> columns)</p></li>
+<li><p><span class="math inline">\(\{x_{ij}\}\)</span> represents the number within a specific cell</p></li>
+<li><p>Each column is a variable.</p></li>
+<li><p><span class="math inline">\(X\)</span> as a set of columns (variables): <span class="math inline">\(X = \{ x_1, \ldots, x_k \}\)</span></p></li>
+<li><p>Each row is an observation: <span class="math inline">\(\{ x_{i1}, \ldots, x_{ik} \}\)</span></p></li>
+<li><p><span class="math inline">\(X\)</span> is (usually but not always) fixed (i.e., not random!)</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="equivalent-linear-regression-notation" class="level3">
+<h3 class="anchored" data-anchor-id="equivalent-linear-regression-notation">Equivalent linear regression notation</h3>
+<ul>
+<li><p>Standard notation:</p>
+<ul>
+<li><p><span class="math inline">\(Y_i = x_i \beta + \epsilon_i = \text{systematic} + \text{stochastic}\)</span></p></li>
+<li><p><u>Systematic</u>: <span class="math inline">\(x_i \beta = \beta_0 + \beta_1 x_{i1} + \ldots + \beta_k x_{ik}\)</span></p></li>
+<li><p><u>Stochastic</u>: <span class="math inline">\(\epsilon_i \sim \text{Normal}(0, \sigma)\)</span></p></li>
+</ul></li>
+<li><p>Alternative notation:</p>
+<ul>
+<li><p><u>Stochastic</u>: <span class="math inline">\(Y_i \sim \text{Normal}(\mu_i, \sigma)\)</span></p></li>
+<li><p><u>Systematic</u>: <span class="math inline">\(\mu_i = x_i \beta\)</span></p></li>
+</ul></li>
+</ul>
+<p><img src="normal_linear_regression_alt_notation.png" class="img-fluid" style="width:60.0%"></p>
+<ul>
+<li><p>Generalized alternative notation for most models:</p>
+<ul>
+<li><p><u>Stochastic</u>: <span class="math inline">\(Y_i \sim f(\theta_i, \alpha)\)</span></p></li>
+<li><p><u>Systematic</u>: <span class="math inline">\(\theta_i = g(x_i, \beta)\)</span></p></li>
+</ul>
+<p>where:</p>
+<ul>
+<li><p><span class="math inline">\(Y_i\)</span> is the random outcome variable</p></li>
+<li><p><span class="math inline">\(f(\cdot)\)</span> is a probability density/mass function (probability distribution)</p></li>
+<li><p><span class="math inline">\(\theta_i\)</span> is a parameter of the probability distribution <span class="math inline">\(f(\cdot)\)</span> that varies over <span class="math inline">\(i\)</span></p></li>
+<li><p><span class="math inline">\(\alpha\)</span> is a parameter of the probability distribution <span class="math inline">\(f(\cdot)\)</span> that doesn’t vary/is constant over <span class="math inline">\(i\)</span></p></li>
+<li><p><span class="math inline">\(g(\cdot)\)</span> is the functional form (e.g., linear for linear models)</p></li>
+<li><p><span class="math inline">\(x_i\)</span> is the explanatory variable vector for <span class="math inline">\(i\)</span> (an observation)</p></li>
+<li><p><span class="math inline">\(\beta\)</span> are the effect parameters/regression coefficients</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="forms-of-uncertainty" class="level3">
+<h3 class="anchored" data-anchor-id="forms-of-uncertainty">Forms of uncertainty</h3>
+<ul>
+<li><p><strong>Estimation uncertainty</strong>: Lack of knowledge of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>. Gets smaller as <span class="math inline">\(n\)</span> gets larger.</p></li>
+<li><p><strong>Fundamental uncertainty</strong>: Represented by the stochastic component <span class="math inline">\(f(\cdot)\)</span>. Exists no matter what you do, or the size of <span class="math inline">\(n\)</span> is.</p></li>
+<li><p><strong>Model dependence</strong>: Maybe the model specification is wrong?</p></li>
+</ul>
+</section>
+<section id="examples-of-systematic-components-1" class="level3">
+<h3 class="anchored" data-anchor-id="examples-of-systematic-components-1">Examples of systematic components</h3>
+<p><img src="systematic_components.png" class="img-fluid" style="width:60.0%"></p>
+<ul>
+<li><p>Each is a class of functional forms</p></li>
+<li><p><span class="math inline">\(\beta\)</span> in each is an “effect parameter” vector, with a different meaning</p></li>
+<li><p>Set <span class="math inline">\(\beta\)</span> and it picks out one member of the class</p></li>
+<li><p>Standard procedure:</p>
+<ul>
+<li><p>Use theory: Assume a class of functional forms</p></li>
+<li><p>User data: Estimate the values of the parameters</p></li>
+<li><p>Remain uncertain: Because of 1) estimation uncertainty, 2) fundamental uncertainty, 3) model dependence</p></li>
+</ul></li>
+<li><p>If we choose the wrong class of functional forms, we:</p>
+<ul>
+<li><p>have specification error, and potentially bias</p></li>
+<li><p>still get the best [linear, logit, exponential] approximation to the correct functional form</p></li>
+<li><p>may be close or far from the truth</p></li>
+</ul></li>
+</ul>
+<p><img src="funform.png" class="img-fluid" style="width:60.0%"></p>
+</section>
+<section id="examples-of-stochastic-components-1" class="level3">
+<h3 class="anchored" data-anchor-id="examples-of-stochastic-components-1">Examples of stochastic components</h3>
+<ul>
+<li><p><u>Normal</u>: continuous, unimodal, symmetric, unbounded</p></li>
+<li><p><u>Log-normal</u>: continuous, unimodal, skewed, bounded from below by zero</p></li>
+<li><p><u>Bernoulli</u>: discrete, binary outcomes</p></li>
+<li><p><u>Poisson</u>: discrete, countably infinite on the nonnegative integers</p></li>
+</ul>
+</section>
+<section id="choosing-systematic-and-stochastic-components-1" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-systematic-and-stochastic-components-1">Choosing systematic and stochastic components</h3>
+<ul>
+<li><p>If one is bounded, so is the other</p></li>
+<li><p>If the stochastic component is bounded, the systematic component must be globally nonlinear (although possibly locally linear)</p></li>
+<li><p>All modeling decisions are about the data generation process:</p>
+<ul>
+<li><p>The chain of evidence from the world to our observation of it!</p></li>
+<li><p>The first question you ask of every empirical paper!</p></li>
+</ul></li>
+<li><p>What if we don’t know the DGP (and we usually don’t know it completely)?</p>
+<ul>
+<li><p>The problem: model dependence</p></li>
+<li><p>Our first approach: make “reasonable” assumptions and check fit (and other observable implications of the assumptions)</p></li>
+<li><p>Later:</p>
+<ul>
+<li><p>avoid model dependence by relaxing assumptions (functional form, distribution, etc)</p></li>
+<li><p>detect remaining model dependence</p></li>
+<li><p>remove model dependence: preprocess data (via matching, etc)</p></li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="data-generation-processes-with-simulation" class="level2">
+<h2 class="anchored" data-anchor-id="data-generation-processes-with-simulation">Data generation processes (with simulation)</h2>
+<p><strong>Probability</strong>: Assumes the DGP</p>
+<p><strong>Statistical inference</strong>: Learns the DGP</p>
+</section>
+<section id="probability" class="level2">
+<h2 class="anchored" data-anchor-id="probability">Probability</h2>
+<p>Probability as a mathematical model of the DGP (the process that generated the data/observations in the real world).</p>
+<section id="probability-is-a-function" class="level3">
+<h3 class="anchored" data-anchor-id="probability-is-a-function">Probability is a function</h3>
+<p>Probability is:</p>
+<ul>
+<li><p>A mathematical function <span class="math inline">\(P(y \mid M) = P(\text{data} \mid \text{model})\)</span>, where <span class="math inline">\(M = (f, g, X, \beta, \alpha)\)</span>, that gives the probability of occurrence of an event <span class="math inline">\(z\)</span>, a subset of the sample space <span class="math inline">\(\Omega\)</span>.</p></li>
+<li><p>Because <span class="math inline">\(M\)</span> is assumed, we assume it is always there but we omit it to simplify the notation: <span class="math inline">\(P(y \mid M) = P(y)\)</span> which itself is a shorthand for <span class="math inline">\(P(Y = y)\)</span></p></li>
+<li><p>Three axioms define the function <span class="math inline">\(P(\cdot)\)</span>:</p>
+<ol type="1">
+<li><p><span class="math inline">\(P(z) \ge 0\)</span></p></li>
+<li><p><span class="math inline">\(P(\Omega) = 1\)</span></p></li>
+<li><p>If <span class="math inline">\(z_1, \ldots, z_k\)</span> are mutually exclusive events: <span class="math inline">\(P(z_1 \cup \ldots \cup z_k) = P(z_1) + \ldots + P(z_k)\)</span></p></li>
+</ol></li>
+<li><p>Axioms 1 and 2 imply <span class="math inline">\(0 \le P(z) \le 1\)</span></p></li>
+<li><p>Axioms are not assumptions; they can’t be wrong! Probability is a just a very useful mathematical model [of uncertainty/the DGP]</p></li>
+<li><p>From these axioms come ALL the rules of probability theory</p></li>
+<li><p>These rules can be applied analytically or via simulation</p></li>
+</ul>
+</section>
+<section id="probability-distributions-are-also-functions" class="level3">
+<h3 class="anchored" data-anchor-id="probability-distributions-are-also-functions">Probability distributions are also functions</h3>
+<p>A probability distribution is a mathematical function (PDF for continuous variable, PMF for discrete variable) that gives the probabilities of occurrence of events, subsets of the sample space.</p>
+<p>A probability distribution is a function <span class="math inline">\(p(y)\)</span> such that:</p>
+<ul>
+<li><p><span class="math inline">\(p(y) \ge 0\)</span> for any <span class="math inline">\(y\)</span></p></li>
+<li><p>for a discrete variable: <span class="math inline">\(\sum_{\text{all}\ y} p(y) = 1\)</span></p></li>
+<li><p>for a continuous variable: <span class="math inline">\(\int_{-\infty}^{\infty}p(y)dy = 1\)</span></p></li>
+</ul>
+<p>Computing probabilities from PDFs/PMFs:</p>
+<ul>
+<li><p>for a discrete random variable:</p>
+<ul>
+<li><p><span class="math inline">\(P(a \le Y \le b) = \sum_{a \le y \le b} p(y)\)</span></p></li>
+<li><p><span class="math inline">\(P(Y = y) = p(y)\)</span></p></li>
+</ul></li>
+<li><p>for continuous random variable:</p>
+<ul>
+<li><p><span class="math inline">\(P(a \le Y \le b) = \int_a^b p(y)dy\)</span></p></li>
+<li><p><span class="math inline">\(P(Y = y) = 0\)</span></p></li>
+</ul></li>
+</ul>
+</section>
+</section>
 
 </main>
 <!-- /main column -->
@@ -289,9 +513,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -356,6 +594,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
