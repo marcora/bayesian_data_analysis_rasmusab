@@ -1,0 +1,71 @@
+---
+title: "INLA"
+format:
+  html:
+    df-print: paged 
+---
+
+## Install `INLA`
+
+<https://www.r-inla.org/download-install>
+
+```{r}
+if ("INLA" %notin% rownames(installed.packages())) {
+  install.packages("INLA", repos = c(getOption("repos"), INLA = "https://inla.r-inla-download.org/R/stable"), dep = TRUE)
+}
+```
+
+## Load `INLA` and other packages
+
+```{r}
+#| output: false
+library(tidyverse)
+library(tidybayes)
+library(posterior)
+library(bayesplot)
+library(INLA)
+
+color_scheme_set(scheme = "gray")
+
+set.seed(123456)
+```
+
+## Simulate data
+
+```{r}
+alpha <- 45
+beta <- 0.63
+sigma <- 4.23
+N <- 100 # 500, 5000, 25000, 100000
+x <- seq(130, 180, length.out = N)
+mu <- alpha + beta * x
+y <- rnorm(N, mean = mu, sd = sigma)
+data <- list(x = x, y = y)
+```
+
+## Build and fit model
+
+```{r}
+res <- inla(y ~ x, data = as_tibble(data),
+            control.predictor = list(compute = TRUE),
+            control.compute = list(config = TRUE, dic = TRUE))
+
+res$summary.fixed
+```
+
+```{r}
+inla.posterior.draws <- function(n, res) {
+  inla.posterior.sample(n, res) |>
+    lapply(pluck, 2) |> 
+    do.call(what = cbind, args = _) |>
+    t() |>
+    as_tibble() |>
+    select(-starts_with("Predictor:")) |>
+    set_names(res$names.fixed) |>
+    as_draws_df()
+}
+
+ds <- inla.posterior.draws(1000, res)
+
+summarize_draws(ds)
+```
