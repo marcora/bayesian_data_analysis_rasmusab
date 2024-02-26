@@ -26,7 +26,7 @@ color_scheme_set(scheme = "brightblue")
 
 A review of frequentist regression using `lm()`, an introduction to Bayesian regression using `stan_glm()`, and a comparison of the respective outputs.
 
-### Non-Bayesian linear regression
+### Non-Bayesian/Frequentist linear regression
 
 ```{r}
 lm_model <- lm(kid_score ~ mom_iq, data = kidiq)
@@ -56,13 +56,57 @@ tidy(stan_model)
 
 ### Assessing model convergence
 
-Rhat should be less than 1.1
+-   `sigma`: the standard deviation of errors
+
+-   `mean_PPD`: the mean of posterior predictive samples
+
+-   `log-posterior`: analogous to a likelihood (used for model comparison)
+
+-   `rhat`: a measure of within chain variance compared to across chain variance; values less than 1.1 indicate convergence
+
+### Comparing frequentist and Bayesian probabilities
+
+-   What's the probability a woman has cancer, given positive mammogram?
+
+    -   $P(M^+ \mid C) = 0.9$ (likelihood, p-value)
+
+    -   $P(C) = 0.004$ (prior)
+
+    -   $P(M^+) = P(M^+ \mid C) + P(M^+ \mid \lnot C) = (0.9 \times 0.004) + (0.1 \times 0.994) = 0.1$
+
+-   What is $P(C \mid M^+)$?
+
+    -   $P(C \mid M^+) = \frac{P(C) \times P(M^+ \mid C)}{P(M^+)} = \frac{P(C) \times P(M^+ \mid C)}{P(M^+ \mid C) + P(M^+ \mid \lnot C)} = \frac{0.004 \times 0.9}{0.1} = 0.036$
+
+-   P-values make inferences about the probability of data, not parameter values
+
+-   Posterior distribution: Combination of likelihood and prior
+
+    -   Sample the posterior distribution
+
+    -   Summarize the sample
+
+    -   Use the summary to make inferences about parameter values
 
 ### Comparing frequentist and Bayesian inferences
 
 -   Frequentist inference: data are random, parameters are fixed; p-value = P(random data/sample/test statistic \| null hypothesis/parameter = 0)
 -   Bayesian inference: data are fixed, parameters are random; posterior = P(parameter \| observed data/sample)
 -   Use credible interval of posterior distribution to check if parameter is diff from zero (or any other hypothesis)
+
+<!-- -->
+
+-   Frequentists believe data are random and assume parameters are fixed
+
+-   Bayesians believe parameters are random and assume data are fixed
+
+-   What's a p-value?
+
+    -   Probability of data (a random sample) \[test statistic as large or larger than the observed one\], given null hypothesis (parameter value)
+
+-   So what do Bayesians want?
+
+    -   Probability of parameter values, given the observed data (not a random sample)
 
 ```{r}
 # probability that true param value is in interval
@@ -80,11 +124,29 @@ posterior <- spread_draws(stan_model, mom_iq)
 mean(between(posterior$mom_iq, 0.60, 0.65))
 ```
 
+-   **Confidence interval**: Frequency-type probability that the range contains the true parameter value
+
+    -   There is a 89% probability that the range contains the true parameter value (as relative frequency in an infinite series of ranges)
+
+-   **Credible interval**: Belief-type probability that the true parameter value is within the range
+
+    -   There is a 89% probability that the true parameter value is within this range
+
 ## Modifying a Bayesian Model
 
 Learn how to modify your Bayesian model including changing the number and length of chains, changing prior distributions, and adding predictors.
 
 ### Changing number and length of chains
+
+-   Posterior distributions are sampled in groups called chains
+
+-   Each sample in a chain is an iteration
+
+    -   Fewer iterations = shorter estimation time
+
+    -   Not enough iterations = convergence issues
+
+![](images/clipboard-2251697340.png)
 
 ```{r}
 stan_model <- stan_glm(kid_score ~ mom_iq, data = kidiq, chains = 2, iter = 1000, warmup = 500)
@@ -95,6 +157,18 @@ summary(stan_model)
 ```
 
 ### Changing prior distributions
+
+-   Background information that we bring to the model
+
+-   Likelihood + prior = posterior
+
+<!-- -->
+
+-   Why change the default prior?
+
+    -   Good reason to believe the parameter will take a given value
+
+    -   Constraints on parameter
 
 ![](images/clipboard-2312457615.png)
 
@@ -179,7 +253,12 @@ In this chapter, we'll learn how to determine if our estimated model fits our da
 
 ### R-squared
 
-$R^2$ = proportion of total variance explained by the linear predictor (deterministic component of the linear regression model) = coefficient of determination = $1 - \frac{\sum_i(y_i - \hat y_i)^2}{\sum_i (y_i - \bar y)^2}$
+-   Proportion of variance explained by the model (compared to the empty model)
+-   Proportion of total variance explained by the linear predictor (deterministic component of the linear regression model) = coefficient of determination
+
+$$
+R^2 = 1 - \frac{\sum_i(y_i - \hat y_i)^2}{\sum_i (y_i - \bar y)^2}
+$$
 
 ![](images/clipboard-4133301828.png){width="440"}
 
@@ -211,6 +290,8 @@ ss_total <- var(residuals(stan_model)) + var(fitted(stan_model))
 ```
 
 ### Posterior predictive model checks
+
+-   Check that the fitted model is compatible with the observed data
 
 ```{r}
 spread_draws(stan_model, `(Intercept)`, mom_iq) |> select(-.draw)
@@ -283,7 +364,11 @@ pp_check(stan_model, "stat_2d")
 
 ### Bayesian model comparisons
 
-`loo` package = leave-one-out (approximated cross-validation)
+-   `loo` package = leave-one-out
+
+    -   Approximated cross-validation
+
+    -   Using `loo` for model comparison
 
 ```{r}
 loo(stan_model)
@@ -298,8 +383,16 @@ model_2pred <- stan_glm(kid_score ~ mom_iq + mom_hs, data = kidiq)
 loo_1pred <- loo(model_1pred)
 loo_2pred <- loo(model_2pred)
 
-loo_compare(loo_1pred, loo_2pred)
+compare(loo_1pred, loo_2pred) # deprecated in favor of `loo_compare(loo_1pred, loo_2pred)`
 ```
+
+-   Positive = prefer second model
+
+-   Negative = prefer first model
+
+-   Significant difference?
+
+    -   Absolute value of difference relative to standard error
 
 ```{r}
 modelsummary(list("1pred" = model_1pred, "2pred" = model_2pred))

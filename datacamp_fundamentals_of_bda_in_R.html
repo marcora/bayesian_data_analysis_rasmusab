@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>DataCamp: Fundamentals of BDA in R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="datacamp_fundamentals_of_bda_in_R_files/libs/clipboard/clipboard.min.js"></script>
+<script src="datacamp_fundamentals_of_bda_in_R_files/libs/quarto-html/quarto.js"></script>
+<script src="datacamp_fundamentals_of_bda_in_R_files/libs/quarto-html/popper.min.js"></script>
+<script src="datacamp_fundamentals_of_bda_in_R_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="datacamp_fundamentals_of_bda_in_R_files/libs/quarto-html/anchor.min.js"></script>
+<link href="datacamp_fundamentals_of_bda_in_R_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="datacamp_fundamentals_of_bda_in_R_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="datacamp_fundamentals_of_bda_in_R_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="datacamp_fundamentals_of_bda_in_R_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="datacamp_fundamentals_of_bda_in_R_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">DataCamp: Fundamentals of BDA in R</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mosaic)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggformula)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggjoy)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(posterior)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayestestR)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123456</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="what-is-bayesian-data-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-bayesian-data-analysis">What is Bayesian data analysis?</h2>
+<p>This chapter will introduce you to Bayesian data analysis and give you a feel for how it works.</p>
+<section id="bayesianprobabilistic-inference-in-a-nutshell" class="level3">
+<h3 class="anchored" data-anchor-id="bayesianprobabilistic-inference-in-a-nutshell">Bayesian/probabilistic inference in a nutshell</h3>
+<p>A method for figuring out unobservable quantities given known facts that uses probability to describe the uncertainty over what the values of the unknown quantities could be</p>
+</section>
+<section id="bayesian-data-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="bayesian-data-analysis">Bayesian data analysis</h3>
+<ul>
+<li><p>The use of Bayesian inference to learn (parameter estimates, future data, etc) from data</p></li>
+<li><p>It can be used for hypothesis testing, linear regression, etc.</p></li>
+<li><p>It is very flexible and allows the data analyst to construct problem-specific models</p></li>
+</ul>
+</section>
+<section id="probability" class="level3">
+<h3 class="anchored" data-anchor-id="probability">Probability</h3>
+<ul>
+<li><p>A number between 0 and 1</p></li>
+<li><p>A statement about certainty/uncertainty</p></li>
+<li><p>1 is complete certainty something is the case</p></li>
+<li><p>0 is complete certainty something is NOT the case</p></li>
+<li><p>Not only about yes/no events (see continuous probability distribution below)</p>
+<p><img src="images/clipboard-2142904166.png" class="img-fluid" width="278"></p></li>
+</ul>
+<blockquote class="blockquote">
+<p>The role of probability distributions in BDA is to represent uncertainty, and the role of Bayesian inference is to update probability distributions to reflect what has been learned from data</p>
+</blockquote>
+</section>
+<section id="a-bayesian-model-for-the-proportion-of-success" class="level3">
+<h3 class="anchored" data-anchor-id="a-bayesian-model-for-the-proportion-of-success">A Bayesian model for the proportion of success</h3>
+<p>The function <code>prop_model</code> implements a Bayesian model that assumes that:</p>
+<ul>
+<li><p>The <code>data</code> is a vector of successes and failures represented by <code>1</code>s and <code>0</code>s</p></li>
+<li><p>There is an unknown underlying proportion of success</p></li>
+<li><p>Prior to being updated with data any underlying proportion of success is equally likely</p></li>
+</ul>
+<p>The result is a probability distribution that represents what the model knows about the underlying proportion of success</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>prop_model <span class="ot">&lt;-</span> <span class="cf">function</span> (<span class="at">data =</span> <span class="fu">c</span>(), <span class="at">prior_prop =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>), <span class="at">n_draws =</span> <span class="dv">10000</span>, </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">show_plot =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    data <span class="ot">&lt;-</span> <span class="fu">as.logical</span>(data)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    proportion_success <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">100</span>), <span class="dv">1</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    data_indices <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">seq</span>(<span class="dv">0</span>, <span class="fu">length</span>(data), <span class="at">length.out =</span> <span class="fu">min</span>(<span class="fu">length</span>(data) <span class="sc">+</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>, <span class="dv">20</span>)))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    post_curves <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(data_indices, <span class="cf">function</span>(i) {</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        value <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(i <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"Prior"</span>, <span class="fu">ifelse</span>(data[i], <span class="st">"Success"</span>, </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Failure"</span>))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        label <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"n="</span>, i)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        probability <span class="ot">&lt;-</span> <span class="fu">dbeta</span>(proportion_success, prior_prop[<span class="dv">1</span>] <span class="sc">+</span> </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>            <span class="fu">sum</span>(data[<span class="fu">seq_len</span>(i)]), prior_prop[<span class="dv">2</span>] <span class="sc">+</span> <span class="fu">sum</span>(<span class="sc">!</span>data[<span class="fu">seq_len</span>(i)]))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        probability <span class="ot">&lt;-</span> probability<span class="sc">/</span><span class="fu">max</span>(probability)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">data_frame</span>(value, label, proportion_success, probability)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    post_curves<span class="sc">$</span>label <span class="ot">&lt;-</span> <span class="fu">fct_rev</span>(<span class="fu">factor</span>(post_curves<span class="sc">$</span>label, <span class="at">levels =</span> <span class="fu">paste0</span>(<span class="st">"n="</span>, </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        data_indices)))</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    post_curves<span class="sc">$</span>value <span class="ot">&lt;-</span> <span class="fu">factor</span>(post_curves<span class="sc">$</span>value, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Prior"</span>, </span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Success"</span>, <span class="st">"Failure"</span>))</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(post_curves, <span class="fu">aes</span>(<span class="at">x =</span> proportion_success, <span class="at">y =</span> label, </span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">height =</span> probability, <span class="at">fill =</span> value)) <span class="sc">+</span> <span class="fu">geom_joy</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">panel_scaling =</span> <span class="cn">TRUE</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="fu">scale_y_discrete</span>(<span class="st">""</span>, <span class="at">expand =</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="dv">0</span>)) <span class="sc">+</span> <span class="fu">scale_x_continuous</span>(<span class="st">"Underlying proportion of success"</span>) <span class="sc">+</span> </span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">hcl</span>(<span class="dv">120</span> <span class="sc">*</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">0</span> <span class="sc">+</span> <span class="dv">15</span>, <span class="dv">100</span>, <span class="dv">65</span>), </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>            <span class="at">name =</span> <span class="st">""</span>, <span class="at">drop =</span> <span class="cn">FALSE</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Prior   "</span>, <span class="st">"Success   "</span>, </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Failure   "</span>)) <span class="sc">+</span> <span class="fu">theme_light</span>(<span class="at">base_size =</span> <span class="dv">18</span>) <span class="sc">+</span> </span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>        <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (show_plot) {</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>        <span class="fu">print</span>(p)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">invisible</span>(<span class="fu">rbeta</span>(n_draws, prior_prop[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">sum</span>(data), prior_prop[<span class="dv">2</span>] <span class="sc">+</span> </span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(<span class="sc">!</span>data)))</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">prop_model</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `data_frame()` was deprecated in tibble 1.1.0.
+ℹ Please use `tibble()` instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="datacamp_fundamentals_of_bda_in_R_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">prop_model</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="datacamp_fundamentals_of_bda_in_R_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">prop_model</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="datacamp_fundamentals_of_bda_in_R_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">prop_model</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="datacamp_fundamentals_of_bda_in_R_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">prop_model</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="datacamp_fundamentals_of_bda_in_R_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="zombie-cure" class="level3">
+<h3 class="anchored" data-anchor-id="zombie-cure">Zombie cure</h3>
+<p><img src="images/il_1080xN.736851073_n5ij.avif" class="img-fluid"></p>
+<p>Let’s say the zombie apocalypse is upon us and we have come up with a new experimental drug to cure zombieism. We have no clue how effective it’s going to be, but when we gave it to 13 zombies two of them turned human again.</p>
+<p>QOI = proportion of zombies cured by drug</p>
+<p>The model implemented in <code>prop_model</code> makes more sense here than in the fair coin tossing experiment as we have no clue how good the drug is. The final probability distribution (with <code>x = 2</code> successes/zombie cured out of <code>n = 13</code> zombies who were given the drug) represents what the model now knows about the underlying proportion of cured zombies.</p>
+<p>What proportion of zombies would we expect to turn human if we administered this new drug to the whole zombie population?</p>
+<p>Between 5% to 40%.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">prop_model</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="datacamp_fundamentals_of_bda_in_R_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="priors-and-posteriors" class="level3">
+<h3 class="anchored" data-anchor-id="priors-and-posteriors">Priors and posteriors</h3>
+<ul>
+<li><p>A <strong>prior</strong> is a probability distribution that represents what the model knows before seeing the data (the blue distribution above)</p></li>
+<li><p>A <strong>posterior</strong> is a probability distribution that represents what the model knows after having seen the data (the last red distribution above)</p></li>
+</ul>
+<p>A probability distribution can be represented by a plot, a mathematical function (if it exists), or a vector of samples where a value occurs proportionally often to how probable it is.</p>
+<p><img src="images/clipboard-3749826059.png" class="img-fluid"></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># number of dice</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>num_dice <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># number of sides on each die</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>num_sides <span class="ot">&lt;-</span> <span class="dv">6</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate rolling five dice and counting the number of 6's</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>number_of_sixes <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">sum</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>num_sides, num_dice, <span class="at">replace =</span> <span class="cn">TRUE</span>) <span class="sc">==</span> <span class="dv">6</span>))</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>number_of_sixes[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 2 0 2 1 2 1 1 0 1 0 1 0 1 0 0 1 1 0 1 1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_bar</span>(<span class="sc">~</span> number_of_sixes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="datacamp_fundamentals_of_bda_in_R_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="summarizing-and-reporting-the-results-of-the-zombie-drug-experiment" class="level3">
+<h3 class="anchored" data-anchor-id="summarizing-and-reporting-the-results-of-the-zombie-drug-experiment">Summarizing and reporting the results of the zombie drug experiment</h3>
+<p>In addition to showing the plot, <code>prop_model</code> also returns a large (N = 10,000) random sample from the posterior over the underlying proportion of success.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># extract and explore the posterior</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">=</span> <span class="fu">prop_model</span>(data, <span class="at">show_plot =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>posterior[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 0.1652 0.4222 0.2974 0.2881 0.1083 0.1598 0.1613 0.3448 0.1255 0.2367
+[11] 0.2823 0.1645 0.1608 0.4058 0.3985 0.2326 0.3561 0.2758 0.3165 0.1754</code></pre>
+</div>
+</div>
+<p>The point of working with samples from a probability distribution is that it makes it <em>easy</em> to calculate new quantities of interest.</p>
+<ul>
+<li>Take a look at the distribution of <em>all</em> the samples in <code>posterior</code> by plotting it as a histogram or density plot.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_density</span>(<span class="sc">~</span> posterior)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="datacamp_fundamentals_of_bda_in_R_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>A <em>point estimate</em> is a single number used to summarize what’s known about a parameter of interest. It can be seen as a “best guess” of the value of the parameter. A commonly used point estimate is the <strong>median</strong> of the posterior. It’s the midpoint of the distribution, and it’s equally probable for the parameter value to be larger than the median as it is to be smaller than it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(posterior)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2016</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(posterior)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1889</code></pre>
+</div>
+</div>
+<p>So, a best guess is that the drug would cure around 18% of all zombies. Another common summary is to report an interval that includes the parameter of interest with a certain probability. This is called a <em>credible interval</em> (CI). With a posterior represented as a vector of samples you can calculate a CI using the <code>quantile()</code> function.</p>
+<p><code>quantile()</code> takes the vector of samples as its first argument and the second argument is a vector defining how much probability should be left below and above the CI. For example, the vector <code>c(0.05, 0.95)</code> would yield a 90% CI and <code>c(0.25, 0.75)</code> would yield a 50% CI.</p>
+<ul>
+<li>Calculate a 90% credible interval of <code>posterior</code> using <code>quantile()</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(posterior, <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    5%    95% 
+0.0617 0.3871 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">favstats</span>(posterior)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      min     Q1 median     Q3   max   mean     sd     n missing
+ 0.005271 0.1262 0.1889 0.2629 0.727 0.2016 0.1004 10000       0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hdi</span>(posterior, <span class="at">ci =</span> .<span class="dv">89</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>89% HDI: [0.05, 0.35]</code></pre>
+</div>
+</div>
+<p>According to the credible interval, there is a 90% probability that the proportion of zombies the drug would cure is between 6% and 38%. (Here we have to be careful to remember that the percentage of cured zombies and the percentage of probability are two different things.)</p>
+<p>Now, there is a rival zombie laboratory that is also working on a drug. They claim that they are certain that their drug cures 7% of the zombies it’s administered to. Can we calculate how probable it is that our drug is better? Yes, we can! But it’s a two stage process:</p>
+<ol type="1">
+<li>Use <code>sum</code> to count how many samples in <code>posterior</code> that are larger than 7%</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(posterior <span class="sc">&gt;</span> <span class="fl">0.07</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 9309</code></pre>
+</div>
+</div>
+<p>To turn this count into a probability we now need to <em>normalize</em> it, that is, divide it by the total number of samples in <code>posterior</code>.</p>
+<ol start="2" type="1">
+<li>Divide the result of <code>sum</code> by the number of samples in <code>posterior</code></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(posterior <span class="sc">&gt;</span> <span class="fl">0.07</span>)<span class="sc">/</span><span class="fu">length</span>(posterior)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9309</code></pre>
+</div>
+</div>
+<p>or, in one step:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(posterior <span class="sc">&gt;</span> <span class="fl">0.07</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9309</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>Given the data of two cured and 11 relapsed zombies, and using the Bayesian model described before, there is a 90% probability that our drug cures between 6% and 39% of treated zombies. Further, there is 93% probability that our drug cures zombies at a higher rate than current state of the art drugs.</p>
+</blockquote>
+<p>Sounds like science to me!</p>
+</section>
+</section>
+<section id="how-does-bayesian-inference-work" class="level2">
+<h2 class="anchored" data-anchor-id="how-does-bayesian-inference-work">How does Bayesian inference work?</h2>
+<ul>
+<li><p>Bayesian inference requires three ingredients:</p>
+<ol type="1">
+<li><p>Data</p></li>
+<li><p>Generative model</p></li>
+<li><p>Priors</p></li>
+</ol></li>
+</ul>
+<p><img src="images/clipboard-4290210799.png" class="img-fluid"></p>
+<section id="generative-model-of-the-zombie-drug-experiment" class="level3">
+<h3 class="anchored" data-anchor-id="generative-model-of-the-zombie-drug-experiment">Generative model of the zombie drug experiment</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># parameters</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>prop_success <span class="ot">&lt;-</span> <span class="fl">0.15</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>n_zombies <span class="ot">&lt;-</span> <span class="dv">13</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate data</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">map_int</span>(<span class="dv">1</span><span class="sc">:</span>n_zombies, \(x) <span class="fu">runif</span>(<span class="dv">1</span>, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">1</span>) <span class="sc">&lt;</span> prop_success)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 0 0 0 0 0 1 0 0 0 0 0 0 0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count zombie cured</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">sum</span>(data)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+<p>It turns out that this generative model already has a name. It’s called the <strong>binomial process</strong> or the <strong>binomial distribution</strong>. In R you can use the <code>rbinom</code> function to simulate data from a binomial distribution. The <code>rbinom</code> function takes three arguments:</p>
+<ul>
+<li><p><code>n</code> The number of times you want to run the generative model</p></li>
+<li><p><code>size</code> The number of trials. (For example, the number of zombies you’re giving the drug.)</p></li>
+<li><p><code>prob</code> The underlying proportion of success as a number between <code>0.0</code> and <code>1.0</code>.</p></li>
+</ul>
+<p>A nice thing with <code>rbinom</code> is that it makes it easy to rerun the generative model many times.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">size =</span> n_zombies, <span class="at">prob =</span> prop_success)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>data[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 4 2 4 1 3 2 1 2 1 2 3 1 1 0 5 2 2 4 3 3</code></pre>
+</div>
+</div>
+<p>It’s actually the case that all probability distributions, like the normal distribution or the Poisson distribution, can be seen as small generative models, and there are many more that are implemented in R.</p>
+</section>
+<section id="using-a-generative-model" class="level3">
+<h3 class="anchored" data-anchor-id="using-a-generative-model">Using a generative model</h3>
+<p>With a generative model, we can plugin fixed parameter values and it will generate simulated data. This is useful if we know the parameter values, and we want to predict what future unknown data might be.</p>
+<p><img src="images/clipboard-1705872009.png" class="img-fluid"></p>
+<p>For example, say we are completely sure that our drug cures 7% of all zombies, and we want to know how many we’ll likely cure when we give the drug to the 100 zombies we have in our zombie pit.</p>
+<p><img src="images/clipboard-2700806159.png" class="img-fluid"></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>cured_zombies <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">10000</span>, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">prob =</span> <span class="fl">0.07</span>) <span class="co"># sampling distribution</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>cured_zombies[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 11  7  5  5  3 10  6  6 13  7  8  4  4  6  5 11  3  4  7  9</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_bar</span>(<span class="sc">~</span> cured_zombies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="datacamp_fundamentals_of_bda_in_R_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>From known parameters (of the DGP) to unknown data (sampling distribution):</p>
+<p><img src="images/clipboard-2619356156.png" class="img-fluid"></p>
+<p>But we usually want to go from known data (observed data) to unknown parameters (of the DGP):</p>
+<p><img src="images/clipboard-2132806111.png" class="img-fluid"></p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
