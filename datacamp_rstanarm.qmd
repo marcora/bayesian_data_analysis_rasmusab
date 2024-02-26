@@ -1,0 +1,373 @@
+---
+title: "DataCamp: Bayesian Regression Modeling with rstanarm"
+format: html
+---
+
+```{r}
+#| output: false
+library(tidyverse)
+library(ggformula)
+library(broom)
+library(broom.mixed)
+library(performance)
+library(modelsummary)
+library(rstanarm)
+library(loo)
+library(tidybayes)
+library(posterior)
+library(bayesplot)
+
+theme_set(theme_bw())
+
+color_scheme_set(scheme = "brightblue")
+```
+
+## Introduction to Bayesian Linear Models
+
+A review of frequentist regression using `lm()`, an introduction to Bayesian regression using `stan_glm()`, and a comparison of the respective outputs.
+
+### Non-Bayesian linear regression
+
+```{r}
+lm_model <- lm(kid_score ~ mom_iq, data = kidiq)
+```
+
+```{r}
+summary(lm_model)
+```
+
+```{r}
+tidy(lm_model)
+```
+
+### Bayesian linear regression
+
+```{r}
+stan_model <- stan_glm(kid_score ~ mom_iq, data = kidiq)
+```
+
+```{r}
+summary(stan_model)
+```
+
+```{r}
+tidy(stan_model)
+```
+
+### Assessing model convergence
+
+Rhat should be less than 1.1
+
+### Comparing frequentist and Bayesian inferences
+
+-   Frequentist inference: data are random, parameters are fixed; p-value = P(random data/sample/test statistic \| null hypothesis/parameter = 0)
+-   Bayesian inference: data are fixed, parameters are random; posterior = P(parameter \| observed data/sample)
+-   Use credible interval of posterior distribution to check if parameter is diff from zero (or any other hypothesis)
+
+```{r}
+# probability that true param value is in interval
+posterior_interval(stan_model, prob = 0.95)
+```
+
+```{r}
+# probability that interval contains true param value
+confint(lm_model, level = 0.95)
+```
+
+```{r}
+posterior <- spread_draws(stan_model, mom_iq)
+
+mean(between(posterior$mom_iq, 0.60, 0.65))
+```
+
+## Modifying a Bayesian Model
+
+Learn how to modify your Bayesian model including changing the number and length of chains, changing prior distributions, and adding predictors.
+
+### Changing number and length of chains
+
+```{r}
+stan_model <- stan_glm(kid_score ~ mom_iq, data = kidiq, chains = 2, iter = 1000, warmup = 500)
+```
+
+```{r}
+summary(stan_model)
+```
+
+### Changing prior distributions
+
+![](images/clipboard-2312457615.png)
+
+```{r}
+prior_summary(stan_model)
+```
+
+Adjusted scale is `2.5 * sd(y)` for the intercept, and `2.5 * sd(y)/sd(x)` for the coefficients:
+
+```{r}
+2.5 * sd(kidiq$kid_score) # intercept
+
+2.5 * sd(kidiq$kid_score) / sd(kidiq$mom_iq) # coefficient
+```
+
+Auto-scale can be turned off:
+
+```{r}
+# n.b.: autoscale = FALSE is the default when manually specifying priors
+stan_model <- stan_glm(kid_score ~ mom_iq, data = kidiq,
+                       prior_intercept = normal(),
+                       prior = normal(),
+                       prior_aux = exponential())
+```
+
+```{r}
+prior_summary(stan_model)
+```
+
+```{r}
+stan_model <- stan_glm(kid_score ~ mom_iq, data = kidiq,
+                       prior_intercept = normal(location = 3, scale = 2),
+                       prior = cauchy(location = 0, scale = 1))
+```
+
+```{r}
+prior_summary(stan_model)
+```
+
+A prior distribution should reflect that expected distribution of the parameter it is applied to!
+
+A prior can be seen as having more data in addition to the observed ones; specifying a highly informative prior is like having a lot of additional data, therefore if we don't have a lot of observed data, it can strongly influence the posterior!
+
+Flat priors:
+
+```{r}
+stan_model <- stan_glm(kid_score ~ mom_iq, data = kidiq,
+                       prior_intercept = NULL,
+                       prior = NULL,
+                       prior_aux = NULL)
+```
+
+```{r}
+prior_summary(stan_model)
+```
+
+```{r}
+modelsummary(list("frequentist" = lm_model, "bayesian" = stan_model))
+```
+
+### Altering the estimation process
+
+Estimation errors (like non-convergence) are threats to the validity of the parameter estimates
+
+Divergent transitions:
+
+```{r}
+stan_model <- stan_glm(kid_score ~ mom_iq, data = kidiq,
+                       control = list(adapt_delta = 0.99)) # increase from 0.95 default
+```
+
+Exceeding the max treedepth:
+
+```{r}
+stan_model <- stan_glm(kid_score ~ mom_iq, data = kidiq,
+                       control = list(max_treedepth = 15)) # increase from 10 default
+```
+
+## Assessing Model Fit
+
+In this chapter, we'll learn how to determine if our estimated model fits our data and how to compare competing models.
+
+### R-squared
+
+$R^2$ = proportion of total variance explained by the linear predictor (deterministic component of the linear regression model) = coefficient of determination = $1 - \frac{\sum_i(y_i - \hat y_i)^2}{\sum_i (y_i - \bar y)^2}$
+
+![](images/clipboard-4133301828.png){width="440"}
+
+```{r}
+lm_summary <- summary(lm_model)
+
+lm_summary$r.squared
+```
+
+```{r}
+ss_res <- var(residuals(lm_model))
+ss_total <- var(residuals(lm_model)) + var(fitted(lm_model))
+
+1 - (ss_res / ss_total)
+```
+
+```{r}
+ss_res <- var(residuals(lm_model))
+ss_total <- var(kidiq$kid_score)
+
+1 - (ss_res / ss_total)
+```
+
+```{r}
+ss_res <- var(residuals(stan_model))
+ss_total <- var(residuals(stan_model)) + var(fitted(stan_model))
+
+1 - (ss_res / ss_total)
+```
+
+### Posterior predictive model checks
+
+```{r}
+spread_draws(stan_model, `(Intercept)`, mom_iq) |> select(-.draw)
+```
+
+Posterior predictions:
+
+```{r}
+nrow(kidiq)
+```
+
+```{r}
+# for each iteration, predict outcome of each observation using the parameter values at that iteration
+predictions <- posterior_linpred(stan_model)
+
+predictions |> as_tibble()
+```
+
+```{r}
+# compare summaries of predicted iq scores vs observed iq scores for all observations
+# if model is a good fit for the data, these summaries should be very similar!
+
+iter1 <- predictions[1,] # first iteration
+iter2 <- predictions[2,] # second iteration
+
+summary(kidiq$kid_score)
+
+summary(iter1)
+
+summary(iter2)
+```
+
+```{r}
+# compare summaries of predicted iq scores vs observed iq scores for single observations
+# if model is a good fit for the data, these summaries should be similar!
+kidiq$kid_score[24]
+
+summary(predictions[, 24])
+
+kidiq$kid_score[185]
+
+summary(predictions[, 185])
+```
+
+Model fit with posterior predictive model checks:
+
+```{r}
+r2_posterior <- bayes_R2(stan_model)
+summary(r2_posterior)
+quantile(r2_posterior, probs = c(0.025, 0.975)) # credible interval
+```
+
+```{r}
+gf_histogram(~ r2_posterior)
+```
+
+Density overlay:
+
+```{r}
+pp_check(stan_model, "dens_overlay")
+```
+
+```{r}
+pp_check(stan_model, "stat")
+```
+
+```{r}
+pp_check(stan_model, "stat_2d")
+```
+
+### Bayesian model comparisons
+
+`loo` package = leave-one-out (approximated cross-validation)
+
+```{r}
+loo(stan_model)
+```
+
+```{r}
+model_1pred <- stan_glm(kid_score ~ mom_iq, data = kidiq)
+model_2pred <- stan_glm(kid_score ~ mom_iq + mom_hs, data = kidiq)
+```
+
+```{r}
+loo_1pred <- loo(model_1pred)
+loo_2pred <- loo(model_2pred)
+
+loo_compare(loo_1pred, loo_2pred)
+```
+
+```{r}
+modelsummary(list("1pred" = model_1pred, "2pred" = model_2pred))
+```
+
+## Presenting and Using a Bayesian Regression
+
+In this chapter, we'll learn how to use the estimated model to create visualizations of your model and make predictions for new data.
+
+```{r}
+tidy_coef <- tidy(stan_model)
+
+model_intercept <- tidy_coef$estimate[[1]]
+model_slope <- tidy_coef$estimate[[2]]
+
+gf_point(kid_score ~ mom_iq, alpha = 0.5, color = "skyblue", data = kidiq) |> gf_abline(intercept = model_intercept, slope = model_slope, color = "black")
+```
+
+Plotting uncertainty (one line for each iteration)
+
+```{r}
+draws <- spread_draws(stan_model, `(Intercept)`, mom_iq)
+
+draws
+```
+
+```{r}
+gf_point(kid_score ~ mom_iq, alpha = 0.5, color = "skyblue", data = kidiq) |> gf_abline(intercept = ~`(Intercept)`, slope = ~mom_iq, alpha = 0.05, size = 0.1, color = "blue", data = draws) |> gf_abline(intercept = model_intercept, slope = model_slope, color = "black")
+```
+
+### Making predictions
+
+```{r}
+predictions <- posterior_predict(model_2pred)
+
+predictions |> as_tibble()
+```
+
+The advantage of `posterior_predict()` over `posterior_linpred()` is that we can generate predictions for new data:
+
+```{r}
+predict_data <- tibble(mom_iq = 110,
+                       mom_hs = c(0,1))
+
+predict_data
+```
+
+```{r}
+new_predictions <- posterior_predict(model_2pred, newdata = predict_data)
+
+new_predictions |> as_tibble()
+```
+
+```{r}
+summary(new_predictions[, 1]) # No HS
+summary(new_predictions[, 2]) # Completed HS
+```
+
+### Visualizing predictions
+
+```{r}
+new_predictions <- as_tibble(new_predictions) |> set_names(c("No HS", "Completed HS"))
+
+plot_new_predictions <- new_predictions |> gather(key = "HS", value = "predict")
+
+plot_new_predictions
+```
+
+```{r}
+gf_density(~ predict, data = plot_new_predictions) |> gf_facet_wrap(~ HS, ncol = 1)
+```
