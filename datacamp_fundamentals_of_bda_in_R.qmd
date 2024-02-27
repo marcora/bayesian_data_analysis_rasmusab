@@ -15,6 +15,7 @@ library(ggjoy)
 library(broom)
 library(bayesplot)
 library(bayestestR)
+library(patchwork)
 
 theme_set(theme_bw())
 
@@ -177,7 +178,7 @@ number_of_sixes[1:20]
 ```
 
 ```{r}
-gf_bar(~ number_of_sixes)
+gf_bar(~ number_of_sixes, fill = "skyblue")
 ```
 
 ### Summarizing and reporting the results of the zombie drug experiment
@@ -198,7 +199,7 @@ The point of working with samples from a probability distribution is that it mak
 -   Take a look at the distribution of *all* the samples in `posterior` by plotting it as a histogram or density plot.
 
 ```{r}
-gf_density(~ posterior)
+gf_density(~ posterior, fill = "skyblue")
 ```
 
 A *point estimate* is a single number used to summarize what's known about a parameter of interest. It can be seen as a "best guess" of the value of the parameter. A commonly used point estimate is the **median** of the posterior. It's the midpoint of the distribution, and it's equally probable for the parameter value to be larger than the median as it is to be smaller than it.
@@ -274,16 +275,16 @@ prop_success <- 0.18
 n_zombies <- 13
 
 # simulate random samples/data
-cured_zombies <- map_int(1:n_zombies, \(x) runif(1, min = 0, max = 1) < prop_success)
+zombies_cured <- map_int(1:n_zombies, \(x) runif(1, min = 0, max = 1) < prop_success)
 
-cured_zombies
+zombies_cured
 ```
 
 ```{r}
 # count zombie cured
-cured_zombies <- sum(cured_zombies)
+zombies_cured <- sum(zombies_cured)
 
-cured_zombies
+zombies_cured
 ```
 
 It turns out that this generative model already has a name. It's called the **binomial process** or the **binomial distribution**. In R you can use the `rbinom` function to simulate data from a binomial distribution. The `rbinom` function takes three arguments:
@@ -299,9 +300,9 @@ A nice thing with `rbinom` is that it makes it easy to rerun the generative mode
 ```{r}
 n_samples <- 10000
 
-cured_zombies = rbinom(n = n_samples, size = n_zombies, prob = prop_success)
+zombies_cured = rbinom(n = n_samples, size = n_zombies, prob = prop_success)
 
-cured_zombies[1:20]
+zombies_cured[1:20]
 ```
 
 It’s actually the case that all probability distributions, like the normal distribution or the Poisson distribution, can be seen as small generative models, and there are many more that are implemented in R.
@@ -317,13 +318,13 @@ For example, say we are completely sure that our drug cures 10% of all zombies, 
 ![](images/clipboard-2700806159.png)
 
 ```{r}
-cured_zombies <- rbinom(n = 10000, size = 100, prob = 0.1) # sampling distribution
+zombies_cured <- rbinom(n = 10000, size = 100, prob = 0.1) # sampling distribution
 
-cured_zombies[1:20]
+zombies_cured[1:20]
 ```
 
 ```{r}
-gf_bar(~ cured_zombies)
+gf_bar(~ zombies_cured, fill = "skyblue")
 ```
 
 From known parameters (of the DGP) to unknown data (sampling distribution):
@@ -354,20 +355,20 @@ prop_success <- runif(n_samples, min = 0, max = 0.2)
 n_zombies <- 100
 
 # simulate data (combining uncertainty in prop_success with uncertainty in data)
-cured_zombies = rbinom(n = n_samples, size = n_zombies, prob = prop_success)
+zombies_cured = rbinom(n = n_samples, size = n_zombies, prob = prop_success)
 ```
 
-Because the `rbinom` function is *vectorized* the first value of `prop_success` is used to sample the first value in `cured_zombies`, the second value in `prop_success` is used for the second in `cured_zombies`, and so on. The result is that the samples in `cured_zombies` now also incorporate the uncertainty in what the underlying proportion of success could be.
+Because the `rbinom` function is *vectorized* the first value of `prop_success` is used to sample the first value in `zombies_cured`, the second value in `prop_success` is used for the second in `zombies_cured`, and so on. The result is that the samples in `zombies_cured` now also incorporate the uncertainty in what the underlying proportion of success could be.
 
 ```{r}
-gf_density(~ prop_success)
+gf_density(~ prop_success, fill = "skyblue")
 ```
 
 ```{r}
-gf_bar(~ cured_zombies)
+gf_bar(~ zombies_cured, fill = "skyblue")
 ```
 
-This looks very different from the histogram of `cured_zombies` we got in the last exercise when `prop_success` was exactly 0.1. With the added uncertainty in `prop_success` the uncertainty over the number of cured zombies has also increased.
+This looks very different from the histogram of `zombies_cured` we got in the last exercise when `prop_success` was exactly 0.1. With the added uncertainty in `prop_success` the uncertainty over the number of cured zombies has also increased.
 
 ### Bayesian models and conditioning (update a Bayesian model with data)
 
@@ -389,19 +390,19 @@ prop_success <- runif(n_samples, min = 0, max = 0.2)
 n_zombies <- 100
 
 # simulate random samples/data (combining uncertainty in prop_success with uncertainty in data)
-cured_zombies = rbinom(n = n_samples, size = n_zombies, prob = prop_success)
+zombies_cured = rbinom(n = n_samples, size = n_zombies, prob = prop_success)
 ```
 
 ```{r}
 # joint probability distribution of parameter values and simulated random samples/data
 # before seeing the data
-prior <- tibble(prop_success, cured_zombies)
+prior <- tibble(prop_success, zombies_cured)
 
 prior
 ```
 
 ```{r}
-gf_point(prop_success ~ cured_zombies, color = "skyblue", alpha = 0.1, data = prior) |> 
+gf_point(prop_success ~ zombies_cured, color = "skyblue", alpha = 0.1, data = prior) |> 
   gf_density_2d() +
   geom_ysidedensity(color = "skyblue") +
   geom_xsidebar(fill = "skyblue")
@@ -429,6 +430,222 @@ But can also do conditioning the other way around using the observed data (e.g.,
 
 > Bayesian inference is conditioning on data, in order to learn about parameter values.
 
+### Update a Bayesian model with data
+
+The reason we've called it `prior` is because it represents the uncertainty *before* (that is, *prior* to) having included the information in the data. Let's do that now!
+
+You ran your clinical trial of the zombie drug, and 13 out of the 100 zombies in the trial were cured. You would now like to use this new information to update the Bayesian model.
+
+`prior$zombies_cured` represented the uncertainty over how many zombies you would cure because of the drug. But now you know you got exactly 13 cured zombies.
+
+-   Update `prior` to include this information by conditioning on this data. That is, filtering away all rows where `prior$zombies_cured` isn't equal to 13. Store the resulting data frame in `posterior`.
+
+The reason that we call it `posterior` is because it represents the uncertainty *after* (that is, *posterior* to) having included the information in the data.
+
 ```{r}
-# XXX
+posterior <- prior |> filter(zombies_cured == 13) # or `prior[prior$zombies_cured == 13, ]`
+
+posterior
 ```
+
+```{r}
+gf_density(~ prop_success, fill = "skyblue", data = posterior)
+```
+
+This doesn't look at all like the uniform distribution between 0.0 and 0.2 we put into `prop_success` before. The whole distribution of samples now represent the posterior (after the data) probability distribution over what `prop_success` could be.
+
+Now we want to use this updated `prop_success` to predict how many zombies we would cure if we reran the clinical trial.
+
+While `prop_success` represents the uncertainty regarding the underlying proportion of clicks for the next ad campaign, `zombies_cured` has not been updated yet.
+
+-   Replace `prior$zombies_cured` with a new sample drawn using `rbinom` with `prior$prop_success` as an argument.
+
+```{r}
+# assign posterior to a new variable called prior
+prior <- posterior
+
+# replace prior$zombies_cured with a new sample and visualize the result
+n_samples <- nrow(prior)
+n_zombies <- 100
+
+prior$zombies_cured <- rbinom(n_samples, size = n_zombies, prob = prior$prop_success)
+```
+
+-   Plot the resulting `prior$zombies_cured`
+
+```{r}
+gf_bar(~ zombies_cured, data = prior)
+```
+
+The plot shows a probability distribution over the number of zombies that would be cured in a new clinical trial.
+
+-   Calculate the probability that you will get 5 or more zombies cured next time you run your clinical trial.
+
+```{r}
+prior |> summarize(`P(zombies_cured >= 5)` = mean(zombies_cured >= 5)) # or `mean(prior$zombies_cured >= 5)`
+```
+
+### What have we done?
+
+1\) Statistical model = Data/sampling probability of `zombies_cured`, probability model of the DGP (`dbinom`, binomial process)
+
+![](images/clipboard-2236362687.png)
+
+2\) Prior probability distribution of `prop_success` (`dunif`, uniform between 0 and 0.2)
+
+![](images/clipboard-2701134919.png)
+
+3\) Joint probability distribution of `zombies_cured` and `prop_success`
+
+![](images/clipboard-4090737218.png)
+
+4\) Collect data and condition the joint probability distribution on the data
+
+![](images/clipboard-780549006.png)
+
+5\) to obtain the posterior distribution (Bayesian updating)
+
+![](images/clipboard-4259084839.png)
+
+6\) Use posterior as prior for the next BDA
+
+![To recap, we have:](images/clipboard-846239201.png)
+
+1.  Specified prior information\
+    ![](images/clipboard-2433292234.png)
+2.  and a generative model\
+    ![](images/clipboard-1549079272.png)
+3.  and given some data,\
+    ![](images/clipboard-3290617798.png)
+4.  we calculated the posterior/learned about the DGP parameter values (with uncertainty)\
+    ![](images/clipboard-3577203425.png)
+5.  this works for any generative model with any number of parameters\
+    ![](images/clipboard-2068686318.png)\
+
+![](images/clipboard-4237198782.png)
+
+## Why use Bayesian data analysis?
+
+BDA is flexible!
+
+-   You can include information sources in addition to data
+-   You can make any comparisons between groups or data sets
+-   You can use the results of BDA to do Decision Analysis
+-   You can change the underlying statistical model
+
+### Change the model to use an informative prior 
+
+Including information in addition to data:
+
+-   Background information
+-   Expert opinion
+-   Common knowledge
+
+![](images/clipboard-3881761330.png)
+
+![](images/clipboard-2489642209.png)
+
+The Beta distribution is a useful probability distribution when you want model uncertainty over a parameter bounded between 0 and 1. Here you'll explore how the two parameters of the Beta distribution determine its shape.
+
+![](images/clipboard-1156946050.png)
+
+A Beta(1,1) distribution is the same as a uniform distribution between 0 and 1. It is useful as a so-called *non-informative* prior as it expresses than any value from 0 to 1 is equally likely.
+
+![](images/clipboard-3817040415.png)
+
+![](images/clipboard-3431059699.png)
+
+So the larger the shape parameters are, the more concentrated the beta distribution becomes.
+
+![](images/clipboard-4275362894.png)
+
+![](images/clipboard-919083096.png)
+
+![](images/clipboard-1477066393.png)
+
+![](images/clipboard-527699540.png)
+
+The new information you got from the zombie drug manufacturer was:
+
+> Most zombies are cured on 5% of the time, but for some zombies it is as low as 2% and for others as high as 8%.
+
+![`rbeta(shape1 = 5, shape2 = 95)` (C) is a reasonable choice of prior distribution for the above information!](images/clipboard-355123039.png)
+
+```{r}
+n_samples <- 100000
+
+# parameters
+prop_success <- rbeta(n_samples, shape1 = 5, shape2 = 95)
+n_zombies <- 100
+
+# simulate data (combining uncertainty in prop_success with uncertainty in data)
+zombies_cured = rbinom(n = n_samples, size = n_zombies, prob = prop_success)
+
+
+prior <- tibble(prop_success, zombies_cured)
+
+posterior <- prior[prior$zombies_cured == 13, ]
+
+gf_density(~ prop_success, fill = "skyblue", data = prior) / gf_density(~ prop_success, fill = "skyblue", data = posterior)
+```
+
+Two different Bayesian models for the same data:
+
+![](images/clipboard-589544108.png)
+
+### Contrasts and comparisons
+
+Comparing drug A (video) vs. drug B (text) \[same model but different data\]
+
+![](images/clipboard-1514466049.png)
+
+```{r}
+n_samples <- 100000
+
+# parameters
+prop_success <- runif(n_samples, min = 0, max = 0.2)
+n_zombies <- 100
+
+# simulate data (combining uncertainty in prop_success with uncertainty in data)
+zombies_cured = rbinom(n = n_samples, size = n_zombies, prob = prop_success)
+
+
+prior <- tibble(prop_success, zombies_cured)
+
+posterior_video = prior[prior$zombies_cured == 13, ]
+posterior_text = prior[prior$zombies_cured == 6, ]
+
+gf_density(~ prop_success, fill = "skyblue", data = posterior_video) / gf_density(~ prop_success, fill = "skyblue", data = posterior_text)
+```
+
+Calculating the posterior difference:
+
+The posterior `prop_success` for the video and text ad has been put into a single `posterior` data frame. The reason for `[1:4000]` is because these `prop_success`s are not necessarily of the same length, which they need to be when put into a data frame.
+
+-   Calculate the posterior probability distribution over what the difference in proportion of zombies cured might be between drug A (video ad) and drug B (text ad).
+
+```{r}
+posterior <- tibble(
+    video_prop = posterior_video$prop_success[1:4000],
+    text_prop  = posterior_text$prop_success[1:4000])
+    
+# calculate the posterior difference: `video_prop - text_prop`
+posterior$prop_diff = posterior$video_prop - posterior$text_prop
+
+# visualize `prop_diff`
+gf_density(~ prop_diff, fill = "skyblue", data = posterior) 
+```
+
+-   Calculate "a most likely" difference by taking the `median` of `posterior$prop_diff`
+
+```{r}
+favstats(~ prop_diff, data = posterior)
+```
+
+-   Finally, calculate the probability that proportion of success is larger for drug A (video ad) than for drug B (text ad). That is, calculate the proportion of samples in `posterior$prop_diff` that are more than zero.
+
+```{r}
+posterior |> summarize(`P(drug A better than drug B)` = mean(prop_diff > 0))
+```
+
+### Decision analysis
