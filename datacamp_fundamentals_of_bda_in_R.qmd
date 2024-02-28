@@ -3,6 +3,7 @@ title: "DataCamp: Fundamentals of BDA in R"
 format:
   html:
     df-print: paged
+    toc: true
 ---
 
 ```{r}
@@ -16,6 +17,7 @@ library(broom)
 library(bayesplot)
 library(bayestestR)
 library(patchwork)
+library(rethinking)
 
 theme_set(theme_bw())
 
@@ -533,7 +535,7 @@ BDA is flexible!
 -   You can use the results of BDA to do Decision Analysis
 -   You can change the underlying statistical model
 
-### Change the model to use an informative prior 
+### Change the model to use an informative prior
 
 Including information in addition to data:
 
@@ -581,7 +583,6 @@ n_zombies <- 100
 # simulate data (combining uncertainty in prop_success with uncertainty in data)
 zombies_cured = rbinom(n = n_samples, size = n_zombies, prob = prop_success)
 
-
 prior <- tibble(prop_success, zombies_cured)
 
 posterior <- prior[prior$zombies_cured == 13, ]
@@ -618,7 +619,7 @@ posterior_text = prior[prior$zombies_cured == 6, ]
 gf_density(~ prop_success, fill = "skyblue", data = posterior_video) / gf_density(~ prop_success, fill = "skyblue", data = posterior_text)
 ```
 
-Calculating the posterior difference:
+Calculating the posterior difference \[as an example of a probability distribution over an interesting parameter or function of parameter(s)\]:
 
 The posterior `prop_success` for the video and text ad has been put into a single `posterior` data frame. The reason for `[1:4000]` is because these `prop_success`s are not necessarily of the same length, which they need to be when put into a data frame.
 
@@ -633,7 +634,23 @@ posterior <- tibble(
 posterior$prop_diff = posterior$video_prop - posterior$text_prop
 
 # visualize `prop_diff`
-gf_density(~ prop_diff, fill = "skyblue", data = posterior) 
+gf_density(~ prop_diff, fill = "skyblue", data = posterior)
+```
+
+alternatively:
+
+```{r}
+n_samples <- min(nrow(posterior_video), nrow(posterior_text))
+
+posterior <- tibble(
+    video_prop = posterior_video |> sample_n(n_samples) |> pull(prop_success),
+    text_prop  = posterior_text |> sample_n(n_samples) |> pull(prop_success))
+    
+# calculate the posterior difference: `video_prop - text_prop`
+posterior$prop_diff = posterior$video_prop - posterior$text_prop
+
+# visualize `prop_diff`
+gf_density(~ prop_diff, fill = "skyblue", data = posterior)
 ```
 
 -   Calculate "a most likely" difference by taking the `median` of `posterior$prop_diff`
@@ -642,10 +659,275 @@ gf_density(~ prop_diff, fill = "skyblue", data = posterior)
 favstats(~ prop_diff, data = posterior)
 ```
 
--   Finally, calculate the probability that proportion of success is larger for drug A (video ad) than for drug B (text ad). That is, calculate the proportion of samples in `posterior$prop_diff` that are more than zero.
+-   Calculate the probability that proportion of success is larger for drug A (video ad) than for drug B (text ad). That is, calculate the proportion of samples in `posterior$prop_diff` that are more than zero.
 
 ```{r}
 posterior |> summarize(`P(drug A better than drug B)` = mean(prop_diff > 0))
 ```
 
+-   Finally, calculate the 95% (or 89%) HDPI:
+
+```{r}
+hdi(posterior$prop_diff)
+
+hdi(posterior$prop_diff, ci = .89)
+```
+
 ### Decision analysis
+
+```{r}
+video_cost <- 0.25 # money spent making drug A/video
+text_cost <- 0.05 # money spent making drug B/text
+zombie_profit <- 2.5 # money saved curing zombies rather than killing them
+
+posterior <- posterior |>
+  mutate(video_profit = video_prop * zombie_profit - video_cost,
+         text_profit = text_prop * zombie_profit - text_cost,
+         profit_diff = video_profit - text_profit)
+
+posterior
+```
+
+Make a data-informed decision based on cost-profit calculations done above:
+
+```{r}
+gf_density(~ video_profit, fill = "skyblue", data = posterior) |>
+  gf_lims(x = c(-0.5, 0.5)) /
+  gf_density(~ text_profit, fill = "skyblue", data = posterior) |>
+  gf_lims(x = c(-0.5, 0.5)) /
+  gf_density(~ profit_diff, fill = "skyblue", data = posterior) |>
+  gf_lims(x = c(-0.5, 0.5))
+```
+
+```{r}
+favstats(~ profit_diff, data = posterior)
+```
+
+```{r}
+posterior |> summarize(`P(drug A/video more profitable than drug B/text)` = mean(profit_diff > 0)) 
+```
+
+So it seems that the evidence does not strongly favor neither drug A/video nor drug B/text, but if forced to choose at this point, what would you choose?
+
+Drug B/text (1 - 0.36 = 64% probability of being more profitable than drug A)
+
+![](images/clipboard-3468439359.png)
+
+### Change anything and everything
+
+Completely switch out the binomial model with a Poisson model (with parameter λ = rate of zombies cured per day).
+
+The Poisson distribution simulates a process where the outcome is a number of occurrences per day/year/area/unit/etc.
+
+The Poisson distribution has one parameter (λ), the average number of events per unit.
+
+```{r}
+zombies_cured_per_day <- rpois(n = n_samples, lambda = 20)
+
+gf_bar(~ zombies_cured_per_day)
+```
+
+```{r}
+n_samples <- 100000
+
+# parameters
+rate_success <- runif(n_samples, min = 0, max = 80)
+
+# simulate data (combining uncertainty in rate_success with uncertainty in data)
+zombies_cured_per_day = rpois(n = n_samples, lambda = rate_success)
+
+# joint probability distribution of parameter values and simulated random samples/data
+# before seeing the data
+prior <- tibble(rate_success, zombies_cured_per_day)
+
+prior
+
+posterior <- prior[prior$zombies_cured_per_day == 19, ]
+
+gf_density(~ rate_success, fill = "skyblue", data = prior) / gf_density(~ rate_success, fill = "skyblue", data = posterior)
+```
+
+```{r}
+hdi(posterior$rate_success)
+```
+
+![](images/clipboard-3487640598.png)
+
+### Bayesian inference is optimal, kind of…
+
+Optimal only in the small world of the model, not in the big world of reality!
+
+## How to fit Bayesian models more efficiently
+
+### Probability, conditional probability, and probability distributions
+
+-   P(`zombies_cured` = 13) is a probability
+
+-   P(`zombies_cured`) is a probability *distribution*
+
+-   P(`zombies_cured` = 13 \| `prop_success` = 10%) is a *conditional* probability
+
+-   P(`zombies_cured` \| `prop_success` = 10%) is a *conditional* probability *distribution*
+
+### Manipulating probability: The rules of probability
+
+-   The sum rule:
+
+$$
+p(A \lor B) = p(A) + p(B) - p(A \land B)
+$$
+
+-   The product rule:
+
+$$
+p(A \land B) = p(A) \cdot p(B \mid A)
+$$
+
+### Calculating likelihoods
+
+So we can calculate new probabilities using the sum and the product rules. But earlier we didn't calculate probabilities directly, we simulated.
+
+If we wanted to figure out the probability that a generative model would generate a certain value, we simulated a large number of samples and then counted the proportion of samples taking on this certain value. This was easy to do for generative models that correspond to common probability distributions, like the binomial or the Poisson distribution, as you can use the “r”-functions, like `rbinom` and `rpois` for this.
+
+But one thing that faster Bayesian computational methods have in common is that they require that this probability can be calculated directly rather than simulated. Fortunately, for these common distributions someone already figured out how to do this and in R we can use the “d”-functions, like `dbinom` and `dpois`, for this.
+
+This is obviously much more efficient than to have to generate 100,000 or so samples first. We can manipulate the resulting probabilities using the rules we just learned.
+
+Finally, if we want to get a whole probability distribution, we’ll have to calculate the probability for a range of values. But the d-functions are generally vectorized, so that is easy!
+
+![](images/clipboard-1758485739.png)
+
+![](images/clipboard-3097915879.png)
+
+![](images/clipboard-2503161844.png)
+
+![](images/clipboard-3553114941.png)
+
+![](images/clipboard-1550659980.png)
+
+-   Simulate P(`zombies_cured` = 13 \| `prop_success` = 10%)
+
+```{r}
+zombies_cured <- rbinom(n = n_samples, size = n_zombies, prob = 0.1)
+mean(zombies_cured == 13)
+```
+
+-   Calculate P(`zombies_cured` = 13 \| `prop_success` = 10%)
+
+```{r}
+dbinom(13, size = n_zombies, prob = 0.1)
+```
+
+-   Calculate P(`zombies_cured` = 13 OR `zombies_cured` = 14 \| `prop_success` = 10%)
+
+```{r}
+dbinom(13, size = n_zombies, prob = 0.1) + dbinom(14, size = n_zombies, prob = 0.1)
+```
+
+-   Calculate P(`zombies_cured` \| `prop_success` = 10%)
+
+```{r}
+zombies_cured <- 1:n_zombies
+
+p_zombies_cured <- dbinom(zombies_cured, size = n_zombies, prob = 0.1) # probability distribution
+
+# plot(zombies_cured, p_zombies_cured, type = "h")
+
+gf_point(p_zombies_cured ~ zombies_cured) |> gf_segment(x = ~zombies_cured, xend = ~zombies_cured, y = 0, yend = ~p_zombies_cured)
+```
+
+### Bayesian inference by calculation
+
+```{r}
+#| warning: false
+prop_success <- seq(0, 1, by = 0.01)
+n_zombies <- 100
+zombies_cured <- 1:n_zombies
+
+d <- expand_grid(prop_success, zombies_cured)
+
+d <- d |> mutate(prior = dunif(prop_success, min = 0, max = 0.2),
+                 likelihood = dbinom(zombies_cured, size = n_zombies, prob = prop_success),
+                 posterior = prior * likelihood / sum(prior * likelihood))
+         
+gf_raster(posterior ~ zombies_cured + prop_success, data = d) |> gf_lims(x = c(0, 50), y = c(0, 0.2)) |> gf_refine(scale_fill_gradientn(colours=c("white", "yellow","red")))
+```
+
+```{r}
+#| warning: false
+d <- d |>
+  filter(zombies_cured == 13) |> 
+  mutate(posterior = posterior / sum(posterior))
+
+gf_raster(posterior ~ zombies_cured + prop_success, data = d) |> gf_lims(x = c(0, 50), y = c(0, 0.2)) |> gf_refine(scale_fill_gradientn(colours=c("white", "yellow","red")))
+```
+
+```{r}
+#| warning: false
+gf_point(posterior ~ prop_success, data = d) |> gf_segment(x = ~prop_success, xend = ~prop_success, y = 0, yend = ~posterior) |> gf_lims(x = c(0, 0.25))
+```
+
+![](images/clipboard-742346553.png)
+
+### A conditional shortcut
+
+You've now done some Bayesian computation, without doing any simulation! The plot you produced should be similar to the posterior distribution you calculated with simulation. However, it required an awful lot of code, isn't there anything we can cut?
+
+Yes, there is! You can directly condition on the data, no need to first create the joint distribution.
+
+```{r}
+#| warning: false
+prop_success <- seq(0, 1, by = 0.01)
+n_zombies <- 100
+zombies_cured <- 13
+
+d <- tibble(prior = dunif(prop_success, min = 0, max = 0.2),
+            likelihood = dbinom(zombies_cured, size = n_zombies, prob = prop_success),
+            posterior = prior * likelihood / sum(prior * likelihood))
+         
+gf_raster(posterior ~ zombies_cured + prop_success, data = d) |> gf_lims(x = c(0, 50), y = c(0, 0.2)) |> gf_refine(scale_fill_gradientn(colours=c("white", "yellow","red")))
+```
+
+```{r}
+#| warning: false
+gf_point(posterior ~ prop_success, data = d) |> gf_segment(x = ~prop_success, xend = ~prop_success, y = 0, yend = ~posterior) |> gf_lims(x = c(0, 0.25))
+```
+
+### Bayes' theorem
+
+```{r}
+#| eval: false
+posterior = prior * likelihood / sum(posterior)
+```
+
+![![](images/clipboard-1594329491.png)](images/clipboard-2636086849.png)
+
+### Grid approximation
+
+-   Define a grid over all the parameter combinations you need to evaluate
+
+-   Approximate as it's often impossible to try all parameter combinations
+
+-   There are many more algorithms to fit a Bayesian model, some more efficient that others
+
+### A mathematical notation for Bayesian models
+
+$$
+x \sim \text{Binom}(n, \pi) \\
+n = 100 \\
+\pi \sim \text{Unif}(0.0, 0.2)
+$$
+
+```{r}
+m1 <- quap(
+  alist(
+    x ~ dbinom(n, π),
+    n <- 100,
+    π ~ dunif(0, 0.2)
+  ),
+  data=list(x=13))
+
+summary(m1)
+```
+
+## More parameters, more data!
