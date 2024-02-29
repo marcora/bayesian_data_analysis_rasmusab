@@ -850,7 +850,7 @@ d <- d |> mutate(prior = dunif(prop_success, min = 0, max = 0.2),
                  likelihood = dbinom(zombies_cured, size = n_zombies, prob = prop_success),
                  posterior = prior * likelihood / sum(prior * likelihood))
          
-gf_raster(posterior ~ zombies_cured + prop_success, data = d) |> gf_lims(x = c(0, 50), y = c(0, 0.2)) |> gf_refine(scale_fill_gradientn(colours=c("white", "yellow","red")))
+gf_raster(posterior ~ zombies_cured + prop_success, data = d) |> gf_lims(x = c(0, 50), y = c(0, 0.2)) |> gf_refine(scale_fill_viridis_c())
 ```
 
 ```{r}
@@ -859,7 +859,7 @@ d <- d |>
   filter(zombies_cured == 13) |> 
   mutate(posterior = posterior / sum(posterior))
 
-gf_raster(posterior ~ zombies_cured + prop_success, data = d) |> gf_lims(x = c(0, 50), y = c(0, 0.2)) |> gf_refine(scale_fill_gradientn(colours=c("white", "yellow","red")))
+gf_raster(posterior ~ zombies_cured + prop_success, data = d) |> gf_lims(x = c(0, 50), y = c(0, 0.2)) |> gf_refine(scale_fill_viridis_c())
 ```
 
 ```{r}
@@ -885,7 +885,7 @@ d <- tibble(prior = dunif(prop_success, min = 0, max = 0.2),
             likelihood = dbinom(zombies_cured, size = n_zombies, prob = prop_success),
             posterior = prior * likelihood / sum(prior * likelihood))
          
-gf_raster(posterior ~ zombies_cured + prop_success, data = d) |> gf_lims(x = c(0, 50), y = c(0, 0.2)) |> gf_refine(scale_fill_gradientn(colours=c("white", "yellow","red")))
+gf_raster(posterior ~ zombies_cured + prop_success, data = d) |> gf_lims(x = c(0, 50), y = c(0, 0.2)) |> gf_refine(scale_fill_viridis_c())
 ```
 
 ```{r}
@@ -913,21 +913,322 @@ posterior = prior * likelihood / sum(posterior)
 ### A mathematical notation for Bayesian models
 
 $$
-x \sim \text{Binom}(n, \pi) \\
+x = 13 \\
 n = 100 \\
-\pi \sim \text{Unif}(0.0, 0.2)
+x \sim \text{Binom}(n, \pi) \\
+\pi \sim \text{Uniform}(\text{min} : 0, \text{max} : 0.2)
 $$
 
 ```{r}
 m1 <- quap(
   alist(
-    x ~ dbinom(n, π),
-    n <- 100,
-    π ~ dunif(0, 0.2)
+    x ~ dbinom(n, p),
+    p ~ dunif(0, 0.2)
   ),
-  data=list(x=13))
+  data=list(x = 13, n = 100))
 
 summary(m1)
 ```
 
 ## More parameters, more data!
+
+![](images/clipboard-378766852.png)
+
+```{r}
+temp <- c(19, 23, 20, 17, 23) # lake temp on this day in the past 5 years
+```
+
+![](images/clipboard-2889862467.png)
+
+```{r}
+rnorm(n = 5, mean = 20, sd = 2)
+```
+
+```{r}
+like <- dnorm(x = temp, mean = 20, sd = 2)
+
+like
+```
+
+```{r}
+# assuming i.i.d. temp observations
+prod(like)
+```
+
+```{r}
+log(like)
+```
+
+```{r}
+sum(log(like))
+```
+
+```{r}
+exp(sum(log(like)))
+```
+
+### A Bayesian model of lake temp
+
+$$
+\mu \sim \text{Normal}(\text{mean}: 18, \text{sd}: 5)\\
+\sigma \sim \text{Uniform}(\text{min}: 0, \text{max}: 10) \\
+x_i \sim \text{Normal}(\mu, \sigma) \\
+x = \{19, 23, 20, 17, 23 \} \\
+$$
+
+```{r}
+#| warning: false
+temp <- c(19, 23, 20, 17, 23)
+mu <- seq(8, 30, by = 0.5)
+sigma <- seq(0.1, 10, by = 0.2)
+
+d <- expand_grid(mu, sigma)
+
+d <- d |>
+  mutate(mu_prior = dnorm(mu, mean = 18, sd = 5),
+         sigma_prior = dunif(sigma, min = 0, max = 10),
+         prior = mu_prior * sigma_prior) |> 
+  rowwise() |> 
+  mutate(likelihood = exp(sum(dnorm(temp, mu, sigma, log = TRUE)))) |> 
+  ungroup() |> 
+  mutate(posterior = prior * likelihood / sum(prior * likelihood))
+
+gf_raster(posterior ~ mu + sigma, data = d) |> gf_refine(scale_fill_viridis_c())
+```
+
+```{r}
+m2 <- quap(
+  alist(
+    x ~ dnorm(mu, sigma),
+    mu ~ dnorm(18, 5),
+    sigma ~ dunif(0, 10)
+  ),
+  data=list(x = c(19, 23, 20, 17, 23)))
+
+summary(m2)
+```
+
+### Answering the question: Should I have a beach party?
+
+Sampling from the posterior:
+
+```{r}
+sample_indices <- sample(nrow(d), size = 10000, replace = TRUE, prob = d$posterior)
+
+head(sample_indices)
+```
+
+```{r}
+# sample from d to calculate some new measures
+samples <- d[sample_indices, c("mu", "sigma")]
+
+head(samples)
+```
+
+The probability distribution of the average temperature (param mu):
+
+```{r}
+# visualize the mean temp
+gf_histogram(~ mu, data = samples)
+```
+
+```{r}
+# calculate quantiles
+quantile(samples$mu, c(0.025, 0.5, 0.975))
+```
+
+What is the probability that the actual (not the average) temperature 18C or above?
+
+The probability distribution of the actual temperature (predicted temp):
+
+```{r}
+pred_temp <- rnorm(10000, mean = samples$mu, sd = samples$sigma)
+
+gf_histogram(~ pred_temp)
+```
+
+```{r}
+mean(pred_temp >= 18)
+```
+
+### A Bayesian model of zombie IQ
+
+Zombies are stupid, and you and your colleagues at the *National Zombie Research Laboratory* are interested in *how* stupid they are. To the right, you have the Normal model we developed in the last video, but with the temperature data switched out with some zombie IQs fresh from the lab. What we're interested in is how much we can learn about the mean zombie IQ from this data. The model is complete, save for that we need to calculate the `probability` of each parameter combination in `pars`.
+
+```{r}
+# the IQ of a bunch of zombies
+iq <- c(55, 44, 34, 18, 51, 40, 40, 49, 48, 46)
+
+# defining the parameter grid
+pars <- expand.grid(mu = seq(0, 150, length.out = 100), 
+                    sigma = seq(0.1, 50, length.out = 100))
+
+# defining and calculating the prior density for each parameter combination
+pars$mu_prior <- dnorm(pars$mu, mean = 100, sd = 100)
+pars$sigma_prior <- dunif(pars$sigma, min = 0.1, max = 50)
+pars$prior <- pars$mu_prior * pars$sigma_prior
+
+# calculating the likelihood for each parameter combination
+for(i in 1:nrow(pars)) {
+  likelihoods <- dnorm(iq, pars$mu[i], pars$sigma[i])
+  pars$likelihood[i] <- prod(likelihoods)
+}
+
+# calculate the probability of each parameter combination
+pars$probability = pars$likelihood * pars$prior
+pars$probability = pars$probability / sum(pars$probability)
+```
+
+```{r}
+gf_raster(probability ~ mu + sigma, data = pars) |> gf_refine(scale_fill_viridis_c())
+```
+
+`pars` contains the dataframe representing the posterior zombie IQ distribution. The code below draws `sample_indices`: a sample of row numbers (a.k.a. *indices*) from the posterior.
+
+```{r}
+sample_indices <- sample(nrow(pars), size = 10000, replace = TRUE, prob = pars$probability)
+
+head(sample_indices)
+```
+
+```{r}
+# sample from pars to calculate some new measures
+samples <- pars[sample_indices, c("mu","sigma")]
+
+head(samples)
+```
+
+```{r}
+# visualize the mean IQ
+gf_histogram(~ mu, data = samples)
+```
+
+```{r}
+# calculate quantiles
+quantile(samples$mu, c(0.025, 0.5, 0.975))
+```
+
+When submitting this result to *The Journal of Zombieology*, you should we put the following sentence into the results section:
+
+> We estimate the mean zombie IQ to be 42 (95% CI: \[35, 50\])
+
+### Answering the question: How smart will the next zombie be?
+
+So we have an idea about what the *mean* zombie IQ is but what range of zombie IQs should we expect? And how likely is it that the next zombie you encounter is, at least, moderately intelligent?
+
+`samples` is the data frame with a sample of posterior parameter estimates, and the code below simulates from a normal distribution *incorporating* all the uncertainty in the posterior estimates of the parameters mean `mu` and standard deviation `sigma`.
+
+```{r}
+pred_iq <- rnorm(10000, mean = samples$mu, sd = samples$sigma)
+
+# visualize pred_iq
+gf_histogram(~ pred_iq)
+```
+
+Zombies with an IQ of 60 or more are of moderate intelligence, and much more dangerous: they can open doors!
+
+How nervous should you be that the next zombie you meet will be one of these smart zombies?
+
+```{r}
+# calculate the probability of a zombie being "smart" (+60 IQ)
+mean(pred_iq >= 60)
+```
+
+The risk is relatively low but still very real. I always carry my zombie repellent spray!
+
+### A practical tool: BEST
+
+![](images/clipboard-1596283557.png)
+
+![![](images/clipboard-1934054854.png)](images/clipboard-430645344.png)
+
+```{r}
+# brew install jags
+# remotes::install_github("cran/rjags")
+# remotes::install_github("mikemeredith/BEST")
+library(BEST)
+```
+
+```{r}
+iq <- c(55, 44, 34, 18, 51, 40, 40, 49, 48, 46)
+
+fit <- BESTmcmc(iq)
+
+fit
+```
+
+```{r}
+plot(fit)
+```
+
+### The BEST models and zombies on a diet
+
+The t-test is a classical statistical procedure used to compare the means of two data sets. In 2013 John Kruschke developed a souped-up Bayesian version of the t-test he named BEST (standing for *Bayesian Estimation Supersedes the t-test*). Let's try out BEST as implemented in the `BEST` package.
+
+Zombies are stupid, but you and your colleagues at the *National Zombie Research Laboratory* are interested in how diet affects zombie intelligence. You have done a small experiment where you measured the IQ of 10 zombies on a regular diet and 10 zombies on a brain-based diet. The hypothesis is that zombies that eat more brains perform better on IQ tests. To the right, the data from the experiment is put into the variables `iq_brains` and `iq_regular`.
+
+-   Calculate the mean difference in IQ between the two groups by taking the mean of `iq_brains` minus the mean of `iq_regular`. Remember that `mean(iq_brains)` calculates the sample mean of `iq_brains`.
+
+```{r}
+# The IQ of zombies on a regular diet and a brain based diet.
+iq_brains <- c(44, 52, 42, 66, 53, 42, 55, 57, 56, 51)
+iq_regular <- c(55, 44, 34, 18, 51, 40, 40, 49, 48, 46)
+
+# Calculate the mean difference in IQ between the two groups
+mean(iq_brains) - mean(iq_regular)
+```
+
+It looks like zombies eating brains have higher IQ, but how sure should we be of this?
+
+```{r}
+# Fit the BEST model to the data from both groups
+best_posterior = BESTmcmc(iq_brains, iq_regular)
+
+# Plot the model result
+plot(best_posterior)
+```
+
+This plot shows the posterior probability distribution over the difference in means between `iq_brains` and `iq_regular`. On top of this you get:
+
+\(1\) The mean of the posterior as a "best guess" for the difference.
+
+\(2\) A 95% credible interval (called a 95% *Highest Density Interval* in the plot).
+
+\(3\) The amount of probability below and above *zero difference*.
+
+What would be a reasonable conclusion to draw from this analysis? There is some evidence that eating brains makes zombies *smarter*, but it's uncertain by how much.
+
+### BEST is robust
+
+The Bayesian model behind BEST assumes that the generative model for the data is a *t-distribution*; a more flexible distribution than the normal distribution as it assumes that data points might be outliers to some degree. This makes BEST's estimate of the mean difference *robust* to outliers in the data.
+
+Assume that a super smart mutant zombie (IQ = 150) got into the `iq_regular` group by mistake. This might mess up the results as you and your colleagues really were interested in how diet affects *normal* zombies.
+
+```{r}
+# The IQ of zombies given a regular diet and a brain based diet.
+iq_brains <- c(44, 52, 42, 66, 53, 42, 55, 57, 56, 51)
+iq_regular <- c(55, 44, 34, 18, 51, 40, 40, 49, 48, 150)
+
+# Modify the data above and calculate the difference in means
+mean(iq_brains) - mean(iq_regular)
+```
+
+```{r}
+# Fit the BEST model to the modified data and plot the result
+best_posterior <- BESTmcmc(iq_brains, iq_regular)
+
+# Plot the model result
+plot(best_posterior)
+```
+
+Looking at the plot, we see that the mutant zombie data point has made BEST more uncertain to some degree. But since BEST is robust to outliers, it still estimates that brain-eating zombies are more likely to have a higher IQ than zombies on a regular diet.
+
+What conclusion should we draw? There is weak evidence that eating brains make zombies smarter. And we should be better at screening for mutant zombies when doing experiments.
+
+### What have you learned? What did we miss?
+
+![](images/clipboard-4221905109.png)
+
+![![](images/clipboard-2783938752.png)](images/clipboard-1553284924.png)
+
+![![](images/clipboard-2754499041.png)](images/clipboard-1246267136.png)
